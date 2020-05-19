@@ -3,7 +3,11 @@ import React from 'react';
 // import { Container } from './styles';
 
 function ProductDetail() {
-  return (<div>detail </div>);
+  return (
+    <div>
+      <h1>detalhe do produto</h1>
+    </div>
+  );
 }
 
 export default ProductDetail;
