@@ -1,12 +1,14 @@
 import React from 'react';
-
-// import { Container } from './styles';
+import { Container, Article } from './styles';
 
 function ProductDetail() {
   return (
-    <div>
-      <h1>detalhe do produto</h1>
-    </div>
+    <Container>
+      <Article>
+        <h1>detalhe do produto</h1>
+        <i className="icon-user" />
+      </Article>
+    </Container>
   );
 }
 
