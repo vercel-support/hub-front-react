@@ -1,0 +1,19 @@
+@import '../node_modules/material-design-icons/iconfont/material-icons.css';
+
+.wrapper {
+  width: 100%;
+}
+
+.content {
+  height: 100%;
+}
+
+html,
+body,
+#app {
+  height: 100vh !important;
+  width: 100% !important;
+  color: #666666;
+  font-family: Open Sans;
+  background-color: #f8f8f8;
+}

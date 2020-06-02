@@ -28,6 +28,17 @@ module.exports = {
         },
       },
       {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: 'svg-url-loader',
+            options: {
+              limit: 10000,
+            },
+          },
+        ],
+      },
+      {
         test: /\.css$/,
         use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
       },
@@ -46,6 +57,19 @@ module.exports = {
       {
         test: /\.(eot|woff|svg|eot|ttf|svg)$/,
         loader: 'url-loader',
+      },
+      {
+        test: /\.woff(2)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              name: './font/[hash].[ext]',
+              mimetype: 'application/font-woff'
+            }
+          }
+        ]
       },
     ],
   },
