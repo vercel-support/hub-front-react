@@ -1,22 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import LoginForm from '../../shared/components/LoginForm/LoginForm';
-import GoToRegister from '../../shared/components/Register/GoToRegister';
+import EmailForm from '../../shared/components/EmailForm/EmailForm';
 import CheckoutNav from '../../shared/components/CheckoutNav/CheckoutNav';
 import SideBar from '../../shared/components/SideBar/SideBar';
 
-class IdentifyLogin extends Component {
+class CheckoutEmail extends Component {
   constructor() {
     super();
     this.state = {};
-    this.onGoToRegister = this.onGoToRegister.bind(this);
+    this.onEmailFormSubmit = this.onEmailFormSubmit.bind(this);
   }
   componentDidMount() {}
 
   componentDidUpdate() {}
 
-  onGoToRegister() {
-    this.props.history.push('/checkout/registrar');
+  onEmailFormSubmit(email) {
+      this.props.history.push('/checkout/login');
+    // fetch('localhost:3000/rest/V1/customers/isEmailAvailable', {
+    //   method: 'post',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(email),
+    // })
+    //   .then((response) => response.json)
+    //   .then((response) => {
+    //     if (response) {
+    //     } else {
+    //       this.props.history.pus('/checkout/registrar');
+    //     }
+    //   });
   }
 
   render() {
@@ -25,13 +38,11 @@ class IdentifyLogin extends Component {
         <div className="content w-two-thirds-ns pa2">
           <CheckoutNav checkout={1} />
           <div className="flex flex-column flex-row-ns w-100 big-box">
-            <LoginForm />
-            <div className="divider"></div>
-            <GoToRegister onSignUpClick={() => this.onGoToRegister()} />
+            <EmailForm onEmailFormSubmit={this.onEmailFormSubmit} />
           </div>
         </div>
         <div className="w-third-ns pa2 dn db-ns">
-          <SideBar />
+            <SideBar />
         </div>
       </div>
     );
@@ -49,4 +60,4 @@ const mapDispatchToProps = (dispatch) => {
     login: () => dispatch(loginActions.login()),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(IdentifyLogin);
+export default connect(mapStateToProps, mapDispatchToProps)(CheckoutEmail);

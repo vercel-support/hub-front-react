@@ -2,33 +2,39 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MaskedInput from 'react-text-mask';
 import { Button, Form } from 'react-bootstrap';
-import loginActions from '../../actions';
 import tachyons from 'tachyons';
-import './LoginForm.css';
+import './EmailForm.css';
 
-class Login extends Component {
+class EmailForm extends Component {
+  constructor(){
+    super();
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.state = {
+      email: ''
+    }
+  }
+  onFormSubmit(){
+    this.props.onEmailFormSubmit(this.state);
+  }
+  onChange(e){
+    this.setState({email: e.target.value});
+  }
   render() {
     return (
-      <div className="flex flex-column center fl-ns justify-between h-100 mv3 box pa4 flexForm">
+      <div className="flex flex-column center fl-ns justify-between h-100 mv3 box pa4 w-100 w-50-ns">
         <div className="f3 fw6 mb3 items-center">
           <i className="material-icons">account_circle</i> Identificação
         </div>
-        <Form className="flex flex-column center w-100 h8">
+        <div className="">Para finalizar a compra, informe seu e-mail.</div>
+        <Form className="flex flex-column center w-100 h8" onSubmit={this.onFormSubmit}>
           <Form.Group controlId="formBasicEmail" className="mv2">
             <Form.Label className="flex">Email</Form.Label>
             <Form.Control
               type="email"
               placeholder="Seu email"
-              className="flex w-100 self-end"
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formBasicPassword" className="mv2">
-            <Form.Label className="flex">Senha</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Sua senha"
-              className="flex w-100 self-end"
+              className="flex w-100 self-end mv1"
+              value={this.state.email}
+              onChange={this.onChange}
             />
           </Form.Group>
           <Button
@@ -39,11 +45,10 @@ class Login extends Component {
           >
             Entrar
           </Button>
-          <div className="underline pointer link tc">esqueci minha senha</div>
         </Form>
       </div>
     );
   }
 }
 
-export default connect(null, null)(Login);
+export default connect(null, null)(EmailForm);

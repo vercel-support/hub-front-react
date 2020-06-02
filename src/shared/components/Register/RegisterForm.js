@@ -55,11 +55,11 @@ class RegisterForm extends Component {
 
   render() {
     return (
-      <div className="flex flex-column center justify-between h-100 mv3 box pa4 flexForm">
+      <div className="flex flex-column center justify-between h-100 mv3 box w-100 w-50-ns pa4">
         <div className="f3 fw6 mb3 items-center">
           <i className="material-icons">account_circle</i> Novo Cadastro
         </div>
-        <Form className="flex flex-column center w-100 w-50-ns h8" onSubmit={this.onRegister}>
+        <Form className="flex flex-column center w-100 h8" onSubmit={this.onRegister}>
           <Form.Group controlId="formBasicEmail" className="mv2">
             <Form.Label className="flex mv1">e-mail</Form.Label>
             <Form.Control

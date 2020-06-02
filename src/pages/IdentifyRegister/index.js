@@ -2,36 +2,43 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CheckoutNav from '../../shared/components/CheckoutNav/CheckoutNav';
 import RegisterForm from '../../shared/components/Register/RegisterForm';
+import SideBar from '../../shared/components/SideBar/SideBar';
 
 class IdentifyRegister extends Component {
   constructor() {
     super();
-    this.state = {
-    };
+    this.state = {};
     this.onGoBackClick = this.onGoBackClick.bind(this);
-    this.onRegister = this.onRegister.bind(this)
+    this.onRegister = this.onRegister.bind(this);
   }
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   componentDidUpdate() {}
 
-  onGoBackClick(){
+  onGoBackClick() {
     this.props.history.goBack();
   }
-  
-  onRegister(values){
+
+  onRegister(values) {
     console.log(values);
-    this.props.history.push('/checkout/endereco')
+    this.props.history.push('/checkout/endereco');
   }
 
   render() {
     return (
-      <div className="content w-two-thirds-ns pa2">
-      <CheckoutNav checkout={1} />
-      <div className="flex flex-column flex-row-ns w-100 big-box">
-       <RegisterForm onGoBack={this.onGoBackClick} onRegisterSubmit={this.onRegister} />
-      </div>
+      <div className="w-100 flex">
+        <div className="content w-two-thirds-ns pa2">
+          <CheckoutNav checkout={1} />
+          <div className="flex flex-column flex-row-ns w-100 big-box">
+            <RegisterForm
+              onGoBack={this.onGoBackClick}
+              onRegisterSubmit={this.onRegister}
+            />
+          </div>
+        </div>
+        <div className="w-third-ns pa2 dn db-ns">
+          <SideBar />
+        </div>
       </div>
     );
   }
