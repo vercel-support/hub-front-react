@@ -8,16 +8,35 @@ import './EmailForm.css';
 class EmailForm extends Component {
   constructor(){
     super();
-    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.validateForm = this.validateForm.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.state = {
-      email: ''
+      customerEmail: '',
+      emailError: '',
     }
   }
-  onFormSubmit(){
-    this.props.onEmailFormSubmit(this.state);
+  validateForm(e){
+    e.preventDefault();
+    if (this.state.customerEmail == ''){
+      this.setState({emailError: 'Email é um campo obrigatório!'})
+    }
+    else {
+      if (!this.validateEmail()){
+        this.setState({emailError: 'O e-mail informado não é válido!'})
+      }
+      else {
+        this.props.onEmailFormSubmit(this.state);
+      }
+    }
+  }
+  validateEmail() {
+    console.log('validateEmail')
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(this.state.customerEmail));
   }
   onChange(e){
-    this.setState({email: e.target.value});
+    this.setState({customerEmail: e.target.value});
   }
   render() {
     return (
@@ -26,7 +45,7 @@ class EmailForm extends Component {
           <i className="material-icons">account_circle</i> Identificação
         </div>
         <div className="">Para finalizar a compra, informe seu e-mail.</div>
-        <Form className="flex flex-column center w-100 h8" onSubmit={this.onFormSubmit}>
+        <Form className="flex flex-column center w-100 h8" onSubmit={this.validateForm} noValidate>
           <Form.Group controlId="formBasicEmail" className="mv2">
             <Form.Label className="flex">Email</Form.Label>
             <Form.Control
@@ -36,6 +55,9 @@ class EmailForm extends Component {
               value={this.state.email}
               onChange={this.onChange}
             />
+             <Form.Control.Feedback type="invalid" className="errorMessage">
+              {this.state.emailError}
+            </Form.Control.Feedback>
           </Form.Group>
           <Button
             variant="primary"

@@ -10,6 +10,8 @@ import Shipping from './components/Shipping/Shipping';
 import tachyons from 'tachyons';
 import PostalCodeSelect from '../../shared/components/Dialog/PostalCodeDialog';
 import './index.css';
+
+
 class Cart extends Component {
   constructor() {
     super();

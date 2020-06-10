@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import EmailForm from '../../shared/components/EmailForm/EmailForm';
 import CheckoutNav from '../../shared/components/CheckoutNav/CheckoutNav';
 import SideBar from '../../shared/components/SideBar/SideBar';
+import { loginActions } from '../Login/actions'
 
 class CheckoutEmail extends Component {
   constructor() {
@@ -15,19 +16,22 @@ class CheckoutEmail extends Component {
   componentDidUpdate() {}
 
   onEmailFormSubmit(email) {
-      this.props.history.push('/checkout/login');
-    // fetch('localhost:3000/rest/V1/customers/isEmailAvailable', {
+    this.props.setEmail(email.customerEmail)
+    this.props.history.push('/checkout/login');
+    // fetch('http://18.229.234.11:3000/rest/V1/customers/isEmailAvailable', {
     //   method: 'post',
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
     //   body: JSON.stringify(email),
     // })
-    //   .then((response) => response.json)
-    //   .then((response) => {
-    //     if (response) {
-    //     } else {
-    //       this.props.history.pus('/checkout/registrar');
+    // .then((response) => response.json)
+    // .then((response) => {
+    //   console.log('isAvailable?',response);
+    //   if (response) {
+    //   } else {
+    //       this.props.history.push('/checkout/login');
+    //       // this.props.history.pus('/checkout/registrar');
     //     }
     //   });
   }
@@ -57,7 +61,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: () => dispatch(loginActions.login()),
+    setEmail: (email) => dispatch(loginActions.setEmail(email)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CheckoutEmail);

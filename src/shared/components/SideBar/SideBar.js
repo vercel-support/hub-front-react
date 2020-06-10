@@ -13,6 +13,7 @@ class SideBar extends Component {
     };
   }
   render() {
+    console.log(this.props)
       itemsView = []
     const items = this.props.storageItems;
     const selectedItems = this.props.cartItems;
@@ -22,7 +23,6 @@ class SideBar extends Component {
       item.quantity = selected[0].quantity;
       itemsView.push(item);
     });
-    console.log(itemsView.length);
       return (
         <div className="self-start pa2 br3 mb3">
           <div className="flex f4 b">

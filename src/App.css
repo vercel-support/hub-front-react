@@ -7,6 +7,10 @@
 .content {
   height: 100%;
 }
+.errorMessage{
+  color: #ff0000;
+  font-size: small;
+}
 
 html,
 body,
