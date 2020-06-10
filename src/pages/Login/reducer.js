@@ -1,13 +1,13 @@
 const initialState = {
-  email: null,
   isLogged: false,
   isEmailAvailable: false,
   register: {
-    passwordHash: null,
-    firstName: null,
-    lastName: null,
+    email: null,
+    password: null,
+    fname: null,
+    lname: null,
     cpf: null,
-    mobileNumber: null,
+    mobile: null,
   },
 };
 
@@ -15,12 +15,14 @@ const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_EMAIL':
       return Object.assign({}, state, {
-        email: action.email,
-      });
-    case 'SET_PASSWORD_HASH':
+        register: Object.assign({}, state.register, {
+          email: action.email, 
+      })});
+    case 'SET_PASSWORD':
       return Object.assign({}, state, {
-        register: action.passwordHash, //todo fix it
-      });
+        register: Object.assign({}, state.register, {
+          password: action.password, 
+      })});
     case 'LOGIN':
       return Object.assign({}, state, {
         isLogged: true,
@@ -39,20 +41,24 @@ const loginReducer = (state = initialState, action) => {
       });
     case 'SET_FIRST_NAME':
       return Object.assign({}, state, {
-        register: action.firstName, //todo fix it
-      });
+        register: Object.assign({}, state.register, {
+          fname: action.fname, //todo fix it
+      })});
     case 'SET_LAST_NAME':
       return Object.assign({}, state, {
-        register: action.lastName, //todo fix it
-      });
+        register: Object.assign({}, state.register, {
+          lname: action.lname, //todo fix it
+      })});
     case 'SET_CPF':
       return Object.assign({}, state, {
-        register: action.cpf, //todo fix it
-      });
+        register: Object.assign({}, state.register, {
+          cpf: action.cpf, 
+      })});
     case 'SET_MOBILE_NUMBER':
       return Object.assign({}, state, {
-        register: action.mobile, //todo fix it
-      });
+        register: Object.assign({}, state.register, {
+          mobile: action.mobile, 
+      })});
     default:
       return state;
   }

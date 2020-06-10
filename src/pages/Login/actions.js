@@ -4,10 +4,10 @@ function setEmail(email) {
     email,
   };
 }
-function setPasswordHash(passwordHash) {
+function setPassword(password) {
   return {
-    type: 'SET_PASSWORD_HASH',
-    passwordHash,
+    type: 'SET_PASSWORD',
+    password,
   };
 }
 function login() {
@@ -30,16 +30,16 @@ function emailNotAvailable() {
     type: 'EMAIL_NOT_AVAILABLE',
   };
 }
-function setFirsName(firstName) {
+function setFirsName(fname) {
   return {
     type: 'SET_FIRST_NAME',
-    firstName
+    fname
   };
 }
-function setLastName(lastName) {
+function setLastName(lname) {
   return {
     type: 'SET_LAST_NAME',
-    lastName
+    lname
   };
 }
 function setCPF(cpf) {
@@ -55,9 +55,10 @@ function setMobileNumber(mobile) {
   };
 }
 
+
 export const loginActions = {
   setEmail,
-  setPasswordHash,
+  setPassword,
   login,
   logoff,
   emailAvailable,

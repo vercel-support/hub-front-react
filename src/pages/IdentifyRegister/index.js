@@ -2,36 +2,51 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CheckoutNav from '../../shared/components/CheckoutNav/CheckoutNav';
 import RegisterForm from '../../shared/components/Register/RegisterForm';
+import SideBar from '../../shared/components/SideBar/SideBar';
+import {loginActions} from '../Login/actions'
 
 class IdentifyRegister extends Component {
   constructor() {
     super();
-    this.state = {
-    };
+    this.state = {};
     this.onGoBackClick = this.onGoBackClick.bind(this);
-    this.onRegister = this.onRegister.bind(this)
+    this.onSubmitRegister = this.onSubmitRegister.bind(this);
   }
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   componentDidUpdate() {}
 
-  onGoBackClick(){
+  onGoBackClick() {
     this.props.history.goBack();
   }
-  
-  onRegister(values){
-    console.log(values);
-    this.props.history.push('/checkout/endereco')
+
+  onSubmitRegister(register) {
+    this.props.setFirsName(register.fname);
+    this.props.setLastName(register.lname);
+    this.props.setEmail(register.email);
+    this.props.setCPF(register.cpf);
+    this.props.setMobileNumber(register.mobile);
+    this.props.setPassword(register.password);
+    this.props.login();
+    this.props.history.push('/checkout/endereco');
   }
 
   render() {
     return (
-      <div className="content w-two-thirds-ns pa2">
-      <CheckoutNav checkout={1} />
-      <div className="flex flex-column flex-row-ns w-100 big-box">
-       <RegisterForm onGoBack={this.onGoBackClick} onRegisterSubmit={this.onRegister} />
-      </div>
+      <div className="w-100 flex">
+        <div className="content w-two-thirds-ns pa2">
+          <CheckoutNav checkout={1} />
+          <div className="flex flex-column flex-row-ns w-100 big-box">
+            <RegisterForm
+              onGoBack={this.onGoBackClick}
+              onSubmit={this.onSubmitRegister}
+              userEmail={this.props.userEmail}
+            />
+          </div>
+        </div>
+        <div className="w-third-ns pa2 dn db-ns">
+          <SideBar />
+        </div>
       </div>
     );
   }
@@ -39,12 +54,19 @@ class IdentifyRegister extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login,
+    userEmail: state.user.register.email,
   };
 };
 
+
 const mapDispatchToProps = (dispatch) => {
   return {
+    setEmail: (email) => dispatch(loginActions.setEmail(email)),
+    setFirsName: (fname) => dispatch(loginActions.setFirsName(fname)),
+    setLastName: (lname) => dispatch(loginActions.setLastName(lname)),
+    setCPF: (cpf) => dispatch(loginActions.setCPF(cpf)),
+    setMobileNumber: (mobile) => dispatch(loginActions.setMobileNumber(mobile)),
+    setPassword: (password) => dispatch(loginActions.setPassword(password)),
     login: () => dispatch(loginActions.login()),
   };
 };

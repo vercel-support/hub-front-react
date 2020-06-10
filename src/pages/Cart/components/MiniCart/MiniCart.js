@@ -1,14 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { CartIcon, Counter, CounterText } from './styles';
+import { Link } from 'react-router-dom'
 
 function MiniCart(props) {
   const quantity = props.quantityItens;
   return (
-    <CartIcon>
-      c
-       <Counter><CounterText>{quantity > 0 && quantity < 99? quantity : quantity >= 99 ? '99+' : ''} </CounterText></Counter>
-    </CartIcon>
+    <div className="f2 link dib mr3 mr4-ns">
+      <Link to="/carrinho" className="white dim">
+      <i className="material-icons" >shopping_cart</i>
+      </Link>
+       {/* <Counter><CounterText>{quantity > 0 && quantity < 99? quantity : quantity >= 99 ? '99+' : ''} </CounterText></Counter> */}
+    </div>
   );
 }
 

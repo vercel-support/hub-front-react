@@ -10,6 +10,8 @@ import Shipping from './components/Shipping/Shipping';
 import tachyons from 'tachyons';
 import PostalCodeSelect from '../../shared/components/Dialog/PostalCodeDialog';
 import './index.css';
+
+
 class Cart extends Component {
   constructor() {
     super();
@@ -64,6 +66,7 @@ class Cart extends Component {
     }
   }
   getShippingDetails() {
+    console.log('getShipping', this.props.cart.cartItems)
     if (this.props.cart.loading || this.state.loading) {
       const reqBody = {
         items: this.props.cart.cartItems,
@@ -152,12 +155,12 @@ class Cart extends Component {
       }
       newCartItems.push(item);
     });
-    this.props.setCartItems(newCartItems);
-    this.updateTotalPriceItems();
-    this.getShippingDetails();
     if (quantity === 0) {
       this.onDeleteItem(cartItem.sku);
     }
+    this.props.setCartItems(newCartItems);
+    this.updateTotalPriceItems();
+    this.getShippingDetails();
   }
 
   onShippingSelect(shipping) {
@@ -250,7 +253,7 @@ class Cart extends Component {
         });
     }
     if (canProceed) {
-      this.props.history.push('/checkout/login');
+      this.props.history.push('/checkout/identificacao');
     }
   }
 

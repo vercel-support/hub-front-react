@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Form } from 'react-bootstrap';
-import AddressDetail from './AddressDetail'
 import tachyons from 'tachyons';
 
-class AddressView extends Component {
+class AddressViewItem extends Component {
   render() {
     return (
       <div className="flex flex-column center justify-between h-100 mv3 box pa2 flexForm">
@@ -17,4 +16,4 @@ class AddressView extends Component {
   }
 }
 
-export default connect(null, null)(AddressView);
+export default connect(null, null)(AddressViewItem);

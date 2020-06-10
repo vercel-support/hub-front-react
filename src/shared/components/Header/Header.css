@@ -1,0 +1,13 @@
+.navbar {
+  background-color: #2983b9;
+}
+@media (min-width: 30em) {
+  .icon-nav {
+    display: inline-flex;
+  }
+}
+@media (max-width: 29em) {
+  .icon-nav {
+    display: none;
+  }
+}
