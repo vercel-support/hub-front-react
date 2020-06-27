@@ -1,10 +1,27 @@
+import { geolocated } from "react-geolocated";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import RootContext from "../src/contexts";
 
-const App = ({ Component, pageProps }) => (
-  <React.Fragment>
-    <CssBaseline />
-    <Component {...pageProps} />
-  </React.Fragment>
-);
+const App = ({
+  Component,
+  pageProps,
+  isGeolocationAvailable,
+  isGeolocationEnabled,
+  coords,
+}) => {
+  const geo = isGeolocationAvailable && isGeolocationEnabled ? coords : false;
 
-export default App;
+  return (
+    <RootContext.Provider value={{ geo }}>
+      <CssBaseline />
+      <Component {...pageProps} />
+    </RootContext.Provider>
+  );
+};
+
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: false,
+  },
+  userDecisionTimeout: 5000,
+})(App);

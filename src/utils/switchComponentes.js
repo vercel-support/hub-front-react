@@ -1,11 +1,11 @@
 import * as Pages from "../components/pages";
 
 export default {
-  Cart: Pages.Cart,
-  Category: Pages.Category,
-  Checkout: Pages.Checkout,
-  Customer: Pages.Customer,
-  NotFound: Pages.NotFound,
-  Product: Pages.Product,
-  Success: Pages.Success,
+  cart: Pages.Cart,
+  category: Pages.Category,
+  checkout: Pages.Checkout,
+  customer: Pages.Customer,
+  notfound: Pages.NotFound,
+  product: Pages.Product,
+  success: Pages.Success,
 };

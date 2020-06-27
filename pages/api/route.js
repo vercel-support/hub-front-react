@@ -3,97 +3,108 @@ export default (req, res) => {
 
   const urls = {
     cart: {
-      code: 301,
+      status: 301,
       data: {
-        title: "GeraçãoPet - Página de Carrinho.",
+        metaDescription: "MetaDescription da página de carrinho",
+        metaTitle: "GeraçãoPet - Página de Carrinho.",
+        pageType: "cart",
       },
-      pageType: "Cart",
       target: "/carrinho",
     },
     carrinho: {
-      code: 301,
+      status: 301,
       data: {
-        title: "GeraçãoPet - Página de Carrinho.",
+        metaDescription: "MetaDescription da página de carrinho",
+        metaTitle: "GeraçãoPet - Página de Carrinho.",
+        pageType: "cart",
       },
-      pageType: "Cart",
       target: "/carrinho",
     },
 
     category: {
-      code: 301,
+      status: 301,
       data: {
-        title: "GeraçãoPet - Página de categoria",
+        metaDescription: "MetaDescription da página de categoria",
+        metaTitle: "GeraçãoPet - Página de categoria",
+        pageType: "category",
       },
-      pageType: "Category",
       target: "/categoria",
     },
     categoria: {
-      code: 301,
+      status: 301,
       data: {
-        title: "GeraçãoPet - Página de categoria",
+        metaDescription: "MetaDescription da página de categoria",
+        metaTitle: "GeraçãoPet - Página de categoria",
+        pageType: "category",
       },
-      pageType: "Category",
       target: "/categoria",
     },
 
     checkout: {
-      code: 301,
+      status: 301,
       data: {
-        title: "GeraçãoPet - Página de categoria",
+        metaDescription: "MetaDescription da página de pagamento",
+        metaTitle: "GeraçãoPet - Página de categoria",
+        pageType: "checkout",
       },
-      pageType: "Checkout",
       target: "/pagamento",
     },
     pagamento: {
-      code: 301,
+      status: 301,
       data: {
-        title: "GeraçãoPet - Página de pagamento",
+        metaDescription: "MetaDescription da página de pagamento",
+        metaTitle: "GeraçãoPet - Página de pagamento",
+        pageType: "checkout",
       },
-      pageType: "Checkout",
       target: "/pagamento",
     },
 
     customer: {
-      code: 301,
+      status: 301,
       data: {
-        title: "GeraçãoPet - Área do Cliente",
+        metaDescription: "MetaDescription da página do cliente",
+        metaTitle: "GeraçãoPet - Área do Cliente",
+        pageType: "customer",
       },
-      pageType: "Customer",
       target: "/customer",
     },
 
     product: {
-      code: 301,
+      status: 301,
       data: {
-        title: "GeraçãoPet - Página de Produto",
+        metaDescription: "MetaDescription da página de produto",
+        metaTitle: "GeraçãoPet - Página de Produto",
+        pageType: "product",
       },
-      pageType: "Product",
       target: "/produto",
     },
     produto: {
-      code: 301,
+      status: 301,
       data: {
-        title: "GeraçãoPet - Página de Produto",
+        metaDescription: "MetaDescription da página de produto",
+        metaTitle: "GeraçãoPet - Página de Produto",
+        pageType: "product",
       },
-      pageType: "Product",
       target: "/produto",
     },
 
     success: {
-      code: 301,
+      status: 301,
       data: {
-        title: "GeraçãoPet - Página de Produto",
+        metaDescription: "MetaDescription da página de sucesso",
+        metaTitle: "GeraçãoPet - Página de Produto",
+        pageType: "success",
       },
-      pageType: "Success",
       target: "/success",
     },
 
     404: {
-      code: 302,
+      status: 302,
       data: {
-        title: "GeraçãoPet - Página não encontrada!",
+        metaDescription: "MetaDescription da página 404",
+        metaTitle: "GeraçãoPet - Página não encontrada!",
+        pageType: "notfound",
       },
-      pageType: "NotFound",
       target: "/NotFound",
     },
   };
