@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { requestGeocode } from "../../../services";
-import RootContext from "../../../contexts";
+import RootContext from "../../../store";
 
 const GeoLocation = () => {
   const { geo } = useContext(RootContext);

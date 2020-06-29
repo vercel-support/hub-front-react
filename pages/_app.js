@@ -1,6 +1,6 @@
 import { geolocated } from "react-geolocated";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import RootContext from "../src/contexts";
+import RootContext from "../src/store";
 
 const App = ({
   Component,

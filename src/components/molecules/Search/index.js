@@ -1,11 +1,5 @@
 import React from "react";
-import { Button, InputSearch } from "../../atoms";
 
-const Search = () => (
-  <div>
-    <Button />
-    <InputSearch />
-  </div>
-);
+const Search = () => "oi";
 
 export default Search;
