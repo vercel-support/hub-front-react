@@ -31,10 +31,12 @@ export const getServerSideProps = async ({ req, res }) => {
     currentUrl.substr(1)
   );
 
+  /* No Redirect
   if (data && currentUrl !== data.target) {
     res.writeHead(data.status, { Location: data.target });
     res.end();
   }
+  */
 
   return { props: { content: data } };
 };

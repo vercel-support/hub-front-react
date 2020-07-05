@@ -107,6 +107,16 @@ export default (req, res) => {
       },
       target: "/NotFound",
     },
+
+    royalcanin: {
+      status: 302,
+      data: {
+        metaDescription: "MetaDescription da página 404",
+        metaTitle: "GeraçãoPet - Página não encontrada!",
+        pageType: "category",
+      },
+      target: "/categoria",
+    },
   };
 
   const response = urls[url] ?? urls[404];
