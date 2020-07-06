@@ -7,22 +7,22 @@ import HeaderLinksStyled from "./styles";
 const SubMenu = () => (
   <u>
     <li>
-      <Link href="/minha-conta">
+      <Link href={`/[...page]`} as="/minha-conta">
         <a>Minha Conta</a>
       </Link>
     </li>
     <li>
-      <Link href="/meus-pedidos">
+      <Link href={`/[...page]`} as="/meus-pedidos">
         <a>Meus Pedidos</a>
       </Link>
     </li>
     <li>
-      <Link href="/atendimento">
+      <Link href={`/[...page]`} as="/atendimento">
         <a>Atendimento</a>
       </Link>
     </li>
     <li>
-      <Link href="/logout">
+      <Link href={`/[...page]`} as="/logout">
         <a>Sair</a>
       </Link>
     </li>
@@ -35,7 +35,7 @@ const HeaderLinks = () => {
   return (
     <HeaderLinksStyled>
       <li>
-        <Link href="/atendimento">
+        <Link href={`/[...page]`} as="/atendimento">
           <a>
             <Sms />
             atendimento

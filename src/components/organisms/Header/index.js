@@ -22,7 +22,7 @@ const Header = () => {
     <header className={classes.header}>
       <Box component="div" className={classes.topheader}>
         <Container>
-          <Grid container lg={12} className={classes.vcenter}>
+          <Grid container className={classes.vcenter}>
             <Grid item lg={2} xs={8}>
               <Hidden lgUp>
                 <MenuMobile />
@@ -46,7 +46,7 @@ const Header = () => {
 
       <Box component="div" className={classes.subheader}>
         <Container>
-          <Grid container lg={12}>
+          <Grid container>
             <Grid item lg={3} xs={12}>
               <GeoLocation />
             </Grid>

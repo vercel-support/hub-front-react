@@ -13,6 +13,12 @@ const HeaderLinksStyled = styled.ul`
     align-items: center;
     color: #ffffff;
     display: flex;
+    text-decoration: none;
+  }
+  div li,
+  div a {
+    color: #666666;
+    text-decoration: none;
   }
 `;
 
