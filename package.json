@@ -1,0 +1,27 @@
+{
+  "name": "hub-front-react",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "ngrok": "ngrok http 3000"
+  },
+  "dependencies": {
+    "@material-ui/core": "4.10.2",
+    "@material-ui/icons": "4.9.1",
+    "axios": "0.19.2",
+    "next": "9.4.4",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-geolocated": "^3.0.1",
+    "react-hook-form": "^6.0.1",
+    "redux-saga": "^1.1.3",
+    "styled-components": "5.1.1"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "1.10.7",
+    "ngrok": "3.2.7"
+  }
+}
