@@ -35,11 +35,11 @@ const ItemCollapse = ({ listItem }) => {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {listItem.children.map((item) =>
+          {listItem.children.map((item, i) =>
             item?.children?.length ? (
-              <ItemCollapse listItem={item} />
+              <ItemCollapse listItem={item} key={i} />
             ) : (
-              <Item item={item} />
+              <Item item={item} key={i} />
             )
           )}
         </List>
@@ -57,7 +57,7 @@ const MenuMobile = ({ items = [] }) => {
 
   const getMenu = async () => {
     const { data } = await requestGet(
-      "http://localhost:3000/api/catalogs/categories"
+      "http://localhost:3009/api/catalogs/categories"
     );
     setMenuItems(data);
   };
@@ -100,11 +100,11 @@ const MenuMobile = ({ items = [] }) => {
           </List>
 
           <List>
-            {menuItems.map((item) =>
+            {menuItems.map((item, i) =>
               item?.children?.length ? (
-                <ItemCollapse listItem={item} />
+                <ItemCollapse listItem={item} key={i} />
               ) : (
-                <Item item={item} />
+                <Item item={item} key={i} />
               )
             )}
           </List>

@@ -5,7 +5,7 @@ import { DropDown } from "../../atoms";
 import HeaderLinksStyled from "./styles";
 
 const SubMenu = () => (
-  <u>
+  <ul>
     <li>
       <Link href={`/[...page]`} as="/minha-conta">
         <a>Minha Conta</a>
@@ -26,7 +26,7 @@ const SubMenu = () => (
         <a>Sair</a>
       </Link>
     </li>
-  </u>
+  </ul>
 );
 
 const HeaderLinks = () => {

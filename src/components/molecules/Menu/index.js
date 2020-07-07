@@ -52,7 +52,7 @@ const Menu = ({ items = [] }) => {
   // Retirar useEffect, fazer query na page
   const getMenu = async () => {
     const { data } = await requestGet(
-      "http://localhost:3000/api/catalogs/categories"
+      "http://localhost:3009/api/catalogs/categories"
     );
     setMenuItems(data);
   };

@@ -27,7 +27,7 @@ export const getServerSideProps = async ({ req, res }) => {
   const currentUrl = req.url;
 
   const { data } = await requestRedirect(
-    "http://localhost:3000/api/route",
+    "http://localhost:3009/api/route",
     currentUrl.substr(1)
   );
 

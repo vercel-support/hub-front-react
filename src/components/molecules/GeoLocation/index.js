@@ -4,7 +4,7 @@ import { ExpandLess, ExpandMore, MyLocation, Room } from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { requestGeocode } from "../../../services";
-import RootContext from "../../../store";
+import { store } from "../../../store";
 import { DropDown } from "../../atoms";
 import GeoLocationStyled, {
   GeoLocationCurrentStyled,
@@ -34,7 +34,7 @@ const listStores = [
 ];
 
 const GeoLocation = () => {
-  const { geo } = useContext(RootContext);
+  const { state } = useContext(store);
   const [open, setOpen] = useState(false);
   const { register, handleSubmit } = useForm();
 
@@ -51,10 +51,10 @@ const GeoLocation = () => {
   };
 
   useEffect(() => {
-    if (!geo) return;
-    console.log(geo);
-    getGeo();
-  }, [geo]);
+    console.log(state);
+    // if (!geo) return;
+    // getGeo();
+  }, [state]);
 
   return (
     <GeoLocationStyled
@@ -84,16 +84,16 @@ const GeoLocation = () => {
               variant="outlined"
               ref={register}
             />
-            <Button variant="outlined" color="yellow">
+            <Button variant="outlined" color="primary">
               Buscar
             </Button>
           </GeoLocationFormStyled>
 
           <GeoLocationListStyled>
-            {listStores.map((store) => {
+            {listStores.map((store, i) => {
               const { address, current, title } = store;
               return (
-                <GeoLocationStoreStyled selected={current}>
+                <GeoLocationStoreStyled selected={current} key={i}>
                   <h4>{title}</h4>
                   <p>{address}</p>
                   <span>
