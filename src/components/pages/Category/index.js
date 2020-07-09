@@ -1,6 +1,8 @@
 import React from "react";
 import { OneColumn } from "../../templates";
 
-const Category = () => <OneColumn>Minha Categoria</OneColumn>;
+const Category = ({ content }) => (
+  <OneColumn content={content}>Minha Categoria</OneColumn>
+);
 
 export default Category;

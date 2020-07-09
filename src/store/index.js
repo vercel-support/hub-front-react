@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react";
 import { useReducerAndSaga } from "./useReducerAndSaga";
-import { put, delay, all, takeEvery, call } from "redux-saga/effects";
+import { put, all, takeEvery, call, select } from "redux-saga/effects";
 import * as service from "../services";
 
 const initialState = {
@@ -10,9 +10,27 @@ const initialState = {
     timeout: null,
     latitude: null,
     longitude: null,
-    postcode: null,
+    postalCode: null,
     error: false,
   },
+  myStore: {
+    id: "5e8e1c6e43a61128433f0eed",
+    name: "Petshop do Reberth",
+    phone: "(15) 3591-2542",
+    address: {
+      postalCode: "04650-140",
+      street: "Rua José Neves",
+      state: "SP",
+      complement: "até 379/380",
+      neighborhood: "Vila São Paulo",
+      city: "São Paulo",
+      number: "364",
+      latitude: -23.65914,
+      longitude: -46.6761561,
+    },
+    distance: "109057",
+  },
+  stores: [],
 };
 
 const store = createContext(initialState);
@@ -20,20 +38,28 @@ const store = createContext(initialState);
 const { Provider } = store;
 
 // Saga
-function* helloSaga() {
-  console.log("Hello Sagas!");
-}
+function* getStores() {
+  try {
+    const params = yield select(({ geo }) =>
+      geo.postalCode
+        ? { postalCode: geo.postalCode }
+        : { latitude: geo.latitude, longitude: geo.longitude }
+    );
 
-function* getPostcode() {
-  yield put({ type: "INCREMENT" });
+    const { data } = yield call(service.requestGetStore, { params });
+    console.log("retorno stores", data);
+    yield put({ type: "STORES_SUCCESS", payload: data });
+  } catch (error) {
+    yield put({ type: "STORES_ERROR" });
+  }
 }
 
 function* watchGetPostcode() {
-  yield takeEvery("GEO_REQUEST", getPostcode);
+  yield takeEvery("GEO_SUCCESS", getStores);
 }
 
 function* rootSaga() {
-  yield all([helloSaga(), watchGetPostcode()]);
+  yield all([watchGetPostcode()]);
 }
 // Saga
 
@@ -41,12 +67,23 @@ const StateProvider = ({ children, value }) => {
   const [state, dispatch] = useReducerAndSaga(
     (state, action) => {
       switch (action.type) {
-        case "GEO_REQUEST":
-          return { ...state, geo: { ...action.payload } };
         case "GEO_ERROR":
-          return { ...state, geo: { ...initialState.geo, error: true } };
+          return { ...state, geo: { ...state.geo, error: true } };
         case "GEO_SUCCESS":
-          return { ...state, geo: { ...action.payload } };
+          return {
+            ...state,
+            geo: { ...state.geo, ...action.payload, error: false },
+          };
+        case "STORES_ERROR":
+          return {
+            ...state,
+            stores: [],
+          };
+        case "STORES_SUCCESS":
+          return {
+            ...state,
+            stores: [action.payload],
+          };
         default:
           return state;
       }

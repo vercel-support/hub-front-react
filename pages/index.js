@@ -1,9 +1,9 @@
 import React from "react";
 import Head from "next/head";
 import Home from "../src/components/pages/Home";
-import { requestGet } from "../src/services";
+import { requestCategories } from "../src/services";
 
-const Pages = () => (
+const Pages = ({ content }) => (
   <React.Fragment>
     <Head>
       <title>Geração Pet - Pet Shop Online</title>
@@ -18,8 +18,16 @@ const Pages = () => (
         content="Geração Pet - Pet Shop Online - Descrição"
       />
     </Head>
-    <Home />
+    <Home content={content} />
   </React.Fragment>
 );
+
+export const getServerSideProps = async () => {
+  const response = await requestCategories();
+
+  return {
+    props: { content: { categories: response.data } },
+  };
+};
 
 export default Pages;

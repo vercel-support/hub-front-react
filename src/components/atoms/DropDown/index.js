@@ -12,7 +12,11 @@ const DropDownStyled = styled.div`
 `;
 
 const DropDown = ({ children, open }) => {
-  return <DropDownStyled open={open}>{children}</DropDownStyled>;
+  return (
+    <DropDownStyled open={open} className="dropdown">
+      {children}
+    </DropDownStyled>
+  );
 };
 
 export default DropDown;
