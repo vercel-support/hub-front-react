@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Collapse from "@material-ui/core/Collapse";
 import Drawer from "@material-ui/core/Drawer";
@@ -10,7 +10,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import { ExpandMore, ExpandLess } from "@material-ui/icons";
-import { requestGet } from "../../../services";
 
 const useStyles = makeStyles({
   list: {
@@ -49,22 +48,10 @@ const ItemCollapse = ({ listItem }) => {
   );
 };
 
-const MenuMobile = ({ items = [] }) => {
+const MenuMobile = ({ categories = [] }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState(items);
   const [openMenu, setOpenMenu] = useState(false);
-
-  const getMenu = async () => {
-    const { data } = await requestGet(
-      "http://localhost:3009/api/catalogs/categories"
-    );
-    setMenuItems(data);
-  };
-
-  useEffect(() => {
-    getMenu();
-  }, []);
 
   return (
     <React.Fragment>
@@ -100,7 +87,7 @@ const MenuMobile = ({ items = [] }) => {
           </List>
 
           <List>
-            {menuItems.map((item, i) =>
+            {categories.map((item, i) =>
               item?.children?.length ? (
                 <ItemCollapse listItem={item} key={i} />
               ) : (

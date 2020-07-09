@@ -7,12 +7,23 @@ const GeoLocationStyled = styled.div`
   display: flex;
   height: 40px;
   position: relative;
-  width: fit-content;
+  max-width: 100%;
+  &:hover {
+    background-color: #ffffff;
+  }
   & > svg {
     margin: 0 5px;
+    path {
+      background-color: #ffffff;
+    }
   }
   & > div:nth-child(2) {
     width: 285px;
+  }
+  & > .dropdown {
+    background-color: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 280px;
   }
 `;
 
@@ -92,7 +103,7 @@ export const GeoLocationStoreStyled = styled.li`
     cursor: ${(props) => (props.selected ? "auto" : "pointer")};
     font-size: 10px;
     line-height: 14px;
-    text-decoration: underline;
+    text-decoration: ${(props) => (props.selected ? "none" : "underline")};
   }
 `;
 

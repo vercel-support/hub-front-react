@@ -1,7 +1,9 @@
+const hasPort =
+  process.argv.indexOf("-p") === -1 ? false : process.argv.indexOf("-p");
+const PORT = !hasPort ? 3000 : process.argv[hasPort + 1];
+
 module.exports = {
   publicRuntimeConfig: {
-    API_HOST: process.env.API_HOST,
-    API_GEO: process.env.GEO_API,
-    GEO_KEY: process.env.GEO_KEY,
+    API_URL: `${process.env.API_HOST}:${PORT}/${process.env.API_BASE}`,
   },
 };

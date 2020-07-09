@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ExpandLess, ExpandMore, MyLocation, Room } from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { requestGeocode } from "../../../services";
 import { store } from "../../../store";
-import { DropDown } from "../../atoms";
+import { DropDown, GetGeolocation } from "../../atoms";
 import GeoLocationStyled, {
   GeoLocationCurrentStyled,
   GeoLocationFormStyled,
@@ -14,65 +13,46 @@ import GeoLocationStyled, {
   GeoLocationTriggerStyled,
 } from "./styles";
 
-const listStores = [
-  {
-    title: "Petland Campolim",
-    address: "Avenida Carlos Antonio Committre, 160 - Loja 2 - Sorocaba/SP",
-    current: true,
-  },
-  {
-    title: "Petland Higienópolis",
-    address: "Avenida Carlos Antonio Committre, 160 - São Paulo/SP",
-    current: false,
-  },
-  {
-    title: "Petland Benjamim Constance",
-    address:
-      "Avenida Carlos Antonio Committre, 160 - Loja 2 - São José do Rio Preto/SP",
-    current: false,
-  },
-];
-
 const GeoLocation = () => {
-  const { state } = useContext(store);
+  const { state, dispatch } = useContext(store);
+  const { myStore = {}, stores = [] } = state;
   const [open, setOpen] = useState(false);
   const { register, handleSubmit } = useForm();
 
+  const [geo, setGeo] = useState(false);
+
   const onSubmit = (data) => {
     console.log(JSON.stringify(data));
+    dispatch({ type: "CEP" });
   };
 
-  const getGeo = async () => {
-    const response = await requestGeocode(geo.latitude, geo.longitude);
+  const formatAddress = (address) => {
+    if (!address) return null;
 
-    if (!response) return null;
-
-    const { road, suburb, city, state, postcode } = response.components;
+    const complement = address.complement ? `- ${address.complement}` : "";
+    return `${address.street}, ${address.number} ${complement} - ${address.city}/${address.state}`;
   };
-
-  useEffect(() => {
-    console.log(state);
-    // if (!geo) return;
-    // getGeo();
-  }, [state]);
 
   return (
     <GeoLocationStyled
-      onClick={() => setOpen(!open)}
       onMouseOut={() => setOpen(false)}
       onMouseOver={() => setOpen(true)}
     >
       <Room />
-      <GeoLocationCurrentStyled>
+      <GeoLocationCurrentStyled onClick={() => setOpen(!open)}>
         <span>minha loja</span>
-        <p>PETLAND CAMPOLIM {open ? <ExpandLess /> : <ExpandMore />}</p>
+        <p>
+          {myStore.name} {open ? <ExpandLess /> : <ExpandMore />}
+        </p>
       </GeoLocationCurrentStyled>
       <DropDown open={open}>
         <div>
           <GeoLocationTriggerStyled>
             <span>encontre sua loja</span>
-            <p>
+            <p onClick={() => setGeo(true)}>
+              {geo && <GetGeolocation />}
               <MyLocation /> usar minha localização
+              <span></span>
             </p>
           </GeoLocationTriggerStyled>
 
@@ -80,28 +60,30 @@ const GeoLocation = () => {
             <TextField
               name="cep"
               label="CEP"
-              defaultValue="12345-123"
               variant="outlined"
+              defaultValue="00000-000"
               ref={register}
             />
-            <Button variant="outlined" color="primary">
+            <Button variant="outlined" color="primary" type="submit">
               Buscar
             </Button>
           </GeoLocationFormStyled>
 
           <GeoLocationListStyled>
-            {listStores.map((store, i) => {
-              const { address, current, title } = store;
-              return (
-                <GeoLocationStoreStyled selected={current} key={i}>
-                  <h4>{title}</h4>
-                  <p>{address}</p>
-                  <span>
-                    ({current ? "minha loja" : "alterar para essa loja"})
-                  </span>
-                </GeoLocationStoreStyled>
-              );
-            })}
+            <GeoLocationStoreStyled selected>
+              <h4>{myStore.name}</h4>
+              <p>{formatAddress(myStore.address)}</p>
+              <span>(minha loja)</span>
+            </GeoLocationStoreStyled>
+            {stores.map((store, i) => (
+              <GeoLocationStoreStyled key={i}>
+                <h4>{store.name}</h4>
+                <p>{formatAddress(store.address)}</p>
+                <span onClick={() => dispatch({ type: "ALTERAR" })}>
+                  (alterar para essa loja)
+                </span>
+              </GeoLocationStoreStyled>
+            ))}
           </GeoLocationListStyled>
         </div>
       </DropDown>

@@ -12,7 +12,7 @@ const MenuStyled = styled.ul`
     align-items: center;
     display: flex;
     height: 40px;
-    padding: 0 18px;
+    padding: 0 20px;
     position: relative;
     a {
       color: #ffffff;
@@ -36,17 +36,26 @@ const MenuStyled = styled.ul`
   }
 
   ul {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     display: none;
     left: 0;
     list-style: none;
     margin: 0;
-    padding: 0;
+    min-height: 290px;
+    padding: 15px 0;
     position: absolute;
     top: 100%;
-  }
-  ul ul {
-    left: 100%;
-    top: 0;
+    width: 170px;
+    li {
+      padding: 0 10px;
+    }
+    ul {
+      left: 100%;
+      top: 0;
+    }
+    ul + ul {
+      left: 340px;
+    }
   }
 `;
 

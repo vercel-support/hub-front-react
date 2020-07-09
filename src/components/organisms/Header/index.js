@@ -15,7 +15,7 @@ import {
 } from "../../molecules";
 import useStyles from "./styles";
 
-const Header = () => {
+const Header = ({ content }) => {
   const classes = useStyles();
 
   return (
@@ -25,7 +25,7 @@ const Header = () => {
           <Grid container className={classes.vcenter}>
             <Grid item lg={2} xs={8}>
               <Hidden lgUp>
-                <MenuMobile />
+                <MenuMobile categories={content.categories} />
               </Hidden>
               <Logo />
             </Grid>
@@ -47,12 +47,12 @@ const Header = () => {
       <Box component="div" className={classes.subheader}>
         <Container>
           <Grid container>
-            <Grid item lg={3} xs={12}>
+            <Grid item lg={2} xs={12}>
               <GeoLocation />
             </Grid>
             <Hidden mdDown>
-              <Grid item lg={9}>
-                <Menu />
+              <Grid item lg={10}>
+                <Menu categories={content.categories} />
               </Grid>
             </Hidden>
           </Grid>
