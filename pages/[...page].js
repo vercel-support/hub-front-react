@@ -26,6 +26,13 @@ const Pages = ({ content }) => {
 export const getServerSideProps = async ({ req, res }) => {
   const currentUrl = req.url;
 
+  /* No Redirect
+  if (data && currentUrl !== data.target) {
+    res.writeHead(data.status, { Location: data.target });
+    res.end();
+  }
+  */
+
   const { data: route } = await requestRedirect(currentUrl.substr(1));
 
   const response = await requestCategories();

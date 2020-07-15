@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react";
 import { useReducerAndSaga } from "./useReducerAndSaga";
-import { put, all, takeEvery, call, select } from "redux-saga/effects";
+import { put, all, takeEvery, call, select, take } from "redux-saga/effects";
 import * as service from "../services";
 
 const initialState = {
@@ -47,10 +47,19 @@ function* getStores() {
     );
 
     const { data } = yield call(service.requestGetStore, { params });
-    console.log("retorno stores", data);
     yield put({ type: "STORES_SUCCESS", payload: data });
   } catch (error) {
     yield put({ type: "STORES_ERROR" });
+  }
+}
+
+function* changeStore({ payload }) {
+  // const { id } = payload;
+  try {
+    // yield take("GEO_SUCCESS");
+    yield put({ type: "CHANGE_STORE_SUCCESS" });
+  } catch (error) {
+    yield put({ type: "CHANGE_STORE_ERROR" });
   }
 }
 
@@ -58,11 +67,16 @@ function* watchGetPostcode() {
   yield takeEvery("GEO_SUCCESS", getStores);
 }
 
+function* watchChangeStore() {
+  yield takeEvery("CHANGE_STORE", changeStore);
+}
+
 function* rootSaga() {
-  yield all([watchGetPostcode()]);
+  yield all([watchGetPostcode(), watchChangeStore()]);
 }
 // Saga
 
+// Reducer/Provider
 const StateProvider = ({ children, value }) => {
   const [state, dispatch] = useReducerAndSaga(
     (state, action) => {
@@ -82,8 +96,40 @@ const StateProvider = ({ children, value }) => {
         case "STORES_SUCCESS":
           return {
             ...state,
-            stores: [action.payload],
+            stores: [...action.payload],
           };
+        case "CHANGE_STORE":
+          const newMyStore = state.stores.filter(
+            (store) => store.id === action.payload.id
+          )[0];
+
+          const newStores = state.stores.filter(
+            (store) => store.id !== action.payload.id
+          );
+
+          return {
+            ...state,
+            myStore: { ...newMyStore },
+            stores: newStores,
+          };
+        /* case "CHANGE_STORE_SUCCESS":
+          const newMyStore = state.stores.filter(
+            (store) => store.id === action.payload.id
+          )[0];
+
+          const newStores = state.stores.filter(
+            (store) => store.id !== action.payload.id
+          );
+
+          return {
+            ...state,
+            myStore: { ...newMyStore },
+            stores: newStores,
+          };
+        case "CHANGE_STORE_ERROR":
+          return {
+            ...state,
+          }; */
         default:
           return state;
       }
@@ -94,5 +140,6 @@ const StateProvider = ({ children, value }) => {
 
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };
+// Reducer/Provider
 
 export { store, StateProvider };

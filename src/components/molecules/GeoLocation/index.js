@@ -38,8 +38,8 @@ const GeoLocation = () => {
       onMouseOut={() => setOpen(false)}
       onMouseOver={() => setOpen(true)}
     >
-      <Room />
-      <GeoLocationCurrentStyled onClick={() => setOpen(!open)}>
+      <Room htmlColor="white" />
+      <GeoLocationCurrentStyled {...open} onClick={() => setOpen(!open)}>
         <span>minha loja</span>
         <p>
           {myStore.name} {open ? <ExpandLess /> : <ExpandMore />}
@@ -75,11 +75,18 @@ const GeoLocation = () => {
               <p>{formatAddress(myStore.address)}</p>
               <span>(minha loja)</span>
             </GeoLocationStoreStyled>
-            {stores.map((store, i) => (
-              <GeoLocationStoreStyled key={i}>
+            {stores.map((store) => (
+              <GeoLocationStoreStyled key={store.id}>
                 <h4>{store.name}</h4>
                 <p>{formatAddress(store.address)}</p>
-                <span onClick={() => dispatch({ type: "ALTERAR" })}>
+                <span
+                  onClick={() =>
+                    dispatch({
+                      type: "CHANGE_STORE",
+                      payload: { id: store.id },
+                    })
+                  }
+                >
                   (alterar para essa loja)
                 </span>
               </GeoLocationStoreStyled>

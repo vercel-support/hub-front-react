@@ -8,6 +8,9 @@ const SearchStyled = styled.form`
     border: none;
     outline: none;
     width: 40px;
+    & > svg {
+      color: #ffffff;
+    }
   }
 
   & > input {
@@ -24,6 +27,12 @@ const SearchStyled = styled.form`
     height: 35px;
     padding: 0 10px;
     width: 100%;
+
+    & > button {
+      & > svg {
+        color: #666666;
+      }
+    }
 
     & > input {
       background-color: transparent;
