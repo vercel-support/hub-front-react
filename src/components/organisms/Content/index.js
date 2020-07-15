@@ -1,9 +1,13 @@
 import React from "react";
-import { Container } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 
 const Content = ({ children }) => (
   <main>
-    <Container>{children}</Container>
+    <Container>
+      <Grid item xs={12}>
+        {children}
+      </Grid>
+    </Container>
   </main>
 );
 

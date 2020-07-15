@@ -8,7 +8,7 @@ const HeaderLinksStyled = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-  & > a,
+  & > li a,
   & > li {
     align-items: center;
     color: #ffffff;
@@ -19,6 +19,14 @@ const HeaderLinksStyled = styled.ul`
   div a {
     color: #666666;
     text-decoration: none;
+  }
+  .dropdown {
+    border-radius: 5px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 15px;
   }
 `;
 

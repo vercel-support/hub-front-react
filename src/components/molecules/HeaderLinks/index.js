@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Link from "next/link";
 import { ExpandLess, ExpandMore, Person, Sms } from "@material-ui/icons";
 import { DropDown } from "../../atoms";
 import HeaderLinksStyled from "./styles";
+import { store } from "../../../store";
 
 const SubMenu = () => (
   <ul>
@@ -31,10 +32,13 @@ const SubMenu = () => (
 
 const HeaderLinks = () => {
   const [open, setOpen] = useState(false);
+  const { state, dispatch } = useContext(store);
+
+  console.log("HeaderLinks", state);
 
   return (
     <HeaderLinksStyled>
-      <li>
+      <li onClick={() => dispatch({ type: "OPEN_CHAT", payload: "x" })}>
         <Link href={`/[...page]`} as="/atendimento">
           <a>
             <Sms />

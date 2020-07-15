@@ -36,6 +36,7 @@ const MenuStyled = styled.ul`
   }
 
   ul {
+    background-color: #fff;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     display: none;
     left: 0;
@@ -46,6 +47,8 @@ const MenuStyled = styled.ul`
     position: absolute;
     top: 100%;
     width: 170px;
+    z-index: 5;
+
     li {
       padding: 0 10px;
     }

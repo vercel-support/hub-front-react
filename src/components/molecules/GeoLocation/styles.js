@@ -13,9 +13,6 @@ const GeoLocationStyled = styled.div`
   }
   & > svg {
     margin: 0 5px;
-    path {
-      background-color: #ffffff;
-    }
   }
   & > div:nth-child(2) {
     width: 285px;
@@ -28,20 +25,22 @@ const GeoLocationStyled = styled.div`
 `;
 
 export const GeoLocationCurrentStyled = styled.div`
-  color: #ffffff;
+  color: ${(props) => (props.open ? "#2983B9" : "#ffffff")};
   display: flex;
   flex-direction: column;
   & > p {
     align-items: center;
     display: flex;
+    font-weight: bold;
     margin: 0;
   }
   & > span {
     font-size: 10px;
     line-height: 14px;
   }
-  & > svg {
-    color: #ffffff;
+  &:hover > p,
+  &:hover > span {
+    color: #2983b9;
   }
 `;
 
@@ -75,6 +74,14 @@ export const GeoLocationFormStyled = styled.form`
   display: flex;
   justify-content: space-around;
   padding: 0 15px;
+  button {
+    border: 1px solid #cfd601;
+    color: #cfd601;
+  }
+  input {
+    max-width: 125px;
+    padding: 10px;
+  }
 `;
 
 export const GeoLocationListStyled = styled.ul`

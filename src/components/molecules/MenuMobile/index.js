@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Collapse from "@material-ui/core/Collapse";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
@@ -10,12 +9,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import { ExpandMore, ExpandLess } from "@material-ui/icons";
-
-const useStyles = makeStyles({
-  list: {
-    width: 300,
-  },
-});
+import Wrapper from "./styles";
 
 const Item = ({ item }) => (
   <ListItem button>
@@ -49,17 +43,16 @@ const ItemCollapse = ({ listItem }) => {
 };
 
 const MenuMobile = ({ categories = [] }) => {
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
 
   return (
-    <React.Fragment>
+    <Wrapper>
       <IconButton onClick={() => setOpen(true)}>
-        <MenuIcon />
+        <MenuIcon htmlColor="white" />
       </IconButton>
       <Drawer open={open} onClose={() => setOpen(false)}>
-        <div className={classes.list} role="presentation">
+        <div style={{ width: "300px" }} role="presentation">
           <List>
             <ListItem button onClick={() => setOpenMenu(!openMenu)}>
               <ListItemText primary="Entre ou Cadastre-se" />
@@ -97,7 +90,7 @@ const MenuMobile = ({ categories = [] }) => {
           </List>
         </div>
       </Drawer>
-    </React.Fragment>
+    </Wrapper>
   );
 };
 
