@@ -5,7 +5,6 @@ const GetGeolocation = () => {
   const { dispatch } = React.useContext(store);
 
   React.useEffect(() => {
-    console.log("use geo");
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         ({ coords }) => {

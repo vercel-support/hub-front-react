@@ -26,7 +26,7 @@ export const getServerSideProps = async () => {
   const response = await requestCategories();
 
   return {
-    props: { content: { categories: response.data } },
+    props: { content: { data: { categories: response.data } } },
   };
 };
 

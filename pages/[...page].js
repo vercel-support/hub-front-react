@@ -4,18 +4,18 @@ import { requestCategories, requestRedirect } from "../src/services";
 import routes from "../src/utils/switchComponentes";
 
 const Pages = ({ content }) => {
-  const Page = routes[content.head.pageType];
+  const Page = routes[content.data.pageType];
 
   return (
     <>
       <Head>
-        <title>{content.head.metaTitle}</title>
-        <meta property="og:title" content={content.head.metaTitle} />
+        <title>{content.data.metaTitle}</title>
+        <meta property="og:title" content={content.data.metaTitle} />
         <link rel="icon" href="/favicon.ico" />
-        <meta name="description" content={content.head.metaDescription} />
+        <meta name="description" content={content.data.metaDescription} />
         <meta
           property="og:description"
-          content={content.head.metaDescription}
+          content={content.data.metaDescription}
         />
       </Head>
       <Page content={content} />
@@ -26,19 +26,12 @@ const Pages = ({ content }) => {
 export const getServerSideProps = async ({ req, res }) => {
   const currentUrl = req.url;
 
-  /* No Redirect
-  if (data && currentUrl !== data.target) {
-    res.writeHead(data.status, { Location: data.target });
-    res.end();
-  }
-  */
-
   const { data: route } = await requestRedirect(currentUrl.substr(1));
 
   const response = await requestCategories();
 
   return {
-    props: { content: { head: route.data, categories: response.data } },
+    props: { content: { data: { ...route.data, categories: response.data } } },
   };
 };
 

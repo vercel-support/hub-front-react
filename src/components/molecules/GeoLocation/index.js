@@ -22,7 +22,6 @@ const GeoLocation = () => {
   const [geo, setGeo] = useState(false);
 
   const onSubmit = (data) => {
-    console.log(JSON.stringify(data));
     dispatch({ type: "CEP" });
   };
 
