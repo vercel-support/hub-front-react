@@ -1,4 +1,9 @@
 export { default as BannerSlider } from "./BannerSlider";
+export { default as Breadcrumbs } from "./Breadcrumbs";
+export { default as CategoryBanner } from "./CategoryBanner";
+export { default as CategoryFilter } from "./CategoryFilter";
+export { default as CategorySort } from "./CategorySort";
+export { default as CategoryTools } from "./CategoryTools";
 export { default as FooterLinks } from "./FooterLinks";
 export { default as GeoLocation } from "./GeoLocation";
 export { default as HeaderLinks } from "./HeaderLinks";
@@ -6,4 +11,5 @@ export { default as Menu } from "./Menu";
 export { default as MenuMobile } from "./MenuMobile";
 export { default as MiniCart } from "./MiniCart";
 export { default as PaymentMethods } from "./PaymentMethods";
+export { default as ProductCard } from "./ProductCard";
 export { default as Search } from "./Search";

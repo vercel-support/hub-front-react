@@ -6,7 +6,13 @@ const MenuSecond = ({ items }) => (
   <ul>
     {items.map((item) => (
       <li key={item.id}>
-        <Link href={`/[...page]`} as={`/${item.url}`}>
+        <Link
+          href={{
+            pathname: "/[...page]",
+            query: { name: "test" },
+          }}
+          as={`/${item.url}`}
+        >
           <a>{item.name}</a>
         </Link>
         {item?.children?.length ? (

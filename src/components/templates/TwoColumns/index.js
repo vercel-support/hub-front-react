@@ -1,23 +1,30 @@
 import React from "react";
 import { Container, Grid } from "@material-ui/core";
-import { Breadcrumbs } from "../../molecules";
 import { Footer, Header } from "../../organisms";
 
-const OneColumn = ({ children, content }) => (
+const TwoColumns = ({
+  beforeContent = null,
+  children,
+  content = null,
+  left = null,
+}) => (
   <Grid container direction="column" justify="space-between">
-    <Grid item>
+    <Grid item xs={12}>
       <Header content={content} />
     </Grid>
     <Grid item>
       <main>
         <Container>
-          {content.data?.breadcrumbs?.length && (
+          <Grid container>
             <Grid item xs={12}>
-              <Breadcrumbs items={content.data.breadcrumbs} />
+              {beforeContent}
             </Grid>
-          )}
-          <Grid item xs={12}>
-            {children}
+            <Grid item xs={12} lg={2}>
+              {left}
+            </Grid>
+            <Grid item xs={12} lg={10}>
+              {children}
+            </Grid>
           </Grid>
         </Container>
       </main>
@@ -28,4 +35,4 @@ const OneColumn = ({ children, content }) => (
   </Grid>
 );
 
-export default OneColumn;
+export default TwoColumns;

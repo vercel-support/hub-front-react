@@ -4,6 +4,10 @@ import { put, all, takeEvery, call, select, take } from "redux-saga/effects";
 import * as service from "../services";
 
 const initialState = {
+  category: {
+    action: "filter", //filter OR sort
+    loading: false,
+  },
   geo: {
     available: null,
     enabled: null,
@@ -130,6 +134,11 @@ const StateProvider = ({ children, value }) => {
           return {
             ...state,
           }; */
+        case "CATEGORY_ACTION":
+          return {
+            ...state,
+            category: { ...state.category, action: action.payload },
+          };
         default:
           return state;
       }
