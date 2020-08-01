@@ -12,4 +12,5 @@ export { default as MenuMobile } from "./MenuMobile";
 export { default as MiniCart } from "./MiniCart";
 export { default as PaymentMethods } from "./PaymentMethods";
 export { default as ProductCard } from "./ProductCard";
+export { default as ProductCart } from "./ProductCart";
 export { default as Search } from "./Search";

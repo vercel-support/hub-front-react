@@ -11,12 +11,12 @@ const OneColumn = ({ children, content }) => (
     <Grid item>
       <main>
         <Container>
-          {content.data?.breadcrumbs?.length && (
-            <Grid item xs={12}>
-              <Breadcrumbs items={content.data.breadcrumbs} />
-            </Grid>
-          )}
-          <Grid item xs={12}>
+          <Grid container spacing={4}>
+            {content.data?.breadcrumbs?.length && (
+              <Grid item xs={12}>
+                <Breadcrumbs items={content.data.breadcrumbs} />
+              </Grid>
+            )}
             {children}
           </Grid>
         </Container>

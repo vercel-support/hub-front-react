@@ -4,6 +4,11 @@ import axios from "axios";
 const { publicRuntimeConfig } = getConfig();
 const { API_URL } = publicRuntimeConfig;
 
+export const requestCart = async () => {
+  const response = await axios.get(`${API_URL}/cart/cartproduct`);
+  return response;
+};
+
 export const requestCategories = async () => {
   const response = await axios.get(`${API_URL}/catalogs/categories`);
   return response;
