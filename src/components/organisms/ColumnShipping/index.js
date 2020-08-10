@@ -1,53 +1,28 @@
 import React from "react";
-
+import Link from "next/link";
 import { ColumnShippingStyles } from "./styles";
-import {
-  Paper,
-  Radio,
-  FormControl,
-  RadioGroup,
-  FormControlLabel,
-  Button
-} from "@material-ui/core";
-import { ShoppingBasket } from "@material-ui/icons";
+import { Delivery, CartTotal } from "../../atoms";
+import { Shipping } from "../../molecules";
+import { Paper, Button, Hidden } from "@material-ui/core";
+import { ShoppingBasket, LocationOn } from "@material-ui/icons";
 
-const ColumnShipping = () => {
-  const [value, setValue] = React.useState("expressa");
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+const ColumnShipping = ({ shipping, end, setCep }) => {
 
   return (
     <ColumnShippingStyles>
-      <Paper>
-        <span>icone</span> <p>Entregar no cep 18080-430</p>
-        <p>(alterar cep)</p>
-        <FormControl component="fieldset">
-          <RadioGroup
-            aria-label="gender"
-            name="gender1"
-            value={value}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              value="expressa"
-              control={<Radio />}
-              label="Expressa em até 4 horas"
-            />
-            <FormControlLabel
-              value="other"
-              control={<Radio />}
-              label="Econômica em até 7 dias úteis"
-            />
-          </RadioGroup>
-        </FormControl>
-      </Paper>
-      <div>
-        Total <span>R$ 99,00</span>
-      </div>
-      <Button variant="contained" size="large" fullWidth startIcon={<ShoppingBasket/>}> Finalizar Compra</Button>
-      <div>adicionar mais produtos</div>
+      <Hidden only={["xs", "sm"]}>
+        <Paper>
+          <Delivery icon={<LocationOn />} end={end} setCep={setCep} />
+          <Shipping shipping={shipping} />
+        </Paper>
+      </Hidden>
+      <CartTotal subPrice={shipping.economicalDelivery.total} />
+      <Button variant="contained" size="large" fullWidth>
+        Finalizar minha Compra
+      </Button>
+      <Link href={`/[...page]`} as="/category">
+        <a>adicionar mais produtos</a>
+      </Link>
     </ColumnShippingStyles>
   );
 };

@@ -16,7 +16,7 @@ export const ProductCartStyles = styled.li`
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 90%;
         }
     }
 
@@ -45,16 +45,31 @@ export const ProductCartStyles = styled.li`
             }
         }
     }
-
-    .des {
-        font-size: 12px;
-        color: #888;
-    }
-
+    
     .save {
         position: absolute;
-        right: 10px;
-        bottom: 2px;
+        right: 5px;
+        bottom: 10px;
+        text-align: right;
+
+        select {
+            padding: 10px 36px 10px 13px;
+        }
+
+        a {
+            padding: 0;
+            margin: 0;
+            background: 0 0;
+            border: none;
+            color: gray;
+            text-decoration: underline;
+            font-weight: 400;
+            font-size: 14px;
+            text-transform: lowercase;
+            display: block;
+            text-align: center;
+        }
+
     }
   
 `;

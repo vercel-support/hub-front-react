@@ -8,6 +8,9 @@ const initialState = {
     action: "filter", //filter OR sort
     loading: false,
   },
+  productCard: false,
+  storesCart: false,
+  shippingCart: false,
   geo: {
     available: null,
     enabled: null,
@@ -42,6 +45,29 @@ const store = createContext(initialState);
 const { Provider } = store;
 
 // Saga
+function* setCart({ payload }) {
+  try {
+    const dataStores = yield call(
+      service.requestStores,
+      "5e8e1c6e43a61128433f0eed"
+    );
+    const { data } = yield call(service.requestCart, payload);
+    yield put({
+      type: "CART_SUCCESS",
+      payload: data,
+      stores: dataStores.data.data,
+    });
+  } catch (error) {
+  }
+}
+
+function* postShipping({ payload }) {
+  try {
+    const { data } = yield call(service.requestShipping, payload);
+    yield put({ type: "SHIPPING_SUCCESS", shipping: data });
+  } catch (error) {}
+}
+
 function* getStores() {
   try {
     const params = yield select(({ geo }) =>
@@ -67,6 +93,14 @@ function* changeStore({ payload }) {
   }
 }
 
+function* watchPostShipping() {
+  yield takeEvery("SHIPPING_REQUEST", postShipping);
+}
+
+function* watchSetCart() {
+  yield takeEvery("CART_REQUEST", setCart);
+}
+
 function* watchGetPostcode() {
   yield takeEvery("GEO_SUCCESS", getStores);
 }
@@ -76,7 +110,7 @@ function* watchChangeStore() {
 }
 
 function* rootSaga() {
-  yield all([watchGetPostcode(), watchChangeStore()]);
+  yield all([watchGetPostcode(), watchChangeStore(), watchSetCart(), watchPostShipping()]);
 }
 // Saga
 
@@ -85,6 +119,18 @@ const StateProvider = ({ children, value }) => {
   const [state, dispatch] = useReducerAndSaga(
     (state, action) => {
       switch (action.type) {
+        case "SHIPPING_SUCCESS":
+          return { ...state, shippingCart: { ...action.shipping } };
+        case "SHIPPING_REQUEST":
+          return { ...state };
+        case "CART_SUCCESS":
+          return {
+            ...state,
+            productCard: [{ ...action.payload.data }],
+            storesCart: { ...action.stores },
+          };
+        case "CART_REQUEST":
+          return { ...state };
         case "GEO_ERROR":
           return { ...state, geo: { ...state.geo, error: true } };
         case "GEO_SUCCESS":
