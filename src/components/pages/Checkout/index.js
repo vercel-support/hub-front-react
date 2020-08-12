@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import clsx from 'clsx';
 import {
   Grid,
   Paper,
@@ -11,6 +12,9 @@ import {
 } from "@material-ui/core";
 import {AddressForm, Review, PaymentForm} from "../../molecules";
 import { OneColumn } from "../../templates";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import RoomIcon from '@material-ui/icons/Room';
+import PaymentIcon from '@material-ui/icons/Payment';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -51,6 +55,43 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ["Identificação", "Endereço", "Pagamento"];
 
+
+
+
+const useColorlibStepIconStyles = makeStyles({
+  root: {    
+    color: '#ccc'    
+  },
+  active: {
+    color : '#000'    
+  },
+  completed: {
+    color : '#000'
+  },
+});
+
+function LibStepIcon(props) {
+  const classes = useColorlibStepIconStyles();
+  const { active, completed } = props;
+
+  const icons = {
+    1: <AccountCircleIcon />,
+    2: <RoomIcon />,
+    3: <PaymentIcon />,
+  };
+
+  return (
+    <div
+      className={clsx(classes.root, {
+        [classes.active]: active,
+        [classes.completed]: completed,
+      })}
+    >
+      {icons[String(props.icon)]}
+    </div>
+  );
+}
+
 function getStepContent(step) {
   switch (step) {
     case 0:
@@ -83,7 +124,7 @@ const Checkout = ({ content }) => {
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label) => (
               <Step key={label}>
-                <StepLabel>{label}</StepLabel>
+                <StepLabel StepIconComponent={LibStepIcon}>{label}</StepLabel>
               </Step>
             ))}
           </Stepper>    
