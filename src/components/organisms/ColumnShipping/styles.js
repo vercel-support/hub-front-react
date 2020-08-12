@@ -7,9 +7,11 @@ export const ColumnShippingStyles = styled.div`
     text-align: center;
     display: flex;
     margin-top: 15px
+
+    
   }
 
-  button {
+  a.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSizeLarge.MuiButton-sizeLarge.MuiButton-fullWidth {
     background-color: #cfd601;
     box-shadow: none;
     padding: 10px;

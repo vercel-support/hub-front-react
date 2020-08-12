@@ -7,7 +7,6 @@ import { Paper, Button, Hidden } from "@material-ui/core";
 import { ShoppingBasket, LocationOn } from "@material-ui/icons";
 
 const ColumnShipping = ({ shipping, end, setCep }) => {
-
   return (
     <ColumnShippingStyles>
       <Hidden only={["xs", "sm"]}>
@@ -17,10 +16,12 @@ const ColumnShipping = ({ shipping, end, setCep }) => {
         </Paper>
       </Hidden>
       <CartTotal subPrice={shipping.economicalDelivery.total} />
-      <Button variant="contained" size="large" fullWidth>
-        Finalizar minha Compra
-      </Button>
-      <Link href={`/[...page]`} as="/category">
+      <Link href="/checkout" passHref>
+        <Button variant="contained" size="large" fullWidth>
+          Finalizar minha Compra
+        </Button>
+      </Link>
+      <Link href="/checkout" passHref>
         <a>adicionar mais produtos</a>
       </Link>
     </ColumnShippingStyles>

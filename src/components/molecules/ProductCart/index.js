@@ -45,7 +45,7 @@ const ProductCart = ({ product }) => {
         <div className="goods-info">
           <p className="goods-title">{product.name}</p>
           <div className="goods-price">
-            <CartPrice price={product.price} specialPrice="40" />
+            <CartPrice price={product.specialPrice} specialPrice={product.price} />
           </div>
           <span className="save">
             <FormControl variant="outlined">

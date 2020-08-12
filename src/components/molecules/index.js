@@ -1,3 +1,4 @@
+export { default as AddressForm } from "./AddressForm";
 export { default as BannerSlider } from "./BannerSlider";
 export { default as Breadcrumbs } from "./Breadcrumbs";
 export { default as CategoryBanner } from "./CategoryBanner";
@@ -10,8 +11,10 @@ export { default as HeaderLinks } from "./HeaderLinks";
 export { default as Menu } from "./Menu";
 export { default as MenuMobile } from "./MenuMobile";
 export { default as MiniCart } from "./MiniCart";
+export { default as PaymentForm } from "./PaymentForm";
 export { default as PaymentMethods } from "./PaymentMethods";
 export { default as ProductCard } from "./ProductCard";
 export { default as ProductCart } from "./ProductCart";
+export { default as Review } from "./Review";
 export { default as Search } from "./Search";
 export { default as Shipping } from "./Shipping";
