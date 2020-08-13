@@ -60,7 +60,7 @@ const steps = ["Identificação", "Endereço", "Pagamento"];
 
 const useColorlibStepIconStyles = makeStyles({
   root: {    
-    color: '#ccc'    
+    color: '#ccc',    
   },
   active: {
     color : '#000'    

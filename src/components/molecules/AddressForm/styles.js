@@ -22,4 +22,35 @@ export const AddressFormStyles = styled.div`
         margin-bottom: 0;
         margin-top: 1em;                        
     }
+
+    input {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 7px 9px;        
+        margin-bottom: 10px;
+        font-size: 14px;
+        border: 3px solid #dedede;
+        border-radius: 5px;
+
+        &:focus{
+            background: #dedede4f;            
+        }
+    }
+    
+    input[type="submit"] {
+        background-color: #dedede;
+        border: 1px solid white;
+        padding: 13px 15px;
+    }
+
+    .account{
+        padding-top : 15px;
+
+        input[type=submit]{
+            background-color : #fff;
+            border: 2px solid #dedede;
+        }
+    }
+    
 `;
