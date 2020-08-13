@@ -42,18 +42,22 @@ const AddressForm = () => {
                   <label htmlFor="password">senha</label>
                   <input name="pwd" placeholder="Digite sua senha" ref={register} />
                 </div>
+
                 <input type="submit" value="Enviar" />
+
+                <div className="text-center">
+                  <Link href="#">esqueci minha senha</Link>
+                </div>
+                
               </form>
             </div>
 
-            <div className="text-center">
-              <Link href="#">esqueci minha senha</Link>
-            </div>
+            
 
           </Grid>
 
         </Grid>
-        <Grid item xs={1} sm={1}>
+        <Grid item xs={1} sm={1} className="divider">
           <Divider variant="middle" flexItem  orientation="vertical" style={{height: "100%"}}/>                            
         </Grid>
         <Grid item xs ={5} sm={5}>          

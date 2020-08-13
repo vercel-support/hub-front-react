@@ -1,11 +1,11 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import { useForm } from "react-hook-form";
 import Grid from "@material-ui/core/Grid";
-import { ReviewStyles } from "./styles";
+import { ReviewStyles, ReviewCepStyles } from "./styles";
+import RoomIcon from '@material-ui/icons/Room';
+import IconButton from '@material-ui/core/IconButton';
 
 const products = [
   { name: "Product 1", desc: "A nice thing", price: "$9.99" },
@@ -29,7 +29,7 @@ const payments = [
 ];
 
 const useStyles = makeStyles((theme) => ({
-  listItem: {
+  list: {
     padding: theme.spacing(1, 0),
   },
   total: {
@@ -41,53 +41,66 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Review = () => {
+  const { register, handleSubmit, watch, errors } = useForm();
+  const onSubmit = data => console.log(data);
   const classes = useStyles();
 
   return (
-    <ReviewStyles>
-      <Typography variant="h6" gutterBottom>
-        Order summary
-      </Typography>
-      <List disablePadding>
-        {products.map((product) => (
-          <ListItem className={classes.listItem} key={product.name}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
-          </ListItem>
-        ))}
-        <ListItem className={classes.listItem}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" className={classes.total}>
-            $34.06
-          </Typography>
-        </ListItem>
-      </List>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom className={classes.title}>
-            Shipping
-          </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(", ")}</Typography>
-        </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom className={classes.title}>
-            Payment details
-          </Typography>
-          <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
-          </Grid>
-        </Grid>
-      </Grid>
+    <ReviewStyles>      
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={3}>
+
+            <Grid className="d-flex">
+              <RoomIcon />
+              <Typography variant="h6" gutterBottom>
+                Novo Endereço
+              </Typography>
+            </Grid>        
+            
+            <Grid  xs={12} sm={12}>
+              <ReviewCepStyles>
+                <label htmlFor="CEP">CEP</label>
+                <div>
+                  <input type="text" name="cep" ref={register}/>
+                  <input type="button" value="OK" />              
+                </div>
+              </ReviewCepStyles>
+            </Grid>            
+            <Grid  xs={8} sm={8}>
+              <label htmlFor="rua">Rua</label>
+              <input type="text" name="rua" ref={register}></input>              
+            </Grid>            
+            <Grid  xs={4} sm={4}>
+              <label htmlFor="numero">Número</label>
+              <input type="text" name="numero" ref={register}>                
+              </input>              
+            </Grid>            
+            <Grid  xs={8} sm={8}>
+              <label htmlFor="complemento">Complemento</label>
+              <input type="text" name="complemento" ref={register}></input>              
+            </Grid>            
+            <Grid  xs={4} sm={4}>
+              <label htmlFor="bairro">Bairro</label>
+              <input type="text" name="bairro" ref={register}></input>              
+            </Grid>            
+            <Grid  xs={8} sm={8}>
+              <label htmlFor="cidade">Cidade</label>
+              <input type="text" name="cidade" ref={register}></input>              
+            </Grid>            
+            <Grid  xs={4} sm={4}>
+              <label htmlFor="estado">Estado</label>
+              <input type="text" name="estado" ref={register}></input>              
+            </Grid>            
+            <Grid  xs={12} sm={12}>
+              <label htmlFor="destinatario">Nome do destinatário</label>
+              <input type="text" name="destinatario" ref={register}></input>          
+              <p>Nome de quem retira ou recebe o pedido</p>    
+            </Grid>  
+            <Grid  xs={12} sm={12} className="submit">
+              <input type="submit" value="Entregar nesse Endereço" />
+            </Grid>         
+        </Grid>              
+      </form>
     </ReviewStyles>
   );
 };

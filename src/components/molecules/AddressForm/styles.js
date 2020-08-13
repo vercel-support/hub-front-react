@@ -14,6 +14,12 @@ export const AddressFormStyles = styled.div`
         }
     }
 
+    .divider{
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
     .text-center{
         text-align: center;
     }
