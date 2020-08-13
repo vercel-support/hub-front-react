@@ -50,17 +50,24 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
-  },
+  }  
 }));
 
 const steps = ["Identificação", "Endereço", "Pagamento"];
 
 
-
-
 const useColorlibStepIconStyles = makeStyles({
   root: {    
     color: '#ccc',    
+    width: 50,
+    height: 50,
+    display: 'flex',
+    borderRadius: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& svg' : {
+      fontSize : '45px'
+    }
   },
   active: {
     color : '#000'    

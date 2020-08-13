@@ -14,6 +14,10 @@ export const AddressFormStyles = styled.div`
         }
     }
 
+    .text-center{
+        text-align: center;
+    }
+
     label {
         line-height: 1.5;
         font-weight: bold;

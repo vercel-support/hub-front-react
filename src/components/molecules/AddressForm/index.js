@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import Grid from "@material-ui/core/Grid";
+import Link from '@material-ui/core/Link';
 import Typography from "@material-ui/core/Typography";
 import Divider from '@material-ui/core/Divider';
 import {AddressFormStyles} from './styles'
@@ -28,32 +29,29 @@ const AddressForm = () => {
             Para finalizar a compra, informe seu e-mail.                    
           </Typography>      
 
-          {/* <form>
-            <label>e-mail</label>
-            <input
-              type="email"
-              name="email"              
-              ref={register({ required: true })}
-            />                    
+          <Grid class="d-flex">
 
-            <input type="submit" value="Continuar" />
+            <div className="App">
+              <form>
+                <div>
+                  <label htmlFor="email">email</label>
+                  <input name="email" placeholder="marco@marco.com" ref={register} />
+                </div>
 
-          </form> */}
+                <div>
+                  <label htmlFor="password">senha</label>
+                  <input name="pwd" placeholder="Digite sua senha" ref={register} />
+                </div>
+                <input type="submit" value="Enviar" />
+              </form>
+            </div>
 
-          <div className="App">
-            <form>
-              <div>
-                <label htmlFor="email">email</label>
-                <input name="email" placeholder="marco@marco.com" ref={register} />
-              </div>
+            <div className="text-center">
+              <Link href="#">esqueci minha senha</Link>
+            </div>
 
-              <div>
-                <label htmlFor="password">senha</label>
-                <input name="pwd" placeholder="Digite sua senha" ref={register} />
-              </div>
-              <input type="submit" value="Enviar" />
-            </form>
-          </div>
+          </Grid>
+
         </Grid>
         <Grid item xs={1} sm={1}>
           <Divider variant="middle" flexItem  orientation="vertical" style={{height: "100%"}}/>                            
