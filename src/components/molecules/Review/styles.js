@@ -6,6 +6,15 @@ export const ReviewStyles = styled.div`
         padding: 0 12px;
     }
     
+    .icon{
+        display: flex;    
+        padding: 40px 0 0 0 !important;
+    }
+
+    h6{
+        padding: 0 0 .0 .3em;
+    }
+    
     .d-flex{
         display: flex;
         align-items: center;
@@ -50,8 +59,13 @@ export const ReviewStyles = styled.div`
     }
 
     p{
-        margin-top: -9px;    
         color: #adaaaa;
+    }
+
+    .cards{
+        display: flex;
+        width: 100%;    
+        justify-content: space-between;
     }
 `;
 
