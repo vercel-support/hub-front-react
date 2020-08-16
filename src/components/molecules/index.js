@@ -1,3 +1,4 @@
+export { default as ResumeForm } from "./ResumeForm";
 export { default as AddressForm } from "./AddressForm";
 export { default as BannerSlider } from "./BannerSlider";
 export { default as Breadcrumbs } from "./Breadcrumbs";

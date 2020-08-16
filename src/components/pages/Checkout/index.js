@@ -10,7 +10,7 @@ import {
   Button,
   Typography,
 } from "@material-ui/core";
-import {AddressForm, Review, PaymentForm} from "../../molecules";
+import {AddressForm, Review, PaymentForm, ResumeForm} from "../../molecules";
 import { OneColumn } from "../../templates";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import RoomIcon from '@material-ui/icons/Room';
@@ -171,9 +171,12 @@ const Checkout = ({ content }) => {
         </Paper>
       </Grid>
 
-      <Grid item xs={12} lg={4}>
-        TESTE
+      <Grid item xs={12} lg={4}>        
+        
+        <ResumeForm />
+        
       </Grid>
+
     </OneColumn>
   );
 };
