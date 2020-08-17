@@ -1,27 +1,11 @@
 import styled from 'styled-components';
 
 export const AddressFormStyles = styled.div`
-    .d-flex{
-        display: flex;
-        align-items: center;
 
-        svg {
-            margin-bottom: 0.35em;            
-        }
-
-        h6{
-            padding : 0 0 .0 .3em;
-        }
-    }
-
-    .divider{
+    .divider {
         justify-content: center;
         align-items: center;
         display: flex;
-    }
-
-    .text-center{
-        text-align: center;
     }
 
     label {
@@ -52,15 +36,6 @@ export const AddressFormStyles = styled.div`
         background-color: #dedede;
         border: 1px solid white;
         padding: 13px 15px;
-    }
-
-    .account{
-        padding-top : 15px;
-
-        input[type=submit]{
-            background-color : #fff;
-            border: 2px solid #dedede;
-        }
     }
     
 `;

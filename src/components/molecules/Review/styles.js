@@ -47,6 +47,11 @@ export const ReviewStyles = styled.div`
         border-radius: 5px;
     }
 
+    input[type="text"]:focus {
+        box-shadow: 0 0 0 0;
+        outline: 0;
+    }    
+
     input[type="submit"] {
         background-color: #dedede;
         border: 1px solid white;
@@ -79,12 +84,18 @@ export const ReviewCepStyles = styled.div`
     }
 
     input[type=button]{
-        padding: 10px 20px;        
+        padding: 0px 20px;        
         position: relative;
         right: 1%;
         height: 36px;
+        border-radius: 0px 5px 5px 0px;
         border: 3px solid #dedede;
     }
+
+    input[type="text"]:focus {
+        box-shadow: 0 0 0 0;
+        outline: 0;
+    }    
 
     div{
         display : flex;
