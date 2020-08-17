@@ -10,7 +10,7 @@ import {
   Button,
   Typography,
 } from "@material-ui/core";
-import {AddressForm, Review, PaymentForm, ResumeForm} from "../../molecules";
+import {AddressForm, Review, PaymentForm, ResumeForm, InformationForm} from "../../molecules";
 import { OneColumn } from "../../templates";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import RoomIcon from '@material-ui/icons/Room';
@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
+  },
+  resume : {
+    marginTop : theme.spacing(6)
   }  
 }));
 
@@ -74,7 +77,7 @@ const useColorlibStepIconStyles = makeStyles({
   },
   completed: {
     color : '#000'
-  },
+  }
 });
 
 function LibStepIcon(props) {
@@ -171,10 +174,14 @@ const Checkout = ({ content }) => {
         </Paper>
       </Grid>
 
-      <Grid item xs={12} lg={4}>        
-        
-        <ResumeForm />
-        
+
+      <Grid item xs={12} lg={4} className={classes.resume}>        
+        <Grid xs={12} lg={12}>
+          <ResumeForm />
+        </Grid>        
+        <Grid xs={12} lg={12}>
+          <InformationForm />
+        </Grid>        
       </Grid>
 
     </OneColumn>
