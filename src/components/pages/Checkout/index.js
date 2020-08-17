@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Paper, Button } from "@material-ui/core";
-import { AddressForm, Review, PaymentForm } from "../../molecules";
+import { AddressForm, Review, PaymentForm, ResumeForm } from "../../molecules";
 import { Steppers, Success } from "../../organisms";
 import { OneColumn } from "../../templates";
 
@@ -43,8 +43,10 @@ const Checkout = ({ content }) => {
         </Paper>
       </Grid>
 
-      <Grid item xs={12} lg={4}>
-        TESTE
+      <Grid item xs={12} lg={4}>        
+        
+        <ResumeForm />
+        
       </Grid>
 
       <Grid item xs={12}>

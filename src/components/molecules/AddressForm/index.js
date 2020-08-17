@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import { AddressFormStyles } from "./styles";
+import { AddressFormStyles, TitleStyles } from "./styles";
 
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
@@ -16,11 +16,10 @@ const AddressForm = () => {
     <AddressFormStyles>
       <Grid container spacing={3}>
         <Grid item xs={5} sm={5}>
-          <Grid>
+          <TitleStyles>
             <AccountCircleIcon />
-
             <Typography variant="h6">Identificação</Typography>
-          </Grid>
+          </TitleStyles>
 
           <Typography variant="p" component="p">
             Para finalizar a compra, informe seu e-mail.
@@ -64,10 +63,10 @@ const AddressForm = () => {
         </Grid>
 
         <Grid item xs={5} sm={5}>
-          <Grid>
+          <TitleStyles>
             <AccountCircleIcon />
             <Typography variant="h6">Cadastro</Typography>
-          </Grid>
+          </TitleStyles>
 
           <Typography variant="p" component="p">
             Criar nova conta, com outro e-mail

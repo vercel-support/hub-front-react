@@ -15,6 +15,7 @@ export { default as PaymentForm } from "./PaymentForm";
 export { default as PaymentMethods } from "./PaymentMethods";
 export { default as ProductCard } from "./ProductCard";
 export { default as ProductCart } from "./ProductCart";
+export { default as ResumeForm } from "./ResumeForm";
 export { default as Review } from "./Review";
 export { default as Search } from "./Search";
 export { default as Shipping } from "./Shipping";

@@ -1,6 +1,23 @@
 import styled from 'styled-components';
 
+export const TitleStyles = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+
+    svg {
+        margin-right: 10px;
+    }
+`;
+
 export const AddressFormStyles = styled.div`
+    padding: 20px;
+
+    & > div {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
 
     .divider {
         justify-content: center;
@@ -21,7 +38,7 @@ export const AddressFormStyles = styled.div`
         display: block;
         box-sizing: border-box;
         width: 100%;
-        padding: 7px 9px;        
+        padding: 10px 10px;        
         margin-bottom: 10px;
         font-size: 14px;
         border: 3px solid #dedede;
