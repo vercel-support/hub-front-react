@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         display: 'flex',
+        marginBottom : theme.spacing(.5)
       },
       details: {
         display: 'flex',
