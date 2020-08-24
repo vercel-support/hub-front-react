@@ -8,6 +8,13 @@ const initialState = {
     action: "filter", //filter OR sort
     loading: false,
   },
+  user: {
+    address: false,
+  },
+  login: {
+    isEmailAvailable: false,
+    onLogin: false,
+  },
   productCard: false,
   storesCart: false,
   shippingCart: false,
@@ -45,6 +52,50 @@ const store = createContext(initialState);
 const { Provider } = store;
 
 // Saga
+function* newAddress({newAddress}) {
+  try {
+    const {data} = yield call(service.requestNewAddress, newAddress)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function* isLogin({ login, handleNext }) {
+  try {
+    const { data } = yield call(service.requestLogin, login);
+    if (data.status === 200) {
+      localStorage.setItem('app-token', data.token);
+    }
+    const address = yield call(service.requestAddresses, localStorage.getItem('app-token'));
+    window.Mercadopago.setPublishableKey("TEST-6ff57941-ef53-460f-b875-80eec81400ac");
+    window.Mercadopago.getIdentificationTypes();
+    yield put({ type: "LOGIN_SUCCESS", address: address.data.addresses });
+    handleNext();
+    debugger
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function* registerUser({register, setNewRegister}) {
+  try {
+    const {data} = yield call(service.requestRegister, register);
+    if(data) {
+      setNewRegister(false);
+    }
+    console.log(data, newUser);
+  } catch (error) {
+    
+  }
+}
+
+function* emailRequest({ email }) {
+  try {
+    const { data } = yield call(service.requestEmail, email);
+    yield put({ type: "EMAIL_SUCCESS", email: data.isAvailable });
+  } catch (error) {}
+}
+
 function* setCart({ payload }) {
   try {
     const dataStores = yield call(
@@ -57,11 +108,11 @@ function* setCart({ payload }) {
       payload: data,
       stores: dataStores.data.data,
     });
-  } catch (error) {
-  }
+  } catch (error) {}
 }
 
 function* postShipping({ payload }) {
+  debugger
   try {
     const { data } = yield call(service.requestShipping, payload);
     yield put({ type: "SHIPPING_SUCCESS", shipping: data });
@@ -93,6 +144,22 @@ function* changeStore({ payload }) {
   }
 }
 
+function* watchRegisterUser() {
+  yield takeEvery("REGISTERUSER_REQUEST", registerUser);
+}
+
+function* watchNewAddress() {
+  yield takeEvery("NEWADDRESS_REQUEST", newAddress);
+}
+
+function* watchIsLogin() {
+  yield takeEvery("LOGIN_REQUEST", isLogin);
+}
+
+function* watchEmailRequest() {
+  yield takeEvery("EMAIL_REQUEST", emailRequest);
+}
+
 function* watchPostShipping() {
   yield takeEvery("SHIPPING_REQUEST", postShipping);
 }
@@ -110,7 +177,16 @@ function* watchChangeStore() {
 }
 
 function* rootSaga() {
-  yield all([watchGetPostcode(), watchChangeStore(), watchSetCart(), watchPostShipping()]);
+  yield all([
+    watchGetPostcode(),
+    watchChangeStore(),
+    watchSetCart(),
+    watchPostShipping(),
+    watchEmailRequest(),
+    watchIsLogin(),
+    watchNewAddress(),
+    watchRegisterUser(),
+  ]);
 }
 // Saga
 
@@ -119,6 +195,21 @@ const StateProvider = ({ children, value }) => {
   const [state, dispatch] = useReducerAndSaga(
     (state, action) => {
       switch (action.type) {
+        case "REGISTERUSER_REQUEST":
+          return {...state};
+        case "NEWADDRESS_REQUEST":
+          return {...state};
+        case "LOGIN_REQUEST":
+          return {...state};
+        case "LOGIN_SUCCESS":
+          return {...state, user: {address: action.address}};
+        case "EMAIL_REQUEST":
+          return { ...state };
+        case "EMAIL_SUCCESS":
+          return {
+            ...state,
+            login: { isEmailAvailable: action.email, onLogin: true },
+          };
         case "SHIPPING_SUCCESS":
           return { ...state, shippingCart: { ...action.shipping } };
         case "SHIPPING_REQUEST":

@@ -17,6 +17,7 @@ const Pages = ({ content }) => (
         property="og:description"
         content="Geração Pet - Pet Shop Online - Descrição"
       />
+    <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
     </Head>
     <Home content={content} />
   </React.Fragment>

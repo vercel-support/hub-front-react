@@ -1,48 +1,39 @@
 import styled from "styled-components";
 
-export const TitleStyles = styled.div`
+export const TitleStyles = styled.h2`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  margin-top: 30px;
-
-  svg {
-    margin-right: 10px;
-  }
+  margin-bottom: 5px;
+  color: #2983b9;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 19px;
 `;
 
 export const ReviewStyles = styled.div`
   padding: 0 24px;
 
-  .endCard {
-    display: flex;
-    align-items: center;
-
-    & > div {
-      margin: 5px;
-      padding: 5px 0px;
-    }
-  }
-
   form {
     padding-top: 15px;
-
-    div {
-      padding: 0 8px;
-    }
   }
 
-  .d-flex {
-    display: flex;
-    align-items: center;
+  .MuiCardContent-root h2 {
+    font-style: normal;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    line-height: 19px !important;
+    text-transform: capitalize;
+    color: #666666;
+  }
 
-    svg {
-      margin-bottom: 0.35em;
-    }
-
-    h6 {
-      padding: 0 0 0 0.3em;
-    }
+  .MuiCardContent-root p {
+    font-style: normal;
+    padding-top: 20px;
+    font-size: 14px !important;
+    line-height: 19px !important;
+    text-transform: capitalize;
+    color: #666666;
   }
 
   label {
@@ -51,12 +42,15 @@ export const ReviewStyles = styled.div`
     text-align: left;
     display: block;
     margin-bottom: 0;
+    margin-top: 1em;
+    color: #666666;
+    font-size: 12px;
   }
 
   input[type="text"] {
     display: block;
     box-sizing: border-box;
-    width: 100%;
+    width: 99%;
     padding: 7px 9px;
     margin-bottom: 10px;
     font-size: 14px;
@@ -70,24 +64,20 @@ export const ReviewStyles = styled.div`
   }
 
   input[type="submit"] {
-    background-color: #dedede;
-    border: 1px solid white;
+    background-color: #cfd601;
+    border: none;
     padding: 13px 15px;
-  }
-
-  .submit {
-    display: flex;
-    justify-content: center;
-  }
-
-  p {
-    color: #adaaaa;
-  }
-
-  .cards {
-    display: flex;
+    color: #fff;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 20px;
+    border-radius: 5px;
     width: 100%;
-    justify-content: space-between;
+  }
+
+  .button {
+    margin-bottom: 20px;
   }
 `;
 
@@ -97,15 +87,6 @@ export const ReviewCepStyles = styled.div`
 
   input[type="text"] {
     width: 40%;
-  }
-
-  input[type="button"] {
-    padding: 0px 20px;
-    position: relative;
-    right: 1%;
-    height: 36px;
-    border-radius: 0px 5px 5px 0px;
-    border: 3px solid #dedede;
   }
 
   input[type="text"]:focus {

@@ -1,20 +1,29 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { AddressFormStyles, TitleStyles } from "./styles";
 
+
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const AddressForm = () => {
   const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    axios
+      .post(
+        `http://18.229.234.11:3000/api/V2/customers/isEmailAvailable`, {"email":data.email}
+      )
+      .then(({ data }) => console.log(data));
+  };
 
   return (
     <AddressFormStyles>
       <Grid container spacing={3}>
+        
         <Grid item xs={5} sm={5}>
           <TitleStyles>
             <AccountCircleIcon />
@@ -26,7 +35,7 @@ const AddressForm = () => {
           </Typography>
 
           <Grid>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label htmlFor="email">email</label>
                 <input
@@ -47,8 +56,7 @@ const AddressForm = () => {
 
               <input type="submit" value="Enviar" />
 
-              
-                <Link href="#">esqueci minha senha</Link>
+              <Link href="#">esqueci minha senha</Link>
             </form>
           </Grid>
         </Grid>

@@ -7,7 +7,7 @@ import {
   CardContent,
   CardMedia,
 } from "@material-ui/core";
-import { ResumeFormStyles } from "./styles";
+import { ResumeFormStyles, ResumeFormAmountStyles } from "./styles";
 
 const ResumeForm = () => {
   const { register, handleSubmit, watch, errors } = useForm();
@@ -57,6 +57,15 @@ const ResumeForm = () => {
             <span>R$ 239,90</span>
           </CardContent>
         </Card>
+
+        <ResumeFormAmountStyles>
+          <div className="resume-label">
+            <Typography variant="h5" component="h6">Total:</Typography>
+          </div>
+          <div className="resume-total">
+            <Typography variant="h5" component="h6">R$ 239,90</Typography>
+          </div>
+        </ResumeFormAmountStyles>
       </React.Fragment>
     </ResumeFormStyles>
   );

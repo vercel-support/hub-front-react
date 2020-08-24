@@ -1,66 +1,45 @@
-import React from "react";
+import React, { useContext } from "react";
+import { store } from "../../../store";
 import { useForm } from "react-hook-form";
+import { CardAddress } from "../../atoms"
 import {
   Grid,
   Hidden,
-  Typography,
-  Card,
-  CardActions,
-  CardContent,
 } from "@material-ui/core";
-import RoomIcon from "@material-ui/icons/Room";
 import { ReviewStyles, ReviewCepStyles, TitleStyles } from "./styles";
 
 const Review = () => {
+  const { state, dispatch } = useContext(store);
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    const token = localStorage.getItem("app-token");
+    console.log(token, "token");
+    dispatch({
+      type: "NEWADDRESS_REQUEST",
+      newAddress: {
+        "token": `${token}`,
+        "postalCode": data.postalCode,
+        "street": data.street,
+        "number": data.number,
+        "neighborhood": data.neighborhood,
+        "phone": data.phone,
+        "firstName": data.firstName,
+        "lastName": data.lastName,
+        "defaultBilling": true,
+      },
+    });
+  };
+
+  console.log(state, "state")
 
   return (
     <ReviewStyles>
-      <Grid xs={12} sm={12}>
-        <TitleStyles>
-          <RoomIcon />
-          <Typography variant="h6">Endereços Cadastrados</Typography>
-        </TitleStyles>
-      </Grid>
+      <Grid container spacing={3}>
+        {state && state.user.address && <CardAddress address={state && state.user.address} />}
 
-      <Grid xs={12} sm={12} className="endCard">
-        <Card variant="outlined">
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              Marcos Domingues
-            </Typography>
-            <Typography variant="body2" component="p">
-              Rua Fernandes Camacho, 160 - Casa 55 - Jardim Alvorada -
-              Sorocaba/SP CEP: 18080-430
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <input type="submit" value="Entregar nesse endereço" />
-          </CardActions>
-        </Card>
-
-        <Card variant="outlined">
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              Marcos Domingues
-            </Typography>
-            <Typography variant="body2" component="p">
-              Rua Fernandes Camacho, 160 - Casa 55 - Jardim Alvorada -
-              Sorocaba/SP CEP: 18080-430
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <input type="submit" value="Entregar nesse endereço" />
-          </CardActions>
-        </Card>
-      </Grid>
-
-      <Grid xs={12} sm={12}>
-        <TitleStyles>
-          <RoomIcon />
-          <Typography variant="h6">Novo Endereço</Typography>
-        </TitleStyles>
+        <Grid xs={12} sm={12}>
+          <TitleStyles>novo endereço</TitleStyles>
+        </Grid>
       </Grid>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -68,23 +47,22 @@ const Review = () => {
           <Grid xs={12} sm={12}>
             <label htmlFor="CEP">CEP</label>
             <ReviewCepStyles>
-              <input type="text" name="cep" ref={register} />
-              <input type="button" value="OK" />
+              <input type="text" name="postalCode" ref={register} />
             </ReviewCepStyles>
           </Grid>
           <Grid xs={12} sm={8}>
-            <label htmlFor="rua">Rua</label>
-            <input type="text" name="rua" ref={register}></input>
+            <label htmlFor="street">Rua</label>
+            <input type="text" name="street" ref={register}></input>
           </Grid>
 
           <Grid xs={6} sm={4}>
-            <label htmlFor="numero">Número</label>
+            <label htmlFor="number">Número</label>
             <input type="text" name="numero" ref={register}></input>
           </Grid>
 
           <Hidden only={["lg", "sm"]}>
             <Grid xs={6}>
-              <label htmlFor="bairro">Bairro</label>
+              <label htmlFor="neighborhood">Bairro</label>
               <input type="text" name="bairro" ref={register}></input>
             </Grid>
           </Hidden>
@@ -96,7 +74,7 @@ const Review = () => {
 
           <Hidden only="xs">
             <Grid xs={12} sm={4}>
-              <label htmlFor="bairro">Bairro</label>
+              <label htmlFor="neighborhood">Bairro</label>
               <input type="text" name="bairro" ref={register}></input>
             </Grid>
           </Hidden>
@@ -111,15 +89,18 @@ const Review = () => {
           </Grid>
           <Grid xs={12} sm={6}>
             <label htmlFor="destinatario">Nome do destinatário</label>
-            <input type="text" name="destinatario" ref={register}></input>
+            <input type="text" name="firstName" ref={register}></input>
             <p>Nome de quem retira ou recebe o pedido</p>
           </Grid>
           <Grid xs={12} sm={6}>
             <label htmlFor="tel">Telefone</label>
-            <input type="text" name="tel" ref={register}></input>
+            <input type="text" name="phone" ref={register}></input>
           </Grid>
-          <Grid xs={12} sm={12} className="submit">
-            <input type="submit" value="Entregar nesse Endereço" />
+        </Grid>
+
+        <Grid container spacing={3} justify="flex-end">
+          <Grid xs={12} sm={6} className="submit" className="button">
+            <input type="submit" value="cadastrar endereço" />
           </Grid>
         </Grid>
       </form>
