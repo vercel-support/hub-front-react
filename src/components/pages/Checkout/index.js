@@ -17,7 +17,7 @@ function getStepContent(step, handleNext) {
     case 0:
       return <Login handleNext={handleNext}/>;
     case 1:
-      return <Review />;
+      return <Review handleNext={handleNext} />;
     case 2:
       return <PaymentForm />;
     default:

@@ -65,27 +65,12 @@ export const EmailStyles = styled.div`
     font-size: 14px;
     line-height: 19px;
     border-radius: 0px 5px 5px 0px;
-    border: 3px solid #cfd601;
-    background-color: #cfd601;
+    border: 3px solid #CFD601;
+    background-color: #CFD601;
 
     &:focus {
       background: none;
     }
-  }
-
-  input[type="submit"]:focus {
-    padding: 0px 20px;
-    position: relative;
-    right: 1%;
-    height: 42px;
-    color: #fff;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 19px;
-    border-radius: 0px 5px 5px 0px;
-    border: 3px solid #cfd601;
-    background-color: #cfd601 !important;
   }
 
   input[type="text"]:focus {

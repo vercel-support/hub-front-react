@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { ReviewStyles, ReviewCepStyles, TitleStyles } from "./styles";
 
-const Review = () => {
+const Review = ({handleNext}) => {
   const { state, dispatch } = useContext(store);
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
@@ -35,7 +35,7 @@ const Review = () => {
   return (
     <ReviewStyles>
       <Grid container spacing={3}>
-        {state && state.user.address && <CardAddress address={state && state.user.address} />}
+        {state && state.user.address && <CardAddress address={state && state.user.address} handleNext={handleNext} />}
 
         <Grid xs={12} sm={12}>
           <TitleStyles>novo endereço</TitleStyles>

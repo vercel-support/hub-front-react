@@ -68,10 +68,8 @@ function* isLogin({ login, handleNext }) {
     }
     const address = yield call(service.requestAddresses, localStorage.getItem('app-token'));
     window.Mercadopago.setPublishableKey("TEST-6ff57941-ef53-460f-b875-80eec81400ac");
-    window.Mercadopago.getIdentificationTypes();
     yield put({ type: "LOGIN_SUCCESS", address: address.data.addresses });
     handleNext();
-    debugger
   } catch (error) {
     console.log(error)
   }
@@ -112,7 +110,6 @@ function* setCart({ payload }) {
 }
 
 function* postShipping({ payload }) {
-  debugger
   try {
     const { data } = yield call(service.requestShipping, payload);
     yield put({ type: "SHIPPING_SUCCESS", shipping: data });

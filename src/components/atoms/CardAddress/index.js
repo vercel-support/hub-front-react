@@ -9,7 +9,7 @@ import {
 
 import { CardAddressStyles, TitleStyles } from "./styles";
 
-const CardAddress = ({ address }) => {
+const CardAddress = ({ address, handleNext }) => {
   return (
     <React.Fragment>
       {address.length === 0 ? null : (
@@ -26,13 +26,13 @@ const CardAddress = ({ address }) => {
                     {item.firstname} {item.lastname}
                   </Typography>
                   <Typography variant="body2" component="p">
-                    {item.street}, {item.number}{" "}
+                    {item.street}, {item.number}
                     {item.complement && -item.complement}- {item.neighborhood} -
                     {item.city}/{item.region} CEP: {item.postalCode}
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <input type="submit" value="Entregar nesse endereço" />
+                  <input type="submit" value="Entregar nesse endereço" onClick={handleNext} />
                 </CardActions>
               </Card>
             </Grid>
