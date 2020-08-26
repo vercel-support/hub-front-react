@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
+import { useRouter } from "next/router";
+import { store } from "../../../store";
 import FlightIcon from "@material-ui/icons/Flight";
 import StoreIcon from "@material-ui/icons/Store";
-import { store } from "../../../store";
 import ProductShippingStyled, {
   ShippingCardStyled,
   WithdrawStyled,
 } from "./styles";
 
-const addToCart = (product) => {
+const addToCart = (product, dispatch) => {
   let newProducts = {};
   const products = JSON.parse(localStorage.getItem("products"));
 
@@ -26,51 +27,97 @@ const addToCart = (product) => {
   }
 
   localStorage.setItem("products", JSON.stringify(newProducts));
+
+  dispatch({
+    type: "CART_REQUEST",
+    payload: {
+      sku: "7898049719273",
+      storeId: "5e8e1c6e43a61128433f0eed",
+      shippingType: "delivery",
+    },
+  });
+
+  dispatch({
+    type: "SHIPPING_REQUEST",
+    payload: {
+      postalCode: "02976-090",
+      items: [
+        {
+          sku: "7898049719273",
+          name: "Apoquel 5,4 mg",
+          quantity: 1,
+          price: 189,
+          specialPrice: 170.1,
+        },
+      ],
+      storeId: "5e8e1c6e43a61128433f0eed",
+    },
+  });
 };
 
-const Withdraw = ({ config = { stock: true }, myStore, product }) => (
-  <WithdrawStyled {...config}>
-    <p>
-      <span className="stock">
-        {config.stock ? "Retire hoje " : "Sem estoque "}
-      </span>
-      na loja
-      <span className="store"> {myStore.name}</span>
-    </p>
-    <span className="change">(alterar loja)</span>
-    {config.stock && (
-      <span className="available">
-        <StoreIcon /> pedido disponível em até 1 hora
-      </span>
-    )}
-    <button onClick={() => addToCart(product)}>
-      comprar e retirar na loja
-    </button>
-  </WithdrawStyled>
-);
+const Withdraw = ({ config = { stock: true }, myStore, product }) => {
+  const router = useRouter();
+  const { dispatch } = useContext(store);
+
+  return (
+    <WithdrawStyled {...config}>
+      <p>
+        <span className="stock">
+          {config.stock ? "Retire hoje " : "Sem estoque "}
+        </span>
+        na loja
+        <span className="store"> {myStore.name}</span>
+      </p>
+      <span className="change">(alterar loja)</span>
+      {config.stock && (
+        <span className="available">
+          <StoreIcon /> pedido disponível em até 1 hora
+        </span>
+      )}
+      <button
+        onClick={() => {
+          addToCart(product, dispatch);
+          setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+        }}
+      >
+        comprar e retirar na loja
+      </button>
+    </WithdrawStyled>
+  );
+};
 
 const ShippingCard = ({
   config = { stock: true },
   myStore,
   product,
   postalCode,
-}) => (
-  <ShippingCardStyled {...config}>
-    <p>Entregar no CEP {postalCode ? postalCode : "_____-___"}</p>
-    <span className="change">(alterar loja)</span>
-    {postalCode && (
-      <span className={config.stock ? "available" : "unavailable"}>
-        {config.stock && <FlightIcon />}
-        {config.stock
-          ? "receba em até 4 horas"
-          : "Essa loja não entrega no seu CEP"}
-      </span>
-    )}
-    <button onClick={() => addToCart(product)}>
-      comprar e receber em casa
-    </button>
-  </ShippingCardStyled>
-);
+}) => {
+  const router = useRouter();
+  const { dispatch } = useContext(store);
+
+  return (
+    <ShippingCardStyled {...config}>
+      <p>Entregar no CEP {postalCode ? postalCode : "_____-___"}</p>
+      <span className="change">(alterar loja)</span>
+      {postalCode && (
+        <span className={config.stock ? "available" : "unavailable"}>
+          {config.stock && <FlightIcon />}
+          {config.stock
+            ? "receba em até 4 horas"
+            : "Essa loja não entrega no seu CEP"}
+        </span>
+      )}
+      <button
+        onClick={() => {
+          addToCart(product, dispatch);
+          setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+        }}
+      >
+        comprar e receber em casa
+      </button>
+    </ShippingCardStyled>
+  );
+};
 
 const ProductShipping = ({ product }) => {
   const { state } = useContext(store);

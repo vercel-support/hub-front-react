@@ -12,6 +12,16 @@ const initialState = {
     productsPerPage: 16,
     sortedBy: "Nome do produto",
   },
+  user: {
+    address: false,
+  },
+  login: {
+    isEmailAvailable: false,
+    onLogin: false,
+  },
+  productCard: false,
+  storesCart: false,
+  shippingCart: false,
   geo: {
     available: null,
     enabled: null,
@@ -46,6 +56,70 @@ const store = createContext(initialState);
 const { Provider } = store;
 
 // Saga
+function* newAddress({newAddress}) {
+  try {
+    const {data} = yield call(service.requestNewAddress, newAddress)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function* isLogin({ login, handleNext }) {
+  try {
+    const { data } = yield call(service.requestLogin, login);
+    if (data.status === 200) {
+      localStorage.setItem('app-token', data.token);
+    }
+    const address = yield call(service.requestAddresses, localStorage.getItem('app-token'));
+    window.Mercadopago.setPublishableKey("TEST-6ff57941-ef53-460f-b875-80eec81400ac");
+    yield put({ type: "LOGIN_SUCCESS", address: address.data.addresses });
+    handleNext();
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function* registerUser({register, setNewRegister}) {
+  try {
+    const {data} = yield call(service.requestRegister, register);
+    if(data) {
+      setNewRegister(false);
+    }
+    console.log(data, newUser);
+  } catch (error) {
+    
+  }
+}
+
+function* emailRequest({ email }) {
+  try {
+    const { data } = yield call(service.requestEmail, email);
+    yield put({ type: "EMAIL_SUCCESS", email: data.isAvailable });
+  } catch (error) {}
+}
+
+function* setCart({ payload }) {
+  try {
+    const dataStores = yield call(
+      service.requestStores,
+      "5e8e1c6e43a61128433f0eed"
+    );
+    const { data } = yield call(service.requestCart, payload);
+    yield put({
+      type: "CART_SUCCESS",
+      payload: data,
+      stores: dataStores.data.data,
+    });
+  } catch (error) {}
+}
+
+function* postShipping({ payload }) {
+  try {
+    const { data } = yield call(service.requestShipping, payload);
+    yield put({ type: "SHIPPING_SUCCESS", shipping: data });
+  } catch (error) {}
+}
+
 function* getStores() {
   try {
     const params = yield select(({ geo }) =>
@@ -71,6 +145,30 @@ function* changeStore({ payload }) {
   }
 }
 
+function* watchRegisterUser() {
+  yield takeEvery("REGISTERUSER_REQUEST", registerUser);
+}
+
+function* watchNewAddress() {
+  yield takeEvery("NEWADDRESS_REQUEST", newAddress);
+}
+
+function* watchIsLogin() {
+  yield takeEvery("LOGIN_REQUEST", isLogin);
+}
+
+function* watchEmailRequest() {
+  yield takeEvery("EMAIL_REQUEST", emailRequest);
+}
+
+function* watchPostShipping() {
+  yield takeEvery("SHIPPING_REQUEST", postShipping);
+}
+
+function* watchSetCart() {
+  yield takeEvery("CART_REQUEST", setCart);
+}
+
 function* watchGetPostcode() {
   yield takeEvery("GEO_SUCCESS", getStores);
 }
@@ -80,7 +178,16 @@ function* watchChangeStore() {
 }
 
 function* rootSaga() {
-  yield all([watchGetPostcode(), watchChangeStore()]);
+  yield all([
+    watchGetPostcode(),
+    watchChangeStore(),
+    watchSetCart(),
+    watchPostShipping(),
+    watchEmailRequest(),
+    watchIsLogin(),
+    watchNewAddress(),
+    watchRegisterUser(),
+  ]);
 }
 // Saga
 
@@ -95,6 +202,33 @@ const StateProvider = ({ children, value }) => {
             geo: { ...state.geo, postalCode: action.payload },
           };
 
+        case "REGISTERUSER_REQUEST":
+          return {...state};
+        case "NEWADDRESS_REQUEST":
+          return {...state};
+        case "LOGIN_REQUEST":
+          return {...state};
+        case "LOGIN_SUCCESS":
+          return {...state, user: {address: action.address}};
+        case "EMAIL_REQUEST":
+          return { ...state };
+        case "EMAIL_SUCCESS":
+          return {
+            ...state,
+            login: { isEmailAvailable: action.email, onLogin: true },
+          };
+        case "SHIPPING_SUCCESS":
+          return { ...state, shippingCart: { ...action.shipping } };
+        case "SHIPPING_REQUEST":
+          return { ...state };
+        case "CART_SUCCESS":
+          return {
+            ...state,
+            productCard: [{ ...action.payload.data }],
+            storesCart: { ...action.stores },
+          };
+        case "CART_REQUEST":
+          return { ...state };
         case "GEO_ERROR":
           return { ...state, geo: { ...state.geo, error: true } };
         case "GEO_SUCCESS":

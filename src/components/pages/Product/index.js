@@ -24,12 +24,16 @@ const Product = ({ content }) => {
     sku,
     type,
     description,
+    specifications = [],
   } = content.data;
   const [price, setPrice] = useState({
     price: children[0].price,
     specialPrice: children[0].specialPrice,
     discount: children[0].percentagePromotionDiscount,
   });
+  const brand = specifications.filter(
+    (specification) => specification.name === "Marca"
+  )[0]?.value;
 
   return (
     <OneColumn content={content}>
@@ -39,8 +43,8 @@ const Product = ({ content }) => {
         <ProductContainerStyled>
           <ProductName name={name} />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <ProductRating />
-            <ProductBrand brand="Biofresh" />
+            {/*<ProductRating />*/}
+            <ProductBrand brand={brand} />
           </div>
           <ProductContentStyled>
             <div>
@@ -59,7 +63,7 @@ const Product = ({ content }) => {
             </div>
             <ProductShipping product={{ name, sku }} />
           </ProductContentStyled>
-          <ProductDescription description={description} />
+          {/*<ProductDescription description={description} />*/}
         </ProductContainerStyled>
       </ProductStyled>
     </OneColumn>
