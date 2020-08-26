@@ -32,6 +32,8 @@ export default (req, res) => {
           "Royal Canin para Cachorros e Gatos pelo Menor Preço | Geração Pet",
         metaDescription:
           "Encontre Ração Royal Canin para cães e gatos em oferta pelo menor preço na Geração Pet - Pet Shop Online. Clique e confira, entrega garantida para todo Brasil",
+        description:
+          '<p class="productDescription">A <b>Royal Canin</b> é uma marca de ração muito bem conceituada no mercado, é considerada uma boa ração, <b>super premium</b>, que atende a todas as necessidades do seu <b>cachorro e gato</b>, com mais de 150 alimentos com produtos específicos para raças, portes, idades, estilos de vida, necessidades específicas, cuidados especiais e auxiliares no tratamento de algumas doenças.<br>\r\nA <b>Royal Canin</b> é uma das maiores empresas de <b>ração para cães e gatos</b>, conhecida mundialmente, com 13 fábricas no mundo todo e com presença em 92 países e por garantir o melhor alimento para o a seu pet, com tudo o que ele precisa para ter uma melhor qualidade de vida.\r\n <b></b></p>\r\n<h2 class="subTitle">Royal Canin para Cachorros</h2>\r\n<p class="productDescription">Ração é o alimento mais importante da vida do seu cachorro, por isso é preciso tomar cuidado na hora de escolher a ideal. <br>\r\nA <b>Ração Royal Canin</b> está presente em todas as fases da vida do seu cachorro, possui linhas específicas para idade, porte e necessidades específicas. <br>\r\nPara <b>cães filhotes a Royal Canin</b> possui as linhas: <b>X-Small Junior e Mini Junior ou Mini Indoor Junior</b> para os cães filhotes de porte pequeno, até o 8º mês de vida. A <b>Royal Medium Junior</b> para cães de porte médio até 12 meses de idade e <>Royal Maxi Junior</b> para cães de porte grande até 15 meses de idade. A <b>Royal Giant Puppy</b> para cachorros com porte gigante até o 8º mês de vida e o <b>Royal Giant Junior</b> até o 15º mês. <br>\r\nPara outras fases da vida a <b>Royal Canin</b> também oferece a <b>ração para a cães adultos</b> de porte pequeno, médio e grande, e a <b>sênior</b>, para os cachorros a partir dos 7, 8, 10 ou 12 anos de idade.\r\nEntre as linhas para cachorro ainda estão a <b>Light</b>, que ajuda na dieta dos cães com sobrepeso, A <b>Sensible</b> para cães que têm dificuldade em comer, com um maior sabor, bem mais palatável. E ainda a <b>Sterilised</b>, para cães castrados que precisam de uma manutenção do peso ideal, com uma ração que satisfaz o a fome do cão mais rápido e faz com que ele consuma menores quantidades. \r\n</p>\r\n\r\n<h2 class="subTitle">Royal Canin para Gatos</h2>\r\n<p class="productDescription">Os gatos também possuem suas exigências, assim como os cães, e a linha de rações para gato da Royal Canin está presente em todas as fases de suas vidas. Para agradar tanto aos filhotes, com as <b>Rações Royal Canin Kitten</b> como aos adultos e sênior, como a <b>Ração Royal Canin Intense Hairball</b>, eliminando as bolas de pelo do seu felino, a <b>Ração Royal Canin Sensible</b>, para os gatos que têm dificuldade em comer, a <b>Ração Royal Canin Exigent</b> é ainda mais palatável. A <b>Ração Royal Canin Digestive Care</b> para os que precisam de um cuidado a mais na hora da digestão. A <b>Royal canin Gato Fit</b>, que seria como a Light para os cachorros, ideal para a perda de peso do felino. E a Beleza da Pelagem, que foi pensada para deixar a pele e o pelo do gato mais hidratados.\r\nAinda nas rações da Royal para gatos, tem uma linha especial para os gatos castrados, a <b>Royal Gato Sterilised</b>, produzida especialmente para gatos que precisam manter o peso ideal após a castração\r\n</p>\r\n\r\n<h2 class="subTitle">Royal Canin Raças Específicas</h2>\r\n<p class="productDescription">Dentre as linhas específicas da Royal Canin, estão divididas entre cães e gatos, satisfazendo as necessidades de cada raça, sendo que para gatos, são quatro tipos,<b> Maine Coon, Siamês, Persa e filhote de Persa.</b> <br>\r\nJá para os cachorros, a diversidade de rações é imensa, sempre trazendo <b>alimentos balanceados específicos para a raça</b> do cão, como para o <b>Labrador</b>, por exemplo, que é uma ração ideal para auxiliar na saúde dos ossos e articulações. Já para o <b>Pug</b>, a ração precisa conter grãos específicos para ajudar na mastigação e ajuda a manter um peso saudável, evitando o sobrepeso.<br>\r\nE assim segue com a marca para as outras raças como o <b>Boxer, Bulldog Francês, Bulldog Inglês, Dachshund, Golden, Labrador, Maltês, Pastor Alemão, Poodle, Pug, Rottweiler, Schnauzer, Shih Tzu ou Yorkshire.</b> Todas pensando na dieta específica do seu cachorro.</p>\r\n\r\n<h2 class="subTitle">Royal Canin Veterinary Diet</h2>\r\n<p class="productDescription">A Royal Canin conta com uma linha especializada para o tratamento de saúde de cães e gatos, porém é sempre recomendado que antes de utilizar a <b>Ração Royal Canin Veterinary Diet</b>, um médico veterinário seja consultado para que seja dada a orientação correta sobre a dieta. Entre as rações Veterinary Diet estão a Diabética, Cardíaca, Gastro Intestinal, Hipoalergênica, Obesidade, Hepática, Renal, Saciedade, Cuidado para Pele, Controle de Peso e Urinária.</p>',
         breadcrumbs: [
           {
             id: 179,
@@ -1255,13 +1257,139 @@ export default (req, res) => {
       target: "/produto",
     },
     produto: {
-      status: 301,
-      data: {
-        metaDescription: "MetaDescription da página de produto",
-        metaTitle: "GeraçãoPet - Página de Produto",
-        pageType: "product",
+      status: 200,
+      store: {
+        name: "Centro de Distribuição",
+        id: "cd",
       },
-      target: "/produto",
+      data: {
+        pageType: "product",
+        sku: "4710",
+        metaTitle: "Apoquel Dermatológico Zoetis para Cães",
+        metaDescription:
+          "Compre Apoquel Zoetis para Cães em comprimidos com melhor preço na Geração Pet e acabe com a coceira do seu pet. Entrega garantida para todo Brasil",
+        specifications: [
+          {
+            id: 81,
+            type: "select",
+            name: "Marca",
+            value: "Zoetis",
+          },
+          {
+            id: 298,
+            type: "select",
+            name: "Linha",
+            value: "Apoquel",
+          },
+          {
+            id: 283,
+            type: "multiselect",
+            name: "Fase da Vida",
+            value: "Adulto, Sênior",
+          },
+          {
+            id: 285,
+            type: "multiselect",
+            name: "Indicação",
+            value: "Cão",
+          },
+          {
+            id: 284,
+            type: "multiselect",
+            name: "Porte",
+            value: "Pequeno, Médio, Grande, Gigante, Todos",
+          },
+        ],
+        name: "Apoquel Dermatológico Zoetis para Cães",
+        shortDescription:
+          "Apoquel é a inovação no tratamento do prurido associado às dermatites alérgicas, incluindo dermatite atópica em cães. Toda a tranquilidade e paz que a coceira não traz. Diferentemente das terapias comuns com corticoides, ciclosporina ou anti-histamínicos, Apoquel é o único tratamento desenvolvido para agir direto na fonte da coceira, com alívio rápido em até 4 horas e com duração de 24 horas após uma única dose.",
+        description:
+          '<h3 class="productDescriptionTitle">Apoquel Dermatológico Zoetis para Cães</h3>\r\n\r\n<p class="productDescription"><b>Apoquel</b> é a inovação no tratamento do prurido associado às dermatites alérgicas, incluindo dermatite atópica em cães. Toda a tranquilidade e paz que a coceira não traz.<br>Diferentemente das terapias comuns com corticoides, ciclosporina ou anti-histamínicos, Apoquel é o único tratamento desenvolvido para agir direto na fonte da coceira, com alívio rápido em até 4 horas e com duração de 24 horas após uma única dose.</p>\r\n<br><br>\r\n\r\n\r\n<h4 class="productDescriptionSubTitle">Por que recomendamos o Apoquel Dermatológico Zoetis para Cães</h4>\r\n<p class="productDescription">- Ação rápida: Alivio da coceira em 4 horas; <br>- Alivia a coceira por 24 horas após uma única dose; <br>- Seguro e eficaz no longo prazo;<br> - Não contêm corticoides, ciclosporina ou anti-histamínico;<br> - Pode ser utilizado em cães com mais de 1 ano de idade;</p>\r\n<br><br>\r\n\r\n\r\n<h4 class="productDescriptionSubTitle">Modo de usar</h4>\r\n<p class="productDescription">A dose inicial recomendada e de 0,4 a 0,6mg/Kg de oclacitinib, administrado oralmente, duas vezes ao dia por 14 dias.<br>\r\nPara a terapia de manutenção (após 14 dias iniciais), a mesma dose deve ser administrada (0,4 a 0,6 mg/kg, uma vez ao dia. A necessidade da terapia de manutenção de longa duração deve ser baseada numa avaliação de risco-benefício individual, realizada pelo médico veterinário responsável.</p>\r\n<br><br>\r\n\r\n<h4 class="productDescriptionSubTitle">Precauções</h4>\r\n<p class="productDescription">Não deve ser utilizado em cães com menos de 12 meses de idade e nem em cães com infecções severas.<br>Não deve ser utilizado em animais destinados a reprodução, ou em cadelas prenhes ou lactantes. <br>\r\nO uso deste medicamento não foi avaliado em combinação com glucocorticóides, ciclosporina, ou outros agentes imunossupressores sistêmicos. </p><br><br>\r\n\r\n<h4 class="productDescriptionSubTitle">Composição Básica</h4>\r\n<p class="productDescription">Apoquel 3,6mg: Cada 100 mg de <b>Apoquel Zoetis</b> contém: Oclacitinib 3,6mg, Excipiente..q.s.p..100m.</p>\r\n<p class="productDescription">Apoquel 5,4mg: Cada 100 mg de <b>Apoquel Zoetis</b> contém: Oclacitinib 5,4mg, Excipiente..q.s.p..100m.</p>\r\n<p class="productDescription">Apoquel 16mg: Cada 100 mg de <b>Apoquel Zoetis</b> contém: Oclacitinib 16mg, Excipiente..q.s.p..100m.</p>\r\n<br><br>\r\n\r\n<h4 class="productDescriptionSubTitle hide-below-960">Saiba Mais Sobre o <b>Apoquel</b></h4>\r\n<div class="hide-below-960"><iframe width="640" height="360" src="https://www.youtube.com/embed/bh2ATfSbHw0?rel=0" frameborder="0" allowfullscreen></iframe></div><br><br>\r\n\r\n<h4 class="productDescriptionSubTitle">Bula Apoquel Dermatológico Zoetis para Cães</b></h4>\r\n<p class="productDescription"><a target="_blank" href="https://products-info-public.s3-sa-east-1.amazonaws.com/bulas/zoetis/bula-apoquel.pdf">Bula Apoquel Dermatológico Zoetis para Cães. </a></p>\r\n\r\n<h4 class="productDescriptionSubTitle">Sobre a <a href="https://www.geracaopet.com.br/marcas/zoetis">Zoetis</a></h4>\r\n<pclass="productDescription">Zoetis é uma companhia líder em saúde animal, focada em apoiar os clientes e seus respectivos negócios. Com o legado de mais de 60 anos de história, a Zoetis descobre, desenvolve, produz e comercializa vacinas e medicamentos veterinários para animais de criação e de companhia.</p>',
+        type: "configurable",
+        defaultCategory: {
+          code: "479",
+          friendlyLabel: "Tratamento de Pele",
+          label: "Cachorro > Tratamento de Pele",
+        },
+        image: "/a/p/apoguel.jpg",
+        imageGallery: [
+          {
+            id: 25723,
+            media_type: "image",
+            label: "Apoquel",
+            position: 1,
+            disabled: false,
+            types: ["image", "small_image", "thumbnail", "swatch_image"],
+            file: "/a/p/apoguel.jpg",
+          },
+          {
+            id: 32742,
+            media_type: "image",
+            label: "Apoquel Dermatológico Zoetis para Cães",
+            position: 1,
+            disabled: false,
+            types: [],
+            file: "/t/a/tabela.png",
+          },
+        ],
+        children: [
+          {
+            sku: "7898049719266",
+            name: "Apoquel 3,6 mg",
+            variation: {
+              code: "17",
+              label: "3,6 mg",
+            },
+            price: 183.5,
+            specialPrice: 165.15,
+            inPromotion: true,
+            percentagePromotionDiscount: "10",
+            weight: 0.03,
+            width: 0.2,
+            height: 0.12,
+            length: 0.12,
+            pickupAvailable: false,
+            quantityAvailableForPickup: 0,
+          },
+          {
+            sku: "7898049719273",
+            name: "Apoquel 5,4 mg",
+            variation: {
+              code: "19",
+              label: "5,4 mg",
+            },
+            price: 189,
+            specialPrice: 170.1,
+            inPromotion: true,
+            percentagePromotionDiscount: "10",
+            weight: 0.03,
+            width: 0.2,
+            height: 0.12,
+            length: 0.12,
+            pickupAvailable: false,
+            quantityAvailableForPickup: 0,
+          },
+          {
+            sku: "7898049719280",
+            name: "Apoquel 16 mg",
+            variation: {
+              code: "21",
+              label: "16 mg",
+            },
+            price: 393.9,
+            specialPrice: 354.51,
+            inPromotion: true,
+            percentagePromotionDiscount: "10",
+            weight: 0.03,
+            width: 0.2,
+            height: 0.12,
+            length: 0.12,
+            pickupAvailable: false,
+            quantityAvailableForPickup: 0,
+          },
+        ],
+      },
+      target: "/product",
     },
 
     success: {

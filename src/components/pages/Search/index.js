@@ -10,30 +10,26 @@ import {
 import { ListProducts } from "../../organisms";
 import { TwoColumns } from "../../templates";
 
-const Category = ({ content }) => {
+const Search = ({ content }) => {
   const { state, dispatch } = useContext(store);
   const { action } = state.category;
   const [products, setProducts] = useState(content.data.products);
 
   useEffect(() => {
-    console.log("useEffect", state, dispatch);
-    // dispatch({ type: "SET_CATEGORY", payload: products });
-  }, [products, state]);
+    // console.log(state, dispatch);
+  }, [content]);
 
   return (
     <TwoColumns
       beforeContent={
         <React.Fragment>
-          <CategoryBanner
-            categoryName={content.data.pageName}
-            items={content.data.breadcrumbs}
-          />
-          {/* <CategoryTools /> */}
+          <CategoryBanner categoryName={content.data.pageName} />
+          <CategoryTools />
         </React.Fragment>
       }
       content={content}
       left={
-        /* action === "sort" ? (
+        action === "sort" ? (
           // <CategorySort sorters={content.data.sortOptions} />
           <CategoryFilter
             filters={content.data.filtersAvailable}
@@ -44,14 +40,9 @@ const Category = ({ content }) => {
             filters={content.data.filtersAvailable}
             setProducts={setProducts}
           />
-        ) */
-        <CategoryFilter
-          filters={content.data.filtersAvailable}
-          setProducts={setProducts}
-        />
+        )
       }
     >
-      <CategoryDescription description={content.data.description} />
       <ListProducts
         content={content}
         products={products}
@@ -61,4 +52,4 @@ const Category = ({ content }) => {
   );
 };
 
-export default Category;
+export default Search;

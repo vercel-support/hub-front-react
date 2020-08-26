@@ -20,3 +20,12 @@ export const requestRedirect = async (url) => {
   });
   return response;
 };
+
+export const requestSearch = async (params) => {
+  const response = await axios.get(
+    "http://18.229.234.11:3000/api/V2/catalogs/products/search",
+    { params }
+  );
+
+  return response;
+};

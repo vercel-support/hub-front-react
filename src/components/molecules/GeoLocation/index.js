@@ -17,13 +17,13 @@ const GeoLocation = () => {
   const { state, dispatch } = useContext(store);
   const { myStore = {}, stores = [] } = state;
   const [open, setOpen] = useState(false);
+  const [postalcode, setPostalcode] = useState("00000-000");
   const { register, handleSubmit } = useForm();
 
   const [geo, setGeo] = useState(false);
 
-  const onSubmit = (data) => {
-    dispatch({ type: "CEP" });
-  };
+  const onSubmit = () =>
+    dispatch({ type: "CHANGE_POSTALCODE", payload: postalcode });
 
   const formatAddress = (address) => {
     if (!address) return null;
@@ -60,8 +60,9 @@ const GeoLocation = () => {
               name="cep"
               label="CEP"
               variant="outlined"
-              defaultValue="00000-000"
+              value={postalcode}
               ref={register}
+              onChange={({ target }) => setPostalcode(target.value)}
             />
             <Button variant="outlined" color="primary" type="submit">
               Buscar
