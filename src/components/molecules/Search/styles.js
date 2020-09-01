@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import Icon from './icon';
+import Icon from "./icon";
 
 export const SearchContainer = styled.div`
-  background-color: ${props => (props.barOpened ? "white" : "transparent")};
-  width: ${props => (props.barOpened ? "80vw" : "3rem")};
+  background-color: ${(props) => (props.barOpened ? "white" : "transparent")};
+  width: ${(props) => (props.barOpened ? "80vw" : "3rem")};
   height: 35px;
-  box-shadow: ${props => (props.barOpened ? "0 4px 8px rgba(0, 0, 0, 0.2);" : "0")};
+  box-shadow: ${(props) =>
+    props.barOpened ? "0 4px 8px rgba(0, 0, 0, 0.2);" : "0"};
   border-radius: 2px;
-  cursor: ${props => (props.barOpened ? "auto" : "pointer")};
+  cursor: ${(props) => (props.barOpened ? "auto" : "pointer")};
   transition: width 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
 
   position: absolute;
@@ -26,7 +27,8 @@ export const SearchContainer = styled.div`
 `;
 
 export const ResultsContainer = styled.div`
-  display: ${props => (props.barOpened && props.suggestions.length > 0 ? "block" : "none")};
+  display: ${(props) =>
+    props.barOpened && props.suggestions.length > 0 ? "block" : "none"};
   width: 80vw;
   z-index: 10;
   border-radius: 2px;
@@ -46,18 +48,18 @@ export const ResultsContainer = styled.div`
 
 export const ResultItem = styled.div`
   width: 100%;
-  padding: .2rem;
+  padding: 0.2rem;
   background-color: white;
   z-index: 11;
   cursor: pointer;
 `;
 
 export const ProductImage = styled.div`
-  & > img{
+  & > img {
     display: block;
     margin: 0 auto;
     max-width: 90%;
-    max-height 100%;
+    max-height: 100%;
     width: auto;
     height: 4rem;
     object-fit: cover;
@@ -88,9 +90,9 @@ export const Input = styled.input`
   position: relative;
   background-color: transparent;
   font-size: 14px;
-  width: ${props => (props.barOpened ? "100%" : "0")};
+  width: ${(props) => (props.barOpened ? "100%" : "0")};
   height: 100%;
-  margin-left: .2rem;
+  margin-left: 0.2rem;
   border: none;
   outline: none;
   line-height: 1;
@@ -115,17 +117,17 @@ export const Button = styled.button`
   right: 1rem;
   top: 15%;
   line-height: 1;
-  pointer-events: ${props => (props.barOpened ? "auto" : "none")};
-  cursor: ${props => (props.barOpened ? "pointer" : "none")};
+  pointer-events: ${(props) => (props.barOpened ? "auto" : "none")};
+  cursor: ${(props) => (props.barOpened ? "pointer" : "none")};
   background-color: transparent;
   border: none;
   outline: none;
 `;
 
-export const Svg = styled(Icon)` 
-  width: 20px; 
+export const Svg = styled(Icon)`
+  width: 20px;
   height: 20px;
-  fill: ${props => (props.barOpened ? "#c3c3c3" : "white")};
+  fill: ${(props) => (props.barOpened ? "#c3c3c3" : "white")};
 
   @media screen and (min-width: 1280px) {
     fill: #c3c3c3;

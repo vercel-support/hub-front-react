@@ -6,7 +6,7 @@ import {
   ProductName,
   ProductOptions,
   ProductPrice,
-  ProductRating,
+  // ProductRating,
 } from "../../atoms";
 import { Breadcrumbs, Gallery, ProductShipping } from "../../molecules";
 import { OneColumn } from "../../templates";
@@ -26,10 +26,14 @@ const Product = ({ content }) => {
     description,
     specifications = [],
   } = content.data;
-  const [price, setPrice] = useState({
+  const [product, setProduct] = useState({
+    name: children[0].name,
+    sku: children[0].sku,
     price: children[0].price,
     specialPrice: children[0].specialPrice,
     discount: children[0].percentagePromotionDiscount,
+    pickupAvailable: children[0].pickupAvailable,
+    quantityAvailableForPickup: children[0].quantityAvailableForPickup,
   });
   const brand = specifications.filter(
     (specification) => specification.name === "Marca"
@@ -48,24 +52,20 @@ const Product = ({ content }) => {
           </div>
           <ProductContentStyled>
             <div>
-              <ProductDiscount discount={price.discount} />
+              <ProductDiscount discount={product.discount} />
               <ProductPrice
-                price={price.price}
-                specialPrice={price.specialPrice}
-                installments={`3x ${Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(price.specialPrice / 3)}`}
+                price={product.price}
+                specialPrice={product.specialPrice}
               />
               {type.toLocaleLowerCase() === "configurable" && (
-                <ProductOptions change={setPrice} options={children} />
+                <ProductOptions change={setProduct} options={children} />
               )}
             </div>
-            <ProductShipping product={{ name, sku }} />
+            <ProductShipping product={product} />
           </ProductContentStyled>
-          {/*<ProductDescription description={description} />*/}
         </ProductContainerStyled>
       </ProductStyled>
+      <ProductDescription description={description} />
     </OneColumn>
   );
 };

@@ -6,20 +6,23 @@ const MenuSecond = ({ items }) => (
   <ul>
     {items.map((item) => (
       <li key={item.id}>
-        <Link
+        {/*<Link
           href={{
             pathname: "/[...page]",
             query: { name: "test" },
           }}
           as={`/${item.url}`}
-        >
+        >*/}
+        <Link href={`/${item.url}`}>
           <a>{item.name}</a>
         </Link>
-        {item?.children?.length ? (
-          <MenuThird items={item.children} />
-        ) : (
+        {
+          item?.children?.length ? (
+            <MenuThird items={item.children} />
+          ) : null /*(
           <MenuBanner />
-        )}
+        )*/
+        }
       </li>
     ))}
   </ul>
@@ -30,13 +33,14 @@ const MenuThird = ({ items }) => (
     <ul>
       {items.map((item) => (
         <li key={item.id}>
-          <Link href={`/[...page]`} as={`/${item.url}`}>
+          {/* {<Link href={`/[...page]`} as={`/${item.url}`}>} */}
+          <Link href={`/${item.url}`}>
             <a>{item.name}</a>
           </Link>
         </li>
       ))}
     </ul>
-    <MenuBanner />
+    {/*<MenuBanner />*/}
   </React.Fragment>
 );
 
@@ -56,14 +60,17 @@ const Menu = ({ categories = [] }) => (
   <MenuStyled>
     {categories.map((item) => (
       <li key={item.id}>
-        <Link href={`/[...page]`} as={`/${item.url}`}>
+        {/*<Link href={`/[...page]`} as={`/${item.url}`}>*/}
+        <Link href={`/${item.url}`}>
           <a>{item.name}</a>
         </Link>
-        {item?.children?.length ? (
-          <MenuSecond items={item.children} />
-        ) : (
+        {
+          item?.children?.length ? (
+            <MenuSecond items={item.children} />
+          ) : null /*(
           <MenuBanner />
-        )}
+        )*/
+        }
       </li>
     ))}
   </MenuStyled>

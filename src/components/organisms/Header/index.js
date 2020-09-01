@@ -25,7 +25,7 @@ const Header = ({ content }) => {
           <Grid container className={classes.vcenter}>
             <Grid item lg={2} xs={8}>
               <Hidden lgUp>
-                <MenuMobile categories={content.data.categories} />
+                <MenuMobile categories={content?.data.categories.data} />
               </Hidden>
               <Logo />
             </Grid>
@@ -52,7 +52,7 @@ const Header = ({ content }) => {
             </Grid>
             <Hidden mdDown>
               <Grid item lg={10}>
-                <Menu categories={content.data.categories} />
+                <Menu categories={content?.data?.categories?.data} />
               </Grid>
             </Hidden>
           </Grid>

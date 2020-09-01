@@ -3,8 +3,9 @@ import parse from "html-react-parser";
 import CategoryDescriptionStyled from "./styles";
 
 const CategoryDescription = ({ description = "", maxCarac = 300 }) => {
+  if (!description) return null;
   const [open, setOpen] = useState(false);
-  const isBigger = description.length > maxCarac;
+  const isBigger = description?.length > maxCarac;
 
   return (
     <CategoryDescriptionStyled>

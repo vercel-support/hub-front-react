@@ -15,6 +15,8 @@ const Category = ({ content }) => {
   const { action } = state.category;
   const [products, setProducts] = useState(content.data.products);
 
+  console.log("Produtos", products);
+
   useEffect(() => {
     console.log("useEffect", state, dispatch);
     // dispatch({ type: "SET_CATEGORY", payload: products });

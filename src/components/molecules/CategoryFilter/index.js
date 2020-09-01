@@ -96,7 +96,7 @@ const CategoryFilter = ({ filters = [], setProducts }) => {
       params = [...params, ...selecteds[filter]];
     });
 
-    axios
+    /*axios
       .get(
         `http://18.229.234.11:3000/api/V2/catalogs/redirect?url=marcas/royal-canin&storeId=5e8e1c6e43a61128433f0eed&page=0&perPage=16&filters=${params.join(
           ","
@@ -105,7 +105,7 @@ const CategoryFilter = ({ filters = [], setProducts }) => {
       .then(({ data }) => {
         console.log(data);
         setProducts(data.data.products);
-      });
+      });*/
   }, [selecteds]);
 
   return (

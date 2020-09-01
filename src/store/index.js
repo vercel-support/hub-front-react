@@ -49,6 +49,7 @@ const initialState = {
     distance: "109057",
   },
   stores: [],
+  changedStore: false,
 };
 
 const store = createContext(initialState);
@@ -56,11 +57,11 @@ const store = createContext(initialState);
 const { Provider } = store;
 
 // Saga
-function* newAddress({newAddress}) {
+function* newAddress({ newAddress }) {
   try {
-    const {data} = yield call(service.requestNewAddress, newAddress)
+    const { data } = yield call(service.requestNewAddress, newAddress);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -68,27 +69,30 @@ function* isLogin({ login, handleNext }) {
   try {
     const { data } = yield call(service.requestLogin, login);
     if (data.status === 200) {
-      localStorage.setItem('app-token', data.token);
+      localStorage.setItem("app-token", data.token);
     }
-    const address = yield call(service.requestAddresses, localStorage.getItem('app-token'));
-    window.Mercadopago.setPublishableKey("TEST-6ff57941-ef53-460f-b875-80eec81400ac");
+    const address = yield call(
+      service.requestAddresses,
+      localStorage.getItem("app-token")
+    );
+    window.Mercadopago.setPublishableKey(
+      "TEST-6ff57941-ef53-460f-b875-80eec81400ac"
+    );
     yield put({ type: "LOGIN_SUCCESS", address: address.data.addresses });
     handleNext();
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
-function* registerUser({register, setNewRegister}) {
+function* registerUser({ register, setNewRegister }) {
   try {
-    const {data} = yield call(service.requestRegister, register);
-    if(data) {
+    const { data } = yield call(service.requestRegister, register);
+    if (data) {
       setNewRegister(false);
     }
     console.log(data, newUser);
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 }
 
 function* emailRequest({ email }) {
@@ -203,13 +207,13 @@ const StateProvider = ({ children, value }) => {
           };
 
         case "REGISTERUSER_REQUEST":
-          return {...state};
+          return { ...state };
         case "NEWADDRESS_REQUEST":
-          return {...state};
+          return { ...state };
         case "LOGIN_REQUEST":
-          return {...state};
+          return { ...state };
         case "LOGIN_SUCCESS":
-          return {...state, user: {address: action.address}};
+          return { ...state, user: { address: action.address } };
         case "EMAIL_REQUEST":
           return { ...state };
         case "EMAIL_SUCCESS":

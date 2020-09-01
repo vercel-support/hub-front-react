@@ -8,9 +8,18 @@ import ProductShippingStyled, {
   WithdrawStyled,
 } from "./styles";
 
-const addToCart = (product, dispatch) => {
+const addToCart = (myStore, product, shippingType, dispatch) => {
   let newProducts = {};
   const products = JSON.parse(localStorage.getItem("products"));
+
+  if (
+    products &&
+    !Object.keys(products).filter((sku) => products[sku].storeId === myStore.id)
+      .length
+  ) {
+    dispatch({ type: "CLEAN_STORE" });
+    return false;
+  }
 
   if (products && products[product.sku]) {
     newProducts = {
@@ -18,11 +27,17 @@ const addToCart = (product, dispatch) => {
       [product.sku]: {
         ...products[product.sku],
         qty: products[product.sku].qty + 1,
+        storeId: myStore.id,
       },
+    };
+  } else if (products) {
+    newProducts = {
+      ...products,
+      [product.sku]: { ...product, qty: 1, storeId: myStore.id },
     };
   } else {
     newProducts = {
-      [product.sku]: { ...product, qty: 1 },
+      [product.sku]: { ...product, qty: 1, storeId: myStore.id },
     };
   }
 
@@ -31,33 +46,36 @@ const addToCart = (product, dispatch) => {
   dispatch({
     type: "CART_REQUEST",
     payload: {
-      sku: "7898049719273",
-      storeId: "5e8e1c6e43a61128433f0eed",
-      shippingType: "delivery",
+      sku: product.sku,
+      storeId: myStore.id,
+      shippingType,
     },
   });
 
   dispatch({
     type: "SHIPPING_REQUEST",
     payload: {
-      postalCode: "02976-090",
+      postalCode: myStore.address.postalCode,
       items: [
         {
-          sku: "7898049719273",
-          name: "Apoquel 5,4 mg",
+          sku: product.sku,
+          name: product.name,
           quantity: 1,
-          price: 189,
-          specialPrice: 170.1,
+          price: product.price,
+          specialPrice: product.specialPrice,
         },
       ],
-      storeId: "5e8e1c6e43a61128433f0eed",
+      storeId: myStore.id,
     },
   });
+
+  return true;
 };
 
-const Withdraw = ({ config = { stock: true }, myStore, product }) => {
+const Withdraw = ({ config = { stock: true }, product }) => {
   const router = useRouter();
-  const { dispatch } = useContext(store);
+  const { state, dispatch } = useContext(store);
+  const { myStore } = state;
 
   return (
     <WithdrawStyled {...config}>
@@ -76,8 +94,20 @@ const Withdraw = ({ config = { stock: true }, myStore, product }) => {
       )}
       <button
         onClick={() => {
-          addToCart(product, dispatch);
-          setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+          let response = false;
+
+          if (addToCart(myStore, product, "pickup", dispatch))
+            setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+          else {
+            response = confirm(
+              "Você não pode ter produtos de lojas diferentes! Deseja limpar o carrinho?"
+            );
+            if (response) {
+              localStorage.removeItem("products");
+              addToCart(myStore, product, "pickup", dispatch);
+              setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+            }
+          }
         }}
       >
         comprar e retirar na loja
@@ -86,20 +116,16 @@ const Withdraw = ({ config = { stock: true }, myStore, product }) => {
   );
 };
 
-const ShippingCard = ({
-  config = { stock: true },
-  myStore,
-  product,
-  postalCode,
-}) => {
+const ShippingCard = ({ config = { stock: true }, product }) => {
   const router = useRouter();
-  const { dispatch } = useContext(store);
+  const { state, dispatch } = useContext(store);
+  const { myStore, geo } = state;
 
   return (
     <ShippingCardStyled {...config}>
-      <p>Entregar no CEP {postalCode ? postalCode : "_____-___"}</p>
+      <p>Entregar no CEP {geo.postalCode ? geo.postalCode : "_____-___"}</p>
       <span className="change">(alterar loja)</span>
-      {postalCode && (
+      {geo.postalCode && (
         <span className={config.stock ? "available" : "unavailable"}>
           {config.stock && <FlightIcon />}
           {config.stock
@@ -108,9 +134,22 @@ const ShippingCard = ({
         </span>
       )}
       <button
+        disabled={!geo.postalCode}
         onClick={() => {
-          addToCart(product, dispatch);
-          setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+          let response = false;
+
+          if (addToCart(myStore, product, "delivery", dispatch))
+            setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+          else {
+            response = confirm(
+              "Você não pode ter produtos de lojas diferentes! Deseja limpar o carrinho?"
+            );
+            if (response) {
+              localStorage.removeItem("products");
+              addToCart(myStore, product, "delivery", dispatch);
+              setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+            }
+          }
         }}
       >
         comprar e receber em casa
@@ -119,21 +158,11 @@ const ShippingCard = ({
   );
 };
 
-const ProductShipping = ({ product }) => {
-  const { state } = useContext(store);
-  const { myStore, geo } = state;
-  const { postalCode } = geo;
-
-  return (
-    <ProductShippingStyled>
-      <Withdraw myStore={myStore} product={product} />
-      <ShippingCard
-        myStore={myStore}
-        product={product}
-        postalCode={postalCode}
-      />
-    </ProductShippingStyled>
-  );
-};
+const ProductShipping = ({ product }) => (
+  <ProductShippingStyled>
+    <Withdraw product={product} />
+    <ShippingCard product={product} />
+  </ProductShippingStyled>
+);
 
 export default ProductShipping;
