@@ -9,7 +9,7 @@ import {
 
 import { CardAddressStyles, TitleStyles } from "./styles";
 
-const CardAddress = ({ address, handleNext }) => {
+const CardAddress = ({ address, validationCep }) => {
   return (
     <React.Fragment>
       {address.length === 0 ? null : (
@@ -32,7 +32,11 @@ const CardAddress = ({ address, handleNext }) => {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <input type="submit" value="Entregar nesse endereço" onClick={handleNext} />
+                  <input
+                    type="submit"
+                    value="Entregar nesse endereço"
+                    onClick={() => validationCep(item.postalCode)}
+                  />
                 </CardActions>
               </Card>
             </Grid>

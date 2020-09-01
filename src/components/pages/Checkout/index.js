@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { store } from "../../../store";
 import { Button, Container, Grid, Hidden, Paper } from "@material-ui/core";
 import {
   Review,
@@ -12,21 +13,52 @@ import { Footer, HeaderClen } from "../../organisms";
 
 const steps = ["Identificação", "Endereço", "Pagamento"];
 
-function getStepContent(step, handleNext) {
+function getStepContent(step, handleNext, shipping) {
   switch (step) {
     case 0:
-      return <Login handleNext={handleNext}/>;
+      return <Login handleNext={handleNext} />;
     case 1:
-      return <Review handleNext={handleNext} />;
+      return <Review handleNext={handleNext} shipping={shipping} total={shipping.shippingOptions.economicalDelivery.total} />;
     case 2:
-      return <PaymentForm />;
+      return <PaymentForm total={shipping.shippingOptions.economicalDelivery.total} />;
     default:
       throw new Error("Passo desconhecido");
   }
 }
 
 const Checkout = ({ content }) => {
+  const { state, dispatch } = useContext(store);
   const [activeStep, setActiveStep] = React.useState(0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch({
+        type: "CART_REQUEST",
+        payload: {
+          sku: "7898049719273",
+          storeId: "5e8e1c6e43a61128433f0eed",
+          shippingType: "pickup",
+        },
+      });
+
+      dispatch({
+        type: "SHIPPING_REQUEST",
+        payload: {
+          postalCode: "02976-090",
+          items: [
+            {
+              sku: "7898049719273",
+              name: "Apoquel 5,4 mg",
+              quantity: 1,
+              price: 189,
+              specialPrice: 170.1,
+            },
+          ],
+          storeId: "5e8e1c6e43a61128433f0eed",
+        },
+      });
+    }, 1000);
+  }, []);
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -35,6 +67,7 @@ const Checkout = ({ content }) => {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+  console.log(state.user, "state.user")
 
   return (
     <Grid container direction="column" justify="space-between">
@@ -56,18 +89,21 @@ const Checkout = ({ content }) => {
                   {activeStep === steps.length ? (
                     <Success />
                   ) : (
-                    getStepContent(activeStep, handleNext)
+                    getStepContent(activeStep, handleNext, state.shippingCart)
                   )}
                 </Paper>
               </Grid>
               <Hidden mdDown>
                 <Grid item xs={12} lg={4}>
                   <Grid xs={12} lg={12}>
-                    <ResumeForm />
+                    <ResumeForm shipping={state.shippingCart} total={state.shippingCart.shippingOptions && state.shippingCart.shippingOptions.economicalDelivery.total} />
                   </Grid>
 
                   <Grid xs={12} lg={12}>
-                    <InformationForm />
+                    {
+                      state.user &&
+                      <InformationForm />
+                    }
                   </Grid>
                 </Grid>
               </Hidden>

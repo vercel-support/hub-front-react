@@ -33,7 +33,7 @@ const Cart = ({ content }) => {
               payload: {
                 sku: "7898049719273",
                 storeId: "5e8e1c6e43a61128433f0eed",
-                shippingType: "delivery",
+                shippingType: "pickup",
               },
             })
           }
@@ -76,7 +76,7 @@ const Cart = ({ content }) => {
           </Hidden>
 
           <Grid item xs={12} lg={8}>
-            <ColumnCart product={state.shippingCart.items} />
+            <ColumnCart product={state.productCard} />
           </Grid>
 
           <Grid item xs={12} lg={4}>

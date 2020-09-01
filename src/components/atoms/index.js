@@ -11,6 +11,7 @@ export { default as Copyright } from "./Copyright";
 export { default as Delivery } from "./Delivery";
 export { default as DropDown } from "./DropDown";
 export { default as GetGeolocation } from "./GetGeolocation";
+export { default as InputAlternative } from "./InputAlternative";
 export { default as Logo } from "./Logo";
 export { default as LogoFooter } from "./LogoFooter";
 export { default as Title } from "./Title";

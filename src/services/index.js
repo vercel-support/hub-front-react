@@ -62,3 +62,8 @@ export const requestNewAddress = async (newAddress) => {
   const response = await axios.post(`http://18.229.234.11:3000/api/V2/customers/addresses/new`, newAddress);
   return response;
 };
+
+export const requestPaymentsCard = async (paymentCard) => {
+  const response = await axios.post(`http://18.229.234.11:3000/api/V2/payments/card`, paymentCard);
+  return response;
+};

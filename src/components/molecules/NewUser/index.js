@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Grid, Typography } from "@material-ui/core";
 import { AddressFormStyles, TitleStyles } from "./styles";
 
-const NewUser = ({ setNewRegister }) => {
+const NewUser = ({ setNewRegister, handleNext }) => {
   const { state, dispatch } = useContext(store);
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = (data) => {
@@ -17,9 +17,8 @@ const NewUser = ({ setNewRegister }) => {
         "cpf": data.cpf,
         "password": data.password,
       },
-      setNewRegister: setNewRegister,
+      handleNext: handleNext,
     });
-
   };
 
   return (

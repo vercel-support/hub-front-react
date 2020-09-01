@@ -79,6 +79,10 @@ export const ReviewStyles = styled.div`
   .button {
     margin-bottom: 20px;
   }
+
+  .endCard {
+    padding: 0 8px;
+  }
 `;
 
 export const ReviewCepStyles = styled.div`
