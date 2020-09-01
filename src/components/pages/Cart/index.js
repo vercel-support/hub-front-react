@@ -25,7 +25,7 @@ const Cart = ({ content }) => {
       <Grid item xs={12} lg={12}>
         <Title>Meu carrinho</Title>
       </Grid>
-      <Grid item xs={12} lg={12}>
+      {/*<Grid item xs={12} lg={12}>
         <span
           onClick={() =>
             dispatch({
@@ -63,7 +63,7 @@ const Cart = ({ content }) => {
         >
           incluir endereço
         </span>
-      </Grid>
+        </Grid>*/}
       {state.productCard && (
         <React.Fragment>
           <Hidden only="lg">
@@ -80,7 +80,11 @@ const Cart = ({ content }) => {
           </Grid>
 
           <Grid item xs={12} lg={4}>
-            <ColumnShipping shipping={state.shippingCart.shippingOptions} end={cep} setCep={setCep} />
+            <ColumnShipping
+              shipping={state.shippingCart.shippingOptions}
+              end={cep}
+              setCep={setCep}
+            />
           </Grid>
         </React.Fragment>
       )}

@@ -18,7 +18,7 @@ const ProductCard = (props) => {
         <a>
           <CardImage image={product.image} name={product.name} />
           <CardName name={product.name} />
-          <CardBrand brand={product.brand.label} />
+          {product.brand.label && <CardBrand brand={product.brand.label} />}
           <CardPrice
             price={product.price}
             specialPrice={product.specialPrice}

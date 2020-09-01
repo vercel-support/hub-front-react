@@ -15,7 +15,7 @@ const ColumnShipping = ({ shipping, end, setCep }) => {
           <Shipping shipping={shipping} />
         </Paper>
       </Hidden>
-      <CartTotal subPrice={shipping.economicalDelivery.total} />
+      {shipping && <CartTotal subPrice={shipping.economicalDelivery.total} />}
       <Link href="/checkout" passHref>
         <Button variant="contained" size="large" fullWidth>
           Finalizar minha Compra

@@ -4,7 +4,7 @@ import {
   FormControl,
   RadioGroup,
   FormControlLabel,
-  FormLabel
+  FormLabel,
 } from "@material-ui/core";
 
 import { numberToPrice } from "../../../utils/helpers";
@@ -30,19 +30,32 @@ const Shipping = ({ shipping }) => {
           value={value}
           onChange={handleChange}
         >
-          {shipping.expressDelivery.available && (
+          {shipping && shipping.expressDelivery.available && (
             <React.Fragment>
               {shipping.expressDelivery.detailedShipping.map((item) => (
-                <FormLabel > <Radio value={`${item.shippingId}`}/> Expressa em até {item.time} horas <span>{item.price === 0 ? "Grátis": numberToPrice(item.price) }</span></FormLabel>
+                <FormLabel>
+                  {" "}
+                  <Radio value={`${item.shippingId}`} /> Expressa em até{" "}
+                  {item.time} horas{" "}
+                  <span>
+                    {item.price === 0 ? "Grátis" : numberToPrice(item.price)}
+                  </span>
+                </FormLabel>
               ))}
             </React.Fragment>
           )}
-          {shipping.economicalDelivery.available && (
+          {shipping && shipping.economicalDelivery.available && (
             <React.Fragment>
               {shipping.economicalDelivery.detailedShipping.map((item) => (
-                
                 <React.Fragment>
-                <FormLabel > <Radio value={`${item.shippingId}`}/> Econômica em até {item.time} dias úteis <span>{item.price === 0 ? "Grátis": numberToPrice(item.price) }</span></FormLabel>
+                  <FormLabel>
+                    {" "}
+                    <Radio value={`${item.shippingId}`} /> Econômica em até{" "}
+                    {item.time} dias úteis{" "}
+                    <span>
+                      {item.price === 0 ? "Grátis" : numberToPrice(item.price)}
+                    </span>
+                  </FormLabel>
                 </React.Fragment>
               ))}
             </React.Fragment>

@@ -5,8 +5,12 @@ import * as service from "../services";
 
 const initialState = {
   category: {
-    action: "filter", //filter OR sort
+    action: "filter", // filter OR sort
+    currentPage: 0,
     loading: false,
+    products: [],
+    productsPerPage: 16,
+    sortedBy: "Nome do produto",
   },
   user: {
     address: false,
@@ -45,6 +49,7 @@ const initialState = {
     distance: "109057",
   },
   stores: [],
+  changedStore: false,
 };
 
 const store = createContext(initialState);
@@ -231,6 +236,12 @@ const StateProvider = ({ children, value }) => {
       switch (action.type) {
         case "PAYMENTS_REQUEST":
           return { ...state };
+        case "CHANGE_POSTALCODE":
+          return {
+            ...state,
+            geo: { ...state.geo, postalCode: action.payload },
+          };
+
         case "REGISTERUSER_REQUEST":
           return { ...state };
         case "NEWADDRESS_REQUEST":
@@ -289,28 +300,27 @@ const StateProvider = ({ children, value }) => {
             myStore: { ...newMyStore },
             stores: newStores,
           };
-        /* case "CHANGE_STORE_SUCCESS":
-          const newMyStore = state.stores.filter(
-            (store) => store.id === action.payload.id
-          )[0];
-
-          const newStores = state.stores.filter(
-            (store) => store.id !== action.payload.id
-          );
-
+        case "CHANGE_STORE_SUCCESS":
           return {
             ...state,
-            myStore: { ...newMyStore },
-            stores: newStores,
           };
         case "CHANGE_STORE_ERROR":
           return {
             ...state,
-          }; */
+          };
         case "CATEGORY_ACTION":
           return {
             ...state,
             category: { ...state.category, action: action.payload },
+          };
+
+        case "PRODUCTS_SUCCSS":
+          return {
+            ...state,
+            category: {
+              ...state.category,
+              products: action.payload,
+            },
           };
         default:
           return state;

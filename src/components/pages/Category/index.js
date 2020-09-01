@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { store } from "../../../store";
 import { CategoryDescription } from "../../atoms";
 import {
@@ -11,8 +11,16 @@ import { ListProducts } from "../../organisms";
 import { TwoColumns } from "../../templates";
 
 const Category = ({ content }) => {
-  const { state } = useContext(store);
+  const { state, dispatch } = useContext(store);
   const { action } = state.category;
+  const [products, setProducts] = useState(content.data.products);
+
+  console.log("Produtos", products);
+
+  useEffect(() => {
+    console.log("useEffect", state, dispatch);
+    // dispatch({ type: "SET_CATEGORY", payload: products });
+  }, [products, state]);
 
   return (
     <TwoColumns
@@ -22,20 +30,35 @@ const Category = ({ content }) => {
             categoryName={content.data.pageName}
             items={content.data.breadcrumbs}
           />
-          <CategoryTools />
+          {/* <CategoryTools /> */}
         </React.Fragment>
       }
       content={content}
       left={
-        action === "sort" ? (
-          <CategorySort sorters={content.data.sortOptions} />
+        /* action === "sort" ? (
+          // <CategorySort sorters={content.data.sortOptions} />
+          <CategoryFilter
+            filters={content.data.filtersAvailable}
+            setProducts={setProducts}
+          />
         ) : (
-          <CategoryFilter filters={content.data.filtersAvailable} />
-        )
+          <CategoryFilter
+            filters={content.data.filtersAvailable}
+            setProducts={setProducts}
+          />
+        ) */
+        <CategoryFilter
+          filters={content.data.filtersAvailable}
+          setProducts={setProducts}
+        />
       }
     >
-      <CategoryDescription description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
-      <ListProducts content={content} />
+      <CategoryDescription description={content.data.description} />
+      <ListProducts
+        content={content}
+        products={products}
+        setProducts={setProducts}
+      />
     </TwoColumns>
   );
 };

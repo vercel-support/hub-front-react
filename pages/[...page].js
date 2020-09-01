@@ -23,10 +23,9 @@ const Pages = ({ content }) => {
   );
 };
 
-export const getServerSideProps = async ({ req, res }) => {
-  const currentUrl = req.url;
-
-  const { data: route } = await requestRedirect(currentUrl.substr(1));
+export const getServerSideProps = async ({ query }) => {
+  const { data: route } = await requestRedirect(query.page[0]);
+  console.log("Route: ", route);
 
   const response = await requestCategories();
 

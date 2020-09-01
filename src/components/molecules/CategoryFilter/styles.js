@@ -2,6 +2,13 @@ import styled from "styled-components";
 
 const CategoryFilterStyled = styled.div`
   margin-right: 15px;
+  input {
+    background: #fff;
+    border: 2px solid #ccc;
+    border-radius: 16px;
+    width: 15px;
+    height: 15px;
+  }
   ul {
     list-style: none;
     margin: 0;
@@ -17,12 +24,35 @@ const CategoryFilterStyled = styled.div`
     padding: 5px;
     &.Mui-checked {
       svg {
-        color: #2983b9;
+        /* color: #2983b9; */
       }
     }
   }
 `;
 
-export const FilteringByStyled = styled.div``;
+export const FilteringByStyled = styled.div`
+  margin-bottom: 30px;
+  ul {
+    margin-bottom: 10px;
+  }
+`;
+
+export const DrawerContentStyled = styled.div`
+  & > div {
+    align-items: center;
+    background: #2983b9;
+    display: flex;
+    height: 55px;
+    justify-content: space-between;
+    * {
+      color: #ffffff;
+    }
+  }
+  ul {
+    list-style: none;
+    margin: 0 20px;
+    padding: 0;
+  }
+`;
 
 export default CategoryFilterStyled;

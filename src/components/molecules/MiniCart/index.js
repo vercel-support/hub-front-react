@@ -8,7 +8,7 @@ const MiniCart = ({ quantity = 3 }) => (
   <MiniCartStyled>
     <Link href="/[page]" as="/cart">
       <a>
-        <Badge badgeContent={quantity} htmlColor="white">
+        <Badge badgeContent={quantity}>
           <ShoppingCart htmlColor="white" />
         </Badge>
       </a>
