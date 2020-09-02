@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useLayoutEffect } from "react";
 import { store } from "../../../store";
 import { Title, Delivery } from "../../atoms";
 import { Shipping } from "../../molecules";
@@ -10,13 +10,25 @@ import { Grid, Hidden, Paper } from "@material-ui/core";
 const Cart = ({ content }) => {
   const { state, dispatch } = useContext(store);
   const [cep, setCep] = useState();
-  console.log(cep);
+  const [products, setProducts] = useState(false);
+  console.log(products, "products");
 
   useEffect(() => {
     if (state.storesCart) {
       setCep(state.storesCart.address.postalCode);
     }
-  }, [state]);
+    setProducts(JSON.parse(localStorage.getItem("productList")));
+    setTimeout(() => {
+      dispatch({
+        type: "SHIPPING_REQUEST",
+        payload: {
+          postalCode: "02976-090",
+          items: JSON.parse(localStorage.getItem("productList")),
+          storeId: "5e8e1c6e43a61128433f0eed",
+        },
+      }, 100);
+    })
+  }, [state.storesCart]);
 
   console.log(state, "state");
 
@@ -25,46 +37,8 @@ const Cart = ({ content }) => {
       <Grid item xs={12} lg={12}>
         <Title>Meu carrinho</Title>
       </Grid>
-      {/*<Grid item xs={12} lg={12}>
-        <span
-          onClick={() =>
-            dispatch({
-              type: "CART_REQUEST",
-              payload: {
-                sku: "7898049719273",
-                storeId: "5e8e1c6e43a61128433f0eed",
-                shippingType: "delivery",
-              },
-            })
-          }
-        >
-          incluir produto
-        </span>
 
-        <span
-          onClick={() =>
-            dispatch({
-              type: "SHIPPING_REQUEST",
-              payload: {
-                postalCode: "02976-090",
-                items: [
-                  {
-                    sku: "7898049719273",
-                    name: "Apoquel 5,4 mg",
-                    quantity: 1,
-                    price: 189,
-                    specialPrice: 170.1,
-                  },
-                ],
-                storeId: "5e8e1c6e43a61128433f0eed",
-              },
-            })
-          }
-        >
-          incluir endereço
-        </span>
-        </Grid>*/}
-      {state.productCard && (
+      {products && (
         <React.Fragment>
           <Hidden only="lg">
             <Grid item xs={12}>

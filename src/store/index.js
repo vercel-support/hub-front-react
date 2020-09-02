@@ -114,6 +114,7 @@ function* setCart({ payload }) {
       payload: data,
       stores: dataStores.data.data,
     });
+    debugger
   } catch (error) {}
 }
 

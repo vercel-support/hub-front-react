@@ -5,7 +5,7 @@ import { ColumnStyles } from "./styles";
 
 const ColumnCart = ({ product }) => (
   <ColumnStyles>
-    {product && product.map((item) => <ProductCart product={item} />)}
+    {product && product.map((item) => <ProductCart product={item} allProducts={product} />)}
   </ColumnStyles>
 );
 

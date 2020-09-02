@@ -6,7 +6,7 @@ import { Paper } from "@material-ui/core";
 
 import { ProductCartStyles } from "./styles";
 
-const ProductCart = ({ product }) => {
+const ProductCart = ({ product, allProducts }) => {
   const [state, setState] = React.useState({
     quantity: "",
   });
@@ -18,19 +18,13 @@ const ProductCart = ({ product }) => {
       ...state,
       [name]: event.target.value,
     });
+    const newPorducts = allProducts.map(item => item.sku !== product.sku ? item:{...item, quantity: event.target.value})
 
     dispatch({
       type: "SHIPPING_REQUEST",
       payload: {
         postalCode: "04650140",
-        items: [
-          {
-            sku: product.sku,
-            quantity: event.target.value,
-            price: 189,
-            specialPrice: 170.1,
-          },
-        ],
+        items: newPorducts,
         storeId: "5e8e1c6e43a61128433f0eed",
       },
     });
