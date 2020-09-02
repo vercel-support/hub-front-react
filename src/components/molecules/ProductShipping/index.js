@@ -1,12 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { store } from "../../../store";
 import FlightIcon from "@material-ui/icons/Flight";
 import StoreIcon from "@material-ui/icons/Store";
+import { Input } from "@material-ui/core";
 import ProductShippingStyled, {
   ShippingCardStyled,
   WithdrawStyled,
 } from "./styles";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL } = publicRuntimeConfig;
+import axios from "axios";
 
 const addToCart = (myStore, product, shippingType, dispatch) => {
   let newProducts = {};
@@ -76,26 +83,54 @@ const addToCart = (myStore, product, shippingType, dispatch) => {
   return true;
 };
 
-const Withdraw = ({ config = { stock: true }, product }) => {
+const requestStockAvailability = async(postalCode, storeId, sku) => {
+  try{
+    let url = !postalCode ? 
+              `${API_URL}/catalogs/products/delivery-stocks?storeId=${storeId}&sku=${sku}` :
+              `${API_URL}/catalogs/products/delivery-stocks?postalCode=${postalCode}&storeId=${storeId}&sku=${sku}`;
+    let response = await axios.get(url); 
+    return response.data && response.data.status == 200 ? response.data : null;
+  }
+  catch (error) {
+    return null;
+  }
+}
+
+const Withdraw = ({ product }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(store);
   const { myStore } = state;
+  const [ available, setAvailable ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
+
+  useEffect(() => {
+    if(myStore && product){
+      setLoading(true);
+      requestStockAvailability(null, myStore.id, product.sku).then(options => {
+        setLoading(false);
+        if(options && options.data){
+          setAvailable(options.data.pickupAvailable);
+        }
+      });
+    }
+  }, [myStore, product]);
 
   return (
-    <WithdrawStyled {...config}>
+    <WithdrawStyled available={available}>
       <p>
         <span className="stock">
-          {config.stock ? "Retire hoje " : "Sem estoque "}
+          {available ? "Retire hoje " : "Sem estoque "}
         </span>
         na loja
         <span className="store"> {myStore.name}</span>
       </p>
       <span className="change">(alterar loja)</span>
-      {config.stock && (
+      {available && (
         <span className="available">
           <StoreIcon /> pedido disponível em até 1 hora
         </span>
       )}
+      { loading ? <CircularProgress /> :
       <button
         onClick={() => {
           let response = false;
@@ -122,30 +157,80 @@ const Withdraw = ({ config = { stock: true }, product }) => {
       >
         comprar e retirar na loja
       </button>
+      }
     </WithdrawStyled>
   );
 };
 
-const ShippingCard = ({ config = { stock: true }, product }) => {
+const ShippingCard = ({ product }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(store);
   const { myStore, geo } = state;
+  const [ shippingPostalCode, setShippingPostalCode ] = useState(null);
+  const [ deliveryOptionsAvailable, setDeliveryOptionsAvailable ] = useState({
+    deliveryAvailable: false,
+    expressDeliveryAvailable: false
+  });
+  const [ loading, setLoading ] = useState(false);
+
+  useEffect(() => {
+    if(myStore && product){
+      setLoading(true);
+      requestStockAvailability(shippingPostalCode, myStore.id, product.sku).then(options => {
+        setLoading(false);
+        if(options && options.data){
+          console.log(options.data);
+          setDeliveryOptionsAvailable(options.data);
+        }
+      });
+    }
+
+  }, [myStore, product, shippingPostalCode]);
+
+  const validatePostalCode = (event) => {
+    if(event){
+      let value = event.target.value.replace(/\D/g, "");
+      let validator = /^[0-9]{8}$/;
+      if (validator.test(value)) {
+        setShippingPostalCode(value);
+      }
+      else{
+        setDeliveryOptionsAvailable({ deliveryAvailable: false, expressDeliveryAvailable: false });
+        setShippingPostalCode(null);
+      }
+    }
+  }
 
   return (
-    <ShippingCardStyled {...config}>
-      <p>Entregar no CEP {geo.postalCode ? geo.postalCode : "_____-___"}</p>
+    <ShippingCardStyled available={ deliveryOptionsAvailable.deliveryAvailable || deliveryOptionsAvailable.expressDeliveryAvailable }>
+      <p>Entregar no CEP {geo.postalCode ? geo.postalCode : 
+        <Input
+        style={{
+          marginBottom: "20px",
+        }}
+        name="cep"
+        onChange={validatePostalCode}
+        placeholder="00000-000"
+      />
+      }</p>
       <span className="change">(alterar loja)</span>
-      {geo.postalCode && (
-        <span className={config.stock ? "available" : "unavailable"}>
-          {config.stock && <FlightIcon />}
-          {config.stock
-            ? "receba em até 4 horas"
-            : "Essa loja não entrega no seu CEP"}
-        </span>
-      )}
+
+      { deliveryOptionsAvailable.expressDeliveryAvailable ? 
+        <span className={"available"}>
+          {<FlightIcon />}
+          {"receba em até 4 horas"}
+        </span> : null }
+
+      { shippingPostalCode && !deliveryOptionsAvailable.deliveryAvailable && !deliveryOptionsAvailable.expressDeliveryAvailable ?
+            <span className={"unavailable"}>
+            {"Indisponível para entrega em casa"}
+          </span> : null}
+      { loading ? <CircularProgress /> :
       <button
-        disabled={!geo.postalCode}
+        disabled={!shippingPostalCode}
         onClick={() => {
+          console.log('adicionando');
+          dispatch({ type: "CHANGE_POSTALCODE", payload: shippingPostalCode });
           let response = false;
 
           if (addToCart(myStore, product, "delivery", dispatch))
@@ -170,6 +255,7 @@ const ShippingCard = ({ config = { stock: true }, product }) => {
       >
         comprar e receber em casa
       </button>
+      }
     </ShippingCardStyled>
   );
 };

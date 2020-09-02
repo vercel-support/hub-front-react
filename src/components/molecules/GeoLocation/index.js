@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ExpandLess, ExpandMore, MyLocation, Room } from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
@@ -21,6 +21,9 @@ const GeoLocation = () => {
   const { register, handleSubmit } = useForm();
 
   const [geo, setGeo] = useState(false);
+
+  useEffect(() => {
+  }, [myStore, stores]);
 
   const onSubmit = () =>
     dispatch({ type: "CHANGE_POSTALCODE", payload: postalcode });

@@ -9,26 +9,27 @@ import { Grid, Hidden, Paper } from "@material-ui/core";
 
 const Cart = ({ content }) => {
   const { state, dispatch } = useContext(store);
+  const { myStore, geo } = state;
   const [cep, setCep] = useState();
   const [products, setProducts] = useState(false);
-  console.log(products, "products");
 
   useEffect(() => {
-    if (state.storesCart) {
-      setCep(state.storesCart.address.postalCode);
-    }
-    setProducts(JSON.parse(localStorage.getItem("productList")));
-    setTimeout(() => {
+    if(cep){
       dispatch({
         type: "SHIPPING_REQUEST",
         payload: {
-          postalCode: "02976-090",
+          postalCode: cep,
           items: JSON.parse(localStorage.getItem("productList")),
           storeId: "5e8e1c6e43a61128433f0eed",
         },
-      }, 100);
-    })
-  }, [state.storesCart]);
+      });
+    }
+  }, [products, cep]);
+
+  useEffect(() => {
+    if(geo && geo.postalCode) setCep(geo.postalCode);
+    setProducts(JSON.parse(localStorage.getItem("productList")));
+  }, []);
 
   console.log(state, "state");
 
