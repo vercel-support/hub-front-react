@@ -41,9 +41,8 @@ const PaymentForm = ({ total }) => {
         paymentCard: {
           "payment": {
               "transactionAmount": total && total,
-              "token": 'ff8080814c11e237014c1ff593b57b4d',
-              "description": 'COMPRA GERACAO PET',
-              "installments": 3, 
+              "token": token,
+              "description": 'COMPRA GERACAO PET', 
               "method": 'master'
           }
           ,
@@ -70,43 +69,10 @@ const PaymentForm = ({ total }) => {
                     "lastname": "Okumura"
                 }
               },
-              "address": {
-                  "city": "Sorocaba",
-                  "postalCode": "18080-430",
-                  "region": "São Paulo",
-                  "regionId": 508,
-                  "countryId": "BR",
-                  "uf": "SP",
-                  "street": "Rua Fernandes Camacho",
-                  "number": "160",
-                  "neighborhood": "Jardim Alvorada",
-                  "complement": "",
-                  "firstname": "Leo",
-                  "lastname": "Okumura",
-                  "telephone": "(15) 996193365"
-              },
-              "couponCode": "BEMVINDO",
+              "address": JSON.parse(localStorage.getItem("addressSelected")),
+              "couponCode": "",
               "discount": 35,
-              "items": [
-                  {
-                      "storeId": "5e8e1c6e43a61128433f0eed",
-                      "sku": "7896273806059",
-                      "quantity": 1,
-                      "price": 3.9
-                  },
-                  {
-                      "storeId": "5e8e1c6e43a61128433f0eed",
-                      "sku": "7897515654339",
-                      "quantity": 2,
-                      "price": 30
-                  },
-                  {
-                      "storeId": "cd",
-                      "sku": "8713184137012",
-                      "quantity": 1,
-                      "price": 199.9
-                  }
-              ],
+              "items": state && state.shippingCart.items,
               "shippingType": "delivery",
               "shippings": [
                   {
@@ -183,9 +149,7 @@ const PaymentForm = ({ total }) => {
       );
     }
   };
-  const submitForm = () => {
-    debugger
-      
+  const submitForm = () => {      
   };
   return (
     <PaymentFormStyles>

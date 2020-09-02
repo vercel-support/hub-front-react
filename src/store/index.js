@@ -58,7 +58,6 @@ const { Provider } = store;
 
 // Saga
 function* payments({ paymentCard }) {
-  debugger;
   try {
     const { data } = yield call(service.requestPaymentsCard, paymentCard);
     console.log(data, "paymentsCard");
@@ -77,7 +76,6 @@ function* newAddress({ newAddress }) {
 }
 
 function* isLogin({ login, handleNext }) {
-  debugger;
   try {
     const { data } = yield call(service.requestLogin, login);
     if (data.status === 200) {
@@ -98,7 +96,6 @@ function* isLogin({ login, handleNext }) {
 }
 
 function* registerUser({ register, handleNext }) {
-  debugger;
   try {
     const login = { email: register.email, password: register.password };
     const { data } = yield call(service.requestRegister, register);

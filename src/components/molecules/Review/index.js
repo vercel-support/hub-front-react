@@ -39,7 +39,6 @@ const Review = ({ handleNext, shipping, total }) => {
   };
 
   const onSubmit = (data) => {
-    debugger;
     const token = localStorage.getItem("app-token");
 
     dispatch({
@@ -58,11 +57,18 @@ const Review = ({ handleNext, shipping, total }) => {
     });
   };
 
-  const FunValidationCep = (cepCad) => {
-    if ("05386-120" === cepCad) {
-      handleNext();
-    } else setValidationCep(true);
+  const FunValidationCep = (cepCad, item) => {
+    if (state.geo.postalCode) {
+      if (state.geo.postalCode === cepCad) {
+        handleNext();
+        localStorage.setItem("addressSelected", JSON.stringify(item));
+      } else setValidationCep(true);
+    } else {
+      handleNext(item);
+      localStorage.setItem("addressSelected", JSON.stringify(item));
+    }
   };
+
   useEffect(() => {
     if (hasZipLength) requestAddress(cep);
   }, [cep, setValue]);
@@ -71,10 +77,16 @@ const Review = ({ handleNext, shipping, total }) => {
     <ReviewStyles>
       <Grid container spacing={3}>
         <Grid xs={12} sm={12}>
-          <TitleStyles>receber em casa</TitleStyles>
+          <TitleStyles>
+            {state.geo.postalCode ? "receber em casa" : "retirar na loja"}
+          </TitleStyles>
         </Grid>
         <Grid xs={12}>
-          <Shipping shipping={shipping.shippingOptions} />
+          {state.geo.postalCode ? (
+            <Shipping shipping={shipping.shippingOptions} />
+          ) : (
+            state.myStore.name
+          )}
         </Grid>
         {state && state.user.address && (
           <CardAddress

@@ -35,7 +35,7 @@ const CardAddress = ({ address, validationCep }) => {
                   <input
                     type="submit"
                     value="Entregar nesse endereço"
-                    onClick={() => validationCep(item.postalCode)}
+                    onClick={() => validationCep(item.postalCode, item)}
                   />
                 </CardActions>
               </Card>

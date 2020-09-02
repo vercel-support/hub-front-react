@@ -15,6 +15,8 @@ const Shipping = ({ shipping }) => {
   const [value, setValue] = React.useState();
   const [delivery] = React.useState(shipping);
 
+  console.log(value, "deu certo aqui")
+
   const handleChange = (event) => {
     setValue(event.target.value);
   };
@@ -34,9 +36,8 @@ const Shipping = ({ shipping }) => {
             <React.Fragment>
               {shipping.expressDelivery.detailedShipping.map((item) => (
                 <FormLabel>
-                  {" "}
-                  <Radio value={`${item.shippingId}`} /> Expressa em até{" "}
-                  {item.time} horas{" "}
+                  <Radio value={`${item.shippingId}`} /> Expressa em até
+                  {item.time} horas
                   <span>
                     {item.price === 0 ? "Grátis" : numberToPrice(item.price)}
                   </span>
@@ -49,9 +50,9 @@ const Shipping = ({ shipping }) => {
               {shipping.economicalDelivery.detailedShipping.map((item) => (
                 <React.Fragment>
                   <FormLabel>
-                    {" "}
-                    <Radio value={`${item.shippingId}`} /> Econômica em até{" "}
-                    {item.time} dias úteis{" "}
+                    
+                    <Radio value={`${item.shippingId}`} /> Econômica em até
+                    {item.time} dias úteis
                     <span>
                       {item.price === 0 ? "Grátis" : numberToPrice(item.price)}
                     </span>

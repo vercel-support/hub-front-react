@@ -43,6 +43,10 @@ const addToCart = (myStore, product, shippingType, dispatch) => {
 
   localStorage.setItem("products", JSON.stringify(newProducts));
 
+  const productList = JSON.parse(localStorage.getItem("productList") || "[]");
+  productList.push({ ...product, quantity: 1 });
+  localStorage.setItem("productList", JSON.stringify(productList));
+
   dispatch({
     type: "CART_REQUEST",
     payload: {
@@ -97,7 +101,10 @@ const Withdraw = ({ config = { stock: true }, product }) => {
           let response = false;
 
           if (addToCart(myStore, product, "pickup", dispatch))
-            setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+            setTimeout(
+              () => router.push("/cart", undefined, { shallow: true }),
+              1000
+            );
           else {
             response = confirm(
               "Você não pode ter produtos de lojas diferentes! Deseja limpar o carrinho?"
@@ -105,7 +112,10 @@ const Withdraw = ({ config = { stock: true }, product }) => {
             if (response) {
               localStorage.removeItem("products");
               addToCart(myStore, product, "pickup", dispatch);
-              setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+              setTimeout(
+                () => router.push("/cart", undefined, { shallow: true }),
+                1000
+              );
             }
           }
         }}
@@ -139,7 +149,10 @@ const ShippingCard = ({ config = { stock: true }, product }) => {
           let response = false;
 
           if (addToCart(myStore, product, "delivery", dispatch))
-            setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+            setTimeout(
+              () => router.push("/cart", undefined, { shallow: true }),
+              1000
+            );
           else {
             response = confirm(
               "Você não pode ter produtos de lojas diferentes! Deseja limpar o carrinho?"
@@ -147,7 +160,10 @@ const ShippingCard = ({ config = { stock: true }, product }) => {
             if (response) {
               localStorage.removeItem("products");
               addToCart(myStore, product, "delivery", dispatch);
-              setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+              setTimeout(
+                () => router.push("/cart", undefined, { shallow: true }),
+                1000
+              );
             }
           }
         }}
