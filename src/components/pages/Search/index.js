@@ -16,7 +16,7 @@ const Search = ({ content }) => {
   const [products, setProducts] = useState(content.data.products);
 
   useEffect(() => {
-    // console.log(state, dispatch);
+    setProducts(content.data.products);
   }, [content]);
 
   return (

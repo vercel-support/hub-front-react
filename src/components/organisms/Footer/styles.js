@@ -4,6 +4,7 @@ export const FirstLine = styled.div`
   align-items: center;
   background-color: #f6f6f6;
   display: flex;
+  margin-top: 20px;
   padding: 10px 0;
 
   @media screen and (min-width: 1280px) {

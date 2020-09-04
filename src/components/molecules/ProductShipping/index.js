@@ -78,26 +78,30 @@ const Withdraw = ({ config = { stock: true }, product }) => {
   const { myStore } = state;
 
   return (
-    <WithdrawStyled {...config}>
+    <WithdrawStyled stock={product.stockAvailable}>
       <p>
         <span className="stock">
-          {config.stock ? "Retire hoje " : "Sem estoque "}
+          {product.stockAvailable ? "Retire hoje " : "Sem estoque "}
         </span>
         na loja
         <span className="store"> {myStore.name}</span>
       </p>
       <span className="change">(alterar loja)</span>
-      {config.stock && (
+      {product.pickupAvailable && (
         <span className="available">
           <StoreIcon /> pedido disponível em até 1 hora
         </span>
       )}
       <button
+        disabled={!product.stockAvailable}
         onClick={() => {
           let response = false;
 
           if (addToCart(myStore, product, "pickup", dispatch))
-            setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+            setTimeout(
+              () => router.push("/cart", undefined, { shallow: true }),
+              1000
+            );
           else {
             response = confirm(
               "Você não pode ter produtos de lojas diferentes! Deseja limpar o carrinho?"
@@ -105,7 +109,10 @@ const Withdraw = ({ config = { stock: true }, product }) => {
             if (response) {
               localStorage.removeItem("products");
               addToCart(myStore, product, "pickup", dispatch);
-              setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+              setTimeout(
+                () => router.push("/cart", undefined, { shallow: true }),
+                1000
+              );
             }
           }
         }}
@@ -139,15 +146,22 @@ const ShippingCard = ({ config = { stock: true }, product }) => {
           let response = false;
 
           if (addToCart(myStore, product, "delivery", dispatch))
-            setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+            setTimeout(
+              () => router.push("/cart", undefined, { shallow: true }),
+              1000
+            );
           else {
             response = confirm(
               "Você não pode ter produtos de lojas diferentes! Deseja limpar o carrinho?"
             );
+
             if (response) {
               localStorage.removeItem("products");
               addToCart(myStore, product, "delivery", dispatch);
-              setTimeout(() => router.push("/[...page]", "/cart"), 1000);
+              setTimeout(
+                () => router.push("/cart", undefined, { shallow: true }),
+                1000
+              );
             }
           }
         }}

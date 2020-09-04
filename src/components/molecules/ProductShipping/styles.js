@@ -24,6 +24,11 @@ export const ShippingCardStyled = styled.div`
     max-width: 175px;
     padding: 10px 5px;
     text-align: center;
+    &:disabled {
+      background: #ededed;
+      color: #b4b4b4;
+      cursor: auto;
+    }
   }
   p {
     color: #666666;

@@ -23,7 +23,6 @@ const Pages = ({ content }) => (
 );
 
 export const getServerSideProps = async ({ query = {} }) => {
-  console.log(query);
   const { data: route } = await requestSearch(query);
   const response = await requestCategories();
 

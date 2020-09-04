@@ -24,8 +24,11 @@ const Pages = ({ content }) => {
 };
 
 export const getServerSideProps = async ({ query }) => {
-  const { data: route } = await requestRedirect(query.page[0]);
-  console.log("Route: ", route);
+  const url = query.page.join("/");
+  const { data: route } = await requestRedirect(url);
+  console.log("URL:", query.page);
+
+  //console.log("Route: ", route);
 
   const response = await requestCategories();
 
