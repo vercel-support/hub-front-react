@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { ColumnShippingStyles } from "./styles";
 import { Delivery, CartTotal } from "../../atoms";
@@ -6,22 +7,52 @@ import { Shipping } from "../../molecules";
 import { Paper, Button, Hidden } from "@material-ui/core";
 import { ShoppingBasket, LocationOn } from "@material-ui/icons";
 
-const ColumnShipping = ({ shipping, end, setCep }) => {
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL } = publicRuntimeConfig;
+import axios from "axios";
+
+const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handleSelectedShipping, shippingType, end, setCep }) => {
+
+  const [ errorMessage, setErrorMessage ] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+  }, [handleSelectedShipping, shippingType]);
+
+  const confirm = async() => {
+    if(shippingType == "delivery" && !selectedShippingMethod) setErrorMessage("Selecione um método de entrega");
+    if((shippingType == "pickup") || (shippingType == "delivery" && selectedShippingMethod)){
+      const cartId = localStorage.getItem("cartId");
+      localStorage.setItem("selected-shipping-method", selectedShippingMethod);
+      localStorage.setItem("shipping-type", shippingType);
+      localStorage.setItem("cart-address", end);
+      await axios.post(`${API_URL}/cart-shipping`, { 
+        cartId, 
+        shippingOptionSelected: selectedShippingMethod, 
+        shippingType, 
+        postalCodeDelivery: end 
+      });
+      router.push("/checkout", undefined, { shallow: true });
+    }
+  }
+  
   return (
     <ColumnShippingStyles>
       <Hidden only={["xs", "sm"]}>
         <Paper>
           <Delivery icon={<LocationOn />} end={end} setCep={setCep} />
-          <Shipping shipping={shipping} />
+          <Shipping shipping={shipping} handleSelectedShipping={handleSelectedShipping} />
         </Paper>
       </Hidden>
-      {shipping && <CartTotal subPrice={shipping.economicalDelivery.total} />}
-      <Link href="/checkout" passHref>
-        <Button variant="contained" size="large" fullWidth>
-          Finalizar minha Compra
-        </Button>
-      </Link>
-      <Link href="/checkout" passHref>
+      {cartSubTotal && <CartTotal subPrice={cartSubTotal || 0} />}
+      { errorMessage }
+
+      <Button color="red" onClick={confirm} variant="contained" size="large" fullWidth>
+        Finalizar minha Compra
+      </Button>
+
+      <Link href="/" passHref>
         <a>adicionar mais produtos</a>
       </Link>
     </ColumnShippingStyles>

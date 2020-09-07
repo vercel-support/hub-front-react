@@ -1,20 +1,41 @@
 import React, { useEffect, useState, useContext } from "react";
 import { store } from "../../../store";
+import { useRouter } from "next/router";
 import { Grid } from "@material-ui/core";
 import { regex } from '../../../utils/regex';
 import { PaymentFormStyles } from "./styles";
 
-const PaymentForm = ({ total }) => {
-  const { state, dispatch } = useContext(store);
-  const [doSubmit, setDoSubmit] = useState(false);
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL, MERCADOPAGO_KEY } = publicRuntimeConfig;
+import axios from "axios";
+
+const PaymentForm = () => {
+  const router = useRouter();
+  const [ doSubmit, setDoSubmit ] = useState(false);
+  const [ cartTotalAmount, setCartTotalAmount ] = useState();
+  const [ customerEmail, setCustomerEmail ] = useState();
+  const [ cartId, setCartId ] = useState();
+  
+  const getCartInfo = async() => {
+    const cartId = localStorage.getItem("cartId");
+    setCartId(cartId);
+    let serviceResponse = await axios.get(`${API_URL}/cart?cartId=${cartId}`);
+    if(serviceResponse && serviceResponse.data){
+      setCartTotalAmount(serviceResponse.data.data.total);
+    }
+  }
 
   useEffect(() => {
-    window.Mercadopago.setPublishableKey(
-      "TEST-6ff57941-ef53-460f-b875-80eec81400ac"
-    );
+  }, [customerEmail, cartId])
+
+  useEffect(() => {
+    getCartInfo();
+    setCustomerEmail(localStorage.getItem("customer-email"));
+    window.Mercadopago.setPublishableKey(MERCADOPAGO_KEY);
     window.Mercadopago.getIdentificationTypes();
     document.querySelector("#pay").addEventListener("submit", doPay);
-  });
+  }, []);
   
   const mask = "maskCpfCnpj";
   const onChange = null;
@@ -31,68 +52,36 @@ const PaymentForm = ({ total }) => {
 
   const sdkResponseHandler = (status, response) => {
     if (status != 200 && status != 201) {
-      alert("verify filled data");
+      console.log(response);
+      alert("Verifique os dados do cartão");
     } else {
       const token = response.id;
-      alert(`token = ${token}`);
-      console.log(response);
-      dispatch({
-        type: "PAYMENTS_REQUEST",
-        paymentCard: {
-          "payment": {
-              "transactionAmount": total && total,
-              "token": token,
-              "description": 'COMPRA GERACAO PET', 
-              "method": 'master'
+      let payment_method_element = document.getElementById("payment_method_id");
+      const cartId = localStorage.getItem("cartId");
+      const customer = localStorage.getItem("customer-email");
+
+      const i_el = document.getElementById("installments");
+      const installments = parseInt(i_el.options[i_el.selectedIndex].value);
+
+      const requestBody = {
+          payment: {
+              token,
+              description: 'COMPRA GERAÇÃO PET',
+              method: payment_method_element.value,
+              installments
+          },
+          order: {
+              salesChannel: "geracaopet.com.br",
+              customer,
+              cartId
           }
-          ,
-          "order": {
-              "salesChannel": "geracaopet.com.br",
-              "customer": {
-                  "firstname": "Leo",
-                  "lastname": "Accept",
-                  "email": "tste@teste.com",
-                  "telephone": "(15) 995122784",
-                  "cpf": "177.529.640-77",
-                  "address": {
-                    "city": "Sorocaba",
-                    "postalCode": "18030-005",
-                    "region": "São Paulo",
-                    "regionId": 508,
-                    "countryId": "BR",
-                    "uf": "SP",
-                    "street": "Av. Comendador Pereira Inácio",
-                    "number": "800",
-                    "neighborhood": "Jd. Sandra",
-                    "complement": "Ap 83 Bloco A",
-                    "firstname": "Leo",
-                    "lastname": "Okumura"
-                }
-              },
-              "address": JSON.parse(localStorage.getItem("addressSelected")),
-              "couponCode": "",
-              "discount": 35,
-              "items": state && state.shippingCart.items,
-              "shippingType": "delivery",
-              "shippings": [
-                  {
-                      "storeId": "5e8e1c6e43a61128433f0eed",
-                      "id": "5e8e1c6e43a61128433f0ef5",
-                      "price": 10,
-                      "time": 5,
-                      "timeUnits": "hours"
-                  },
-                  {
-                      "storeId": "cd",
-                      "shippingId": "11589028151",
-                      "shippingMethodId": 4,
-                      "price": 0,
-                      "time": 2,
-                      "timeUnits": "days"
-                  }
-              ]
-          }
-      },
+      }
+
+      axios.post(`${API_URL}/payments/card`, requestBody).then(serviceResponse => {
+        if(serviceResponse && serviceResponse.data){
+          localStorage.setItem("payment-response", JSON.stringify(serviceResponse.data));
+          setTimeout(() => { router.push("/success", undefined, { shallow: true }); }, 1000);
+        }
       });
     }
   };
@@ -160,13 +149,13 @@ const PaymentForm = ({ total }) => {
               type="hidden"
               name="description"
               id="description"
-              value="Ítem selecionado"
+              value="COMPRA GERAÇÃO PET"
             />
             <input
               type="hidden"
               name="transaction_amount"
               id="transaction_amount"
-              value={total && total}
+              value={cartTotalAmount || 0}
             />
             <Grid xs={6} sm={6}>
               <label for="cardNumber">Número do cartão</label>
@@ -262,7 +251,7 @@ const PaymentForm = ({ total }) => {
               type="hidden"
               id="email"
               name="email"
-              value="test@test.com"
+              value={customerEmail}
             />
             <input
               type="hidden"

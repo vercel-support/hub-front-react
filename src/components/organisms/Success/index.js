@@ -2,17 +2,19 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 import { SuccessStyles } from "./styles";
 
-const Success = () => {
-  return (
-    <SuccessStyles>
-      <Typography variant="h5">Obrigado pelo seu pedido.</Typography>
-      <Typography variant="subtitle1">
-        O número do seu pedido é # 2001539. Enviamos seu pedido por e-mail a
-        confirmação, e enviaremos uma atualização quando seu pedido tiver
-        enviado.
-      </Typography>
-    </SuccessStyles>
-  );
+const Success = ({ paymentResponse }) => {
+  console.log(paymentResponse);
+  if(paymentResponse)
+    return (
+      <SuccessStyles>
+        <Typography variant="h5">{paymentResponse.message}</Typography>
+        <Typography variant="subtitle1">
+          O número do seu pedido é # {paymentResponse.data}. 
+          Enviaremos atualizações sobre o status do seu pedido pelo email.
+        </Typography>
+      </SuccessStyles>
+    );
+  return null;
 };
 
 export default Success;

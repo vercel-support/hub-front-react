@@ -4,20 +4,26 @@ import { useForm } from "react-hook-form";
 import { Grid, Typography } from "@material-ui/core";
 import { AddressFormStyles, TitleStyles, EmailStyles } from "./styles";
 
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL } = publicRuntimeConfig;
+import axios from "axios";
+
 const IdentificationForm = ({ setEmailIdentification }) => {
   const { state, dispatch } = useContext(store);
   const { register, errors, handleSubmit } = useForm({
     mode: "onBlur",
   });
 
-  const onSubmit = (data) => {
-    setEmailIdentification(data.email);
-    dispatch({
-      type: "EMAIL_REQUEST",
-      email: data.email,
-    });
+  const onSubmit = async(data) => {
+    let serviceResponse = await axios.post(`${API_URL}/customers/isEmailAvailable`, { email: data.email });
+    if(serviceResponse && serviceResponse.data && serviceResponse.status === 200){
+      setEmailIdentification({
+        email: data.email,
+        isRegistered: serviceResponse.data.isAvailable
+      });
+    }
   };
-  console.log(state, "state");
 
   return (
     <AddressFormStyles>
@@ -32,7 +38,6 @@ const IdentificationForm = ({ setEmailIdentification }) => {
               <input
                 name="email"
                 type="text"
-                placeholder="marco@marco.com"
                 ref={register({
                   required: true,
                   pattern: {

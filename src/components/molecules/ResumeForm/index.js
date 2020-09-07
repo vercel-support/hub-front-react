@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Paper,
@@ -11,9 +11,36 @@ import { CardImage, CartPrice } from "../../atoms";
 import { numberToPrice } from "../../../utils/helpers";
 import { ResumeFormStyles, ResumeFormAmountStyles } from "./styles";
 
-const ResumeForm = ({ shipping, total }) => {
+const ResumeForm = () => {
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = (data) => console.log(data);
+  const [resumeInfo, setResumeInfo] = useState({
+    subtotal: 0, discount: 0, shipping: 0, total: 0
+  });
+  const [products, setProducts] = useState([]);
+
+  const calculateResumeInfo = () => {
+    let subtotal = 0;
+    products.map(product =>{
+      subtotal+= product.specialPrice || product.price;
+    });
+
+    const selectedShippingMethod = localStorage.getItem("selected-shipping-method");
+    const shippingOptions = JSON.parse(localStorage.getItem("shipping-options"), "{}");
+    const selectedShippingOption = shippingOptions[selectedShippingMethod];
+    setResumeInfo({
+      ...resumeInfo,
+      subtotal, shipping: selectedShippingMethod.price, total: subtotal + selectedShippingOption.price
+    });
+  }
+
+  useEffect(() => {
+    calculateResumeInfo();
+  }, [products]);
+
+  useEffect(() => {
+    setProducts(JSON.parse(localStorage.getItem("productList") || "[]"));
+  }, []);
 
   return (
     <ResumeFormStyles>
@@ -21,14 +48,14 @@ const ResumeForm = ({ shipping, total }) => {
         Resumo
       </Typography>
       <React.Fragment>
-        {shipping && shipping.items.map((item) => (
+        {products && products.map((item) => (
           <Card>
             <CardMedia title="Resume Title">
               <CardImage image={item.image} />
             </CardMedia>
             <CardContent>
               <p>{item.name}</p>
-              <span>{numberToPrice(item.specialPrice)}</span>
+              <span>{numberToPrice(item.specialPrice || item.price)}</span>
             </CardContent>
           </Card>
         ))}
@@ -41,7 +68,7 @@ const ResumeForm = ({ shipping, total }) => {
           </div>
           <div className="resume-total">
             <Typography variant="h5" component="h6">
-              {numberToPrice(total)}
+              {numberToPrice(resumeInfo.total)}
             </Typography>
           </div>
         </ResumeFormAmountStyles>

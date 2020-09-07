@@ -40,7 +40,6 @@ const AddressForm = () => {
                 <label htmlFor="email">email</label>
                 <input
                   name="email"
-                  placeholder="marco@marco.com"
                   ref={register}
                 />
               </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { store } from "../../../store";
 import { useForm } from "react-hook-form";
 import { CardAddress, InputAlternative } from "../../atoms";
@@ -7,9 +7,13 @@ import Shipping from "../Shipping";
 import { Grid, Hidden } from "@material-ui/core";
 import { ReviewStyles, TitleStyles } from "./styles";
 
-const Review = ({ handleNext, shipping, total }) => {
-  const { state, dispatch } = useContext(store);
-  const [validationCep, setValidationCep] = React.useState(false);
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL } = publicRuntimeConfig;
+import axios from "axios";
+
+const Review = ({ handleNext }) => {
+  const [validationCep, setValidationCep] = useState(false);
   const {
     handleSubmit,
     register,
@@ -19,6 +23,9 @@ const Review = ({ handleNext, shipping, total }) => {
     watch,
     getValues,
   } = useForm({ mode: "onBlur" });
+  const [shippingType, setShippingType] = useState();
+  const [userAddresses, setUserAddresses] = useState([]);
+  const [cartAddress, setCartAddress] = useState();
 
   const cep = watch("zip", 0);
   const hasZipLength = cep.toString().length === 9;
@@ -38,28 +45,49 @@ const Review = ({ handleNext, shipping, total }) => {
     }
   };
 
-  const onSubmit = (data) => {
-    const token = localStorage.getItem("app-token");
+  const getUserAddresses = async() => {
+    const token = localStorage.getItem("customer-token");
+    const cartId = localStorage.getItem("cartId");
+    try{
+      let serviceResponse = await axios.get(`${API_URL}/customers/addresses?token=${token}&cartId=${cartId}`);
+      if(serviceResponse && serviceResponse.data){
+        console.log(serviceResponse.data.addresses);
+        setUserAddresses(serviceResponse.data.addresses);
+        if(serviceResponse.data.cartAddress) setCartAddress(serviceResponse.data.cartAddress);
+      }
+    }
+    catch(error){
 
-    dispatch({
-      type: "NEWADDRESS_REQUEST",
-      newAddress: {
-        token: `${token}`,
-        postalCode: data.zip,
-        street: data.street,
-        number: data.number,
-        neighborhood: data.neighborhood,
-        phone: data.telephone,
-        firstName: data.firstname,
-        lastName: data.lastname,
-        defaultBilling: true,
-      },
-    });
+    }
+  }
+
+  const onSubmit = async(data) => {
+    if(!validationCep){
+      const token = localStorage.getItem("customer-token");
+      try{
+        await axios.post(`${API_URL}/customers/addresses/new`, { 
+          token: `${token}`,
+          postalCode: data.zip,
+          street: data.street,
+          number: data.number,
+          neighborhood: data.neighborhood,
+          phone: data.telephone,
+          firstName: data.firstname,
+          lastName: data.lastname,
+          defaultBilling: true,
+        });
+        handleNext();
+      }
+      catch(error){
+        console.log(error.response.data);
+      }
+    }
   };
 
   const FunValidationCep = (cepCad, item) => {
-    if (state.geo.postalCode) {
-      if (state.geo.postalCode === cepCad) {
+    const cartAddress = localStorage.getItem("cart-address");
+    if (cartAddress) {
+      if (cartAddress.replace(/\D/g, '').trim() === cepCad.replace(/\D/g, '').trim()) {
         handleNext();
         localStorage.setItem("addressSelected", JSON.stringify(item));
       } else setValidationCep(true);
@@ -70,28 +98,31 @@ const Review = ({ handleNext, shipping, total }) => {
   };
 
   useEffect(() => {
-    if (hasZipLength) requestAddress(cep);
+    if (hasZipLength) {
+      requestAddress(cep);
+      const cartAddress = localStorage.getItem("cart-address");
+      if(cep.replace(/\D/g, '').trim() !== cartAddress.replace(/\D/g, '').trim()) setValidationCep(true);
+      else setValidationCep(false);
+    }
   }, [cep, setValue]);
+
+  useEffect(() => {
+    setShippingType(localStorage.getItem("shipping-type"));
+    getUserAddresses();
+  }, []);
 
   return (
     <ReviewStyles>
       <Grid container spacing={3}>
         <Grid xs={12} sm={12}>
           <TitleStyles>
-            {state.geo.postalCode ? "receber em casa" : "retirar na loja"}
+            {shippingType == "delivery" ? "receber em casa" : "retirar na loja"}
           </TitleStyles>
         </Grid>
-        <Grid xs={12}>
-          {state.geo.postalCode ? (
-            <Shipping shipping={shipping.shippingOptions} />
-          ) : (
-            state.myStore.name
-          )}
-        </Grid>
-        {state && state.user.address && (
+        {userAddresses && userAddresses.length > 0 && (
           <CardAddress
             validationCep={FunValidationCep}
-            address={state && state.user.address}
+            address={cartAddress ? [cartAddress] : []}
             handleNext={handleNext}
           />
         )}

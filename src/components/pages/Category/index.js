@@ -9,6 +9,7 @@ import {
 } from "../../molecules";
 import { ListProducts } from "../../organisms";
 import { TwoColumns } from "../../templates";
+import { categoryPageView } from '../../../../lib/ga';
 
 const Category = ({ content }) => {
   const { state, dispatch } = useContext(store);
@@ -16,6 +17,9 @@ const Category = ({ content }) => {
   const [products, setProducts] = useState(content.data.products);
 
   console.log("Produtos", products);
+  useEffect(() => {
+    categoryPageView(window.dataLayer.push, window.ga, {products, url: content.data.categoryUrl, pageName: content.data.pageName});
+  }, []);
 
   useEffect(() => {
     console.log("useEffect", state, dispatch);

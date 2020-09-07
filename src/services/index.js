@@ -11,7 +11,7 @@ export const requestCart = async (params = {}) => {
   return response;
 };
 
-export const requestStores = async (params = "5e8e1c6e43a61128433f0eed") => {
+export const  requestStores = async (params = "5e8e1c6e43a61128433f0eed") => {
   const response = await axios.get(
     `http://18.229.234.11:3000/api/V2/logistic/store?storeId=${params}`
   );

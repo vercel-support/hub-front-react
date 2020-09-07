@@ -11,20 +11,17 @@ import { numberToPrice } from "../../../utils/helpers";
 
 import { ShippingStyles } from "./styles";
 
-const Shipping = ({ shipping }) => {
+const Shipping = ({ shipping, handleSelectedShipping }) => {
   const [value, setValue] = React.useState();
-  const [delivery] = React.useState(shipping);
-
-  console.log(value, "deu certo aqui")
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    handleSelectedShipping(event.target.value);
+    //setValue(event.target.value);
   };
-
-  console.log(delivery, "delivery");
 
   return (
     <ShippingStyles>
+      { shipping ? 
       <FormControl component="fieldset">
         <RadioGroup
           aria-label="shipping"
@@ -36,8 +33,7 @@ const Shipping = ({ shipping }) => {
             <React.Fragment>
               {shipping.expressDelivery.detailedShipping.map((item) => (
                 <FormLabel>
-                  <Radio value={`${item.shippingId}`} /> Expressa em até
-                  {item.time} horas
+                  <Radio value={"expressDelivery"} /> Expressa em até {item.time} horas
                   <span>
                     {item.price === 0 ? "Grátis" : numberToPrice(item.price)}
                   </span>
@@ -51,8 +47,7 @@ const Shipping = ({ shipping }) => {
                 <React.Fragment>
                   <FormLabel>
                     
-                    <Radio value={`${item.shippingId}`} /> Econômica em até
-                    {item.time} dias úteis
+                    <Radio value={"economicalDelivery"} /> Econômica em até {item.time} dias úteis
                     <span>
                       {item.price === 0 ? "Grátis" : numberToPrice(item.price)}
                     </span>
@@ -62,7 +57,8 @@ const Shipping = ({ shipping }) => {
             </React.Fragment>
           )}
         </RadioGroup>
-      </FormControl>
+      </FormControl> : null
+      }
     </ShippingStyles>
   );
 };
