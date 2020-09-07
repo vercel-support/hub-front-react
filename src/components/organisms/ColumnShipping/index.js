@@ -22,6 +22,7 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
 
   const confirm = async() => {
     if(shippingType == "delivery" && !selectedShippingMethod) setErrorMessage("Selecione um método de entrega");
+    if(shippingType == "delivery" && !shipping) setErrorMessage("Não há entrega disponível para esse cep")
     if(shippingType == "pickup"){
       const cartId = localStorage.getItem("cartId");
       localStorage.setItem("selected-shipping-method", "");
@@ -35,7 +36,7 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
       });
       router.push("/checkout", undefined, { shallow: true });
     }
-    if(shippingType == "delivery" && selectedShippingMethod){
+    if(shippingType == "delivery" && selectedShippingMethod && shipping){
       const cartId = localStorage.getItem("cartId");
       localStorage.setItem("selected-shipping-method", selectedShippingMethod);
       localStorage.setItem("shipping-type", shippingType);

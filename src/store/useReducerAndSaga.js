@@ -13,13 +13,13 @@ export function useReducerAndSaga(reducer, state0, saga, sagaOptions) {
 
   function dispatch(action) {
     reactDispatch(action);
-    console.log("React Dispatch", action);
+    //console.log("React Dispatch", action);
     // dispatch to sagas is done in the commit phase
     sagaEnv.current.pendingActions.push(action);
   }
 
   useEffect(() => {
-    console.log("Sagas was updated");
+    //console.log("Sagas was updated");
     // sync with react state, *should* be safe since we're in commit phase
     sagaEnv.current.state = state;
     const pendingActions = sagaEnv.current.pendingActions;
@@ -27,7 +27,7 @@ export function useReducerAndSaga(reducer, state0, saga, sagaOptions) {
     // should've handled all those actions
     if (pendingActions.length > 0) {
       sagaEnv.current.pendingActions = [];
-      console.log("flush saga actions");
+      //console.log("flush saga actions");
       pendingActions.forEach((action) => sagaEnv.current.channel.put(action));
       sagaEnv.current.channel.put({ type: "REACT_STATE_READY", state });
     }

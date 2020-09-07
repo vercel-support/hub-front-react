@@ -197,9 +197,21 @@ function* setMyStore({ payload }){
   }
 }
 
-function* changePostalCode() {
-  const postal_code = yield select(({ geo }) => geo.postalCode);
-  localStorage.setItem("postalcode-delivery", postal_code);
+function* changePostalCode({ payload }) {
+  const params = { postalCode: payload };
+  const { data } = yield call(service.requestGetStore, { params });
+  const myNewStore = data[0];
+  yield put({ type: "UPDATE_STORES", payload: data });
+  yield put({ type: "CHANGE_STORE", payload: { id: myNewStore.id } });
+  localStorage.setItem("myStore", JSON.stringify(myNewStore));
+
+  try {
+    yield put({ type: "CHANGE_STORE_SUCCESS" });
+  } catch (error) {
+    yield put({ type: "CHANGE_STORE_ERROR" });
+  }
+
+  localStorage.setItem("postalcode-delivery", payload);
 }
 
 function* watchPayments() {

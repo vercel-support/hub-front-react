@@ -73,6 +73,10 @@ const Product = ({ content }) => {
     productPageView(window.dataLayer.push, window.ga, {data: content.data, selectedProduct: product});
   }, [product]);
 
+  const updatePrices = () => {
+    fetchPrices();
+  }
+
   return (
     <OneColumn content={content}>
       {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
@@ -96,7 +100,7 @@ const Product = ({ content }) => {
                   <ProductOptions change={setProduct} options={children} />
                 )}
               </div>
-              <ProductShipping product={product} />
+              <ProductShipping product={product} updatePrices={updatePrices} />
             </ProductContentStyled> : null
           }
         </ProductContainerStyled>

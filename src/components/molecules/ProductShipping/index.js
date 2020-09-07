@@ -176,7 +176,7 @@ const Withdraw = ({ product }) => {
   );
 };
 
-const ShippingCard = ({ product }) => {
+const ShippingCard = ({ product, updatePrices }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(store);
   const { myStore, geo } = state;
@@ -194,9 +194,20 @@ const ShippingCard = ({ product }) => {
   const [ loading, setLoading ] = useState(false);
   const [ inputPostalCode, setInputPostalCode ] = useState("");
 
+  const checkStateAndSetStore = (postalCode) => {
+    if(!myStore || myStore.id === "cd"){
+      updatePrices();
+      dispatch({ type: "CHANGE_POSTALCODE", payload: postalCode });
+    }
+  }
+
   useEffect(() => {
     setInputPostalCode(localStorage.getItem("postalcode-delivery") || "");
-    if(localStorage.getItem("postalcode-delivery")) setShippingPostalCode(localStorage.getItem("postalcode-delivery"));
+    const lsPostalCode = localStorage.getItem("postalcode-delivery");
+    if(lsPostalCode){
+      setShippingPostalCode(lsPostalCode);
+      checkStateAndSetStore(lsPostalCode);
+    }
   }, []);
 
   useEffect(() => {
@@ -220,6 +231,7 @@ const ShippingCard = ({ product }) => {
       if (validator.test(value)) {
         setShippingPostalCode(value);
         localStorage.setItem("postalcode-delivery", value);
+        checkStateAndSetStore(value);
       }
       else{
         setDeliveryOptionsAvailable({ deliveryAvailable: false, expressDeliveryAvailable: false });
@@ -289,10 +301,10 @@ const ShippingCard = ({ product }) => {
   );
 };
 
-const ProductShipping = ({ product }) => (
+const ProductShipping = ({ product, updatePrices }) => (
   <ProductShippingStyled>
     <Withdraw product={product} />
-    <ShippingCard product={product} />
+    <ShippingCard product={product} updatePrices={updatePrices}/>
   </ProductShippingStyled>
 );
 
