@@ -150,6 +150,7 @@ const Cart = ({ content }) => {
               handleSelectedShipping={handleSelectedShipping}
               shippingType={shippingType}
               cartSubTotal={cartSubTotalAmount}
+              pickupStore={pickupStore}
             />
           </Grid>
         </React.Fragment>
