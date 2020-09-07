@@ -51,10 +51,7 @@ const PaymentForm = () => {
   };
 
   const sdkResponseHandler = (status, response) => {
-    if (status != 200 && status != 201) {
-      console.log(response);
-      alert("Verifique os dados do cartão");
-    } else {
+    if (status == 200 || status == 201){
       const token = response.id;
       let payment_method_element = document.getElementById("payment_method_id");
       const cartId = localStorage.getItem("cartId");
@@ -83,6 +80,10 @@ const PaymentForm = () => {
           setTimeout(() => { router.push("/success", undefined, { shallow: true }); }, 1000);
         }
       });
+    }
+    else{
+      console.log(response);
+      alert("Verifique os dados do cartão");
     }
   };
   const doPay = (event) => {
