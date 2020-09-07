@@ -20,7 +20,7 @@ const { FRONTEND_URL, ALGOLIA_APP_KEY, ALGOLIA_ACCESS_KEY } = publicRuntimeConfi
 
 const algoliaSearch = require("algoliasearch");
 const algoliaClient = algoliaSearch(ALGOLIA_APP_KEY, ALGOLIA_ACCESS_KEY);
-const productsIndex = algoliaClient.initIndex(`${process.env.NODE_ENV !== "production" ? "dev_" : ""}PRODUCTS`);
+const productsIndex = algoliaClient.initIndex(`${FRONTEND_URL !== "https://www.geracaopet.com.br" ? "dev_" : ""}PRODUCTS`);
 
 const redirectURL = (url) => {
     return url.replace("https://www.geracaopet.com.br", FRONTEND_URL);
