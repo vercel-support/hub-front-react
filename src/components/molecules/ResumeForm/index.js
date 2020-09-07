@@ -22,7 +22,7 @@ const ResumeForm = () => {
   const calculateResumeInfo = () => {
     let subtotal = 0;
     products.map(product =>{
-      subtotal+= product.specialPrice || product.price;
+      subtotal+= (product.specialPrice || product.price) * product.quantity;
     });
 
     const selectedShippingMethod = localStorage.getItem("selected-shipping-method");
