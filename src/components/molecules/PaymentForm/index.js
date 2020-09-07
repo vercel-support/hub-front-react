@@ -27,7 +27,7 @@ const PaymentForm = () => {
   }
 
   useEffect(() => {
-  }, [customerEmail, cartId])
+  }, [customerEmail, cartId, cartTotalAmount])
 
   useEffect(() => {
     getCartInfo();
