@@ -149,6 +149,11 @@ const Withdraw = ({ product }) => {
       setValidAction({ ...cartActionResponse, confirm: clearCartAndRetryAddToCart, cancel: cancelAction });
   }
 
+  const getStoreDistance = () => {
+    if(myStore && myStore.distance)
+      return myStore.distance >= 1000 ? `${(myStore.distance/1000).toFixed(1)} km` : `${myStore.distance} m`;
+  }
+
   return (
     <WithdrawStyled available={available}>
       { !validAction.isValid ? <ActionDialog data={validAction}/> : null }
@@ -158,6 +163,9 @@ const Withdraw = ({ product }) => {
         </span>
         na loja
         <span className="store"> {myStore.name}</span>
+      </p>
+      <p>
+      {getStoreDistance() ? `A ${getStoreDistance()} de você` : null}
       </p>
       <span className="change">(alterar loja)</span>
       {available && (

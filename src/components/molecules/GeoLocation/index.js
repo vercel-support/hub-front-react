@@ -35,6 +35,10 @@ const GeoLocation = () => {
     return `${address.street}, ${address.number} ${complement} - ${address.city}/${address.state}`;
   };
 
+  const formatStoreDistance = (distance) => {
+      return distance >= 1000 ? `${(distance/1000).toFixed(1)} km` : `${distance} m`;
+  }
+
   return (
     <GeoLocationStyled
       onMouseOut={() => setOpen(false)}
@@ -75,12 +79,14 @@ const GeoLocation = () => {
           <GeoLocationListStyled>
             <GeoLocationStoreStyled selected>
               <h4>{myStore.name}</h4>
+              <p>A {formatStoreDistance(myStore.distance)} de você</p>
               { myStore.id !== "cd" ? <p>{formatAddress(myStore.address)}</p> : null }
               <span>(minha loja)</span>
             </GeoLocationStoreStyled>
-            {stores.map((store) => (
+            {stores.slice(0, 10).map((store) => (
               <GeoLocationStoreStyled key={store.id}>
                 <h4>{store.name}</h4>
+                <p>A {formatStoreDistance(store.distance)} de você</p>
                 <p>{formatAddress(store.address)}</p>
                 <span
                   onClick={() =>
