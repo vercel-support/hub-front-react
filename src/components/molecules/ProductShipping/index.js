@@ -4,6 +4,10 @@ import { store } from "../../../store";
 import FlightIcon from "@material-ui/icons/Flight";
 import StoreIcon from "@material-ui/icons/Store";
 import { Input } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
 import ProductShippingStyled, {
   ShippingCardStyled,
   WithdrawStyled,
@@ -14,73 +18,66 @@ import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 const { API_URL } = publicRuntimeConfig;
 import axios from "axios";
+import { addToCart as gaAddToCart } from "../../../../lib/ga";
 
-const addToCart = (myStore, product, shippingType, dispatch) => {
-  let newProducts = {};
-  const products = JSON.parse(localStorage.getItem("products"));
+const addToCart = async (myStore, product, shippingType, clearFirst) => {
+  const products = JSON.parse(localStorage.getItem("productList") || "[]");
+
+  if (products.length > 0 && myStore.id !== "cd") {
+    if (products.find((p) => p.storeId !== myStore.id && p.storeId !== "cd"))
+      return {
+        isValid: false,
+        message: "Seu carrinho tem produtos de outra loja",
+        cancelMessage: `Cancelar`,
+        confirmMessage: `Limpar carrinho e comprar em ${myStore.name}`,
+      };
+  }
 
   if (
-    products &&
-    !Object.keys(products).filter((sku) => products[sku].storeId === myStore.id)
-      .length
+    products.length > 0 &&
+    !Object.keys(products).filter(
+      (sku) => products[sku].shippingType === shippingType
+    ).length
+  )
+    return shippingType === "delivery"
+      ? {
+          isValid: false,
+          message: "Você já está comprando para retirar na loja.",
+          cancelMessage: `Cancelar`,
+          confirmMessage: `Limpar carrinho e receber em casa`,
+        }
+      : {
+          isValid: false,
+          message: "Você já está comprando para receber em casa.",
+          cancelMessage: `Cancelar`,
+          confirmMessage: `Limpar carrinho e retirar na loja`,
+        };
+
+  const cartId = localStorage.getItem("cartId");
+  product.storeId = myStore.id;
+  product.shippingType = shippingType;
+  product.quantity = 1;
+  let serviceResponse = await axios.post(`${API_URL}/cart`, {
+    products: [product],
+    cartId,
+    clearFirst,
+  });
+
+  if (
+    serviceResponse.data &&
+    (serviceResponse.status === 200 || serviceResponse.status === 201)
   ) {
-    dispatch({ type: "CLEAN_STORE" });
-    return false;
+    localStorage.setItem(
+      "productList",
+      JSON.stringify(serviceResponse.data.products)
+    );
+    localStorage.setItem("cartId", serviceResponse.data.cartId);
   }
 
-  if (products && products[product.sku]) {
-    newProducts = {
-      ...products,
-      [product.sku]: {
-        ...products[product.sku],
-        qty: products[product.sku].qty + 1,
-        storeId: myStore.id,
-      },
-    };
-  } else if (products) {
-    newProducts = {
-      ...products,
-      [product.sku]: { ...product, qty: 1, storeId: myStore.id },
-    };
-  } else {
-    newProducts = {
-      [product.sku]: { ...product, qty: 1, storeId: myStore.id },
-    };
-  }
-
-  localStorage.setItem("products", JSON.stringify(newProducts));
-
-  const productList = JSON.parse(localStorage.getItem("productList") || "[]");
-  productList.push({ ...product, quantity: 1 });
-  localStorage.setItem("productList", JSON.stringify(productList));
-
-  dispatch({
-    type: "CART_REQUEST",
-    payload: {
-      sku: product.sku,
-      storeId: myStore.id,
-      shippingType,
-    },
-  });
-
-  dispatch({
-    type: "SHIPPING_REQUEST",
-    payload: {
-      postalCode: myStore.address.postalCode,
-      items: [
-        {
-          sku: product.sku,
-          name: product.name,
-          quantity: 1,
-          price: product.price,
-          specialPrice: product.specialPrice,
-        },
-      ],
-      storeId: myStore.id,
-    },
-  });
-
-  return true;
+  gaAddToCart(window.dataLayer.push, product);
+  return {
+    isValid: true,
+  };
 };
 
 const requestStockAvailability = async (postalCode, storeId, sku) => {
@@ -89,10 +86,30 @@ const requestStockAvailability = async (postalCode, storeId, sku) => {
       ? `${API_URL}/catalogs/products/delivery-stocks?storeId=${storeId}&sku=${sku}`
       : `${API_URL}/catalogs/products/delivery-stocks?postalCode=${postalCode}&storeId=${storeId}&sku=${sku}`;
     let response = await axios.get(url);
-    return response.data && response.data.status == 200 ? response.data : null;
+    return response.data && response.data.status === 200 ? response.data : null;
   } catch (error) {
     return null;
   }
+};
+
+const ActionDialog = ({ data }) => {
+  const [open, setOpen] = useState(true);
+  return (
+    <Dialog open={open}>
+      <DialogTitle id="alert-dialog-title" align={"center"}>
+        {data.message}
+      </DialogTitle>
+      <DialogActions>
+        <Button onClick={data.confirm} color="primary">
+          {data.confirmMessage}
+        </Button>
+        <br />
+        <Button onClick={data.cancel} color="primary" autoFocus>
+          {data.cancelMessage}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 };
 
 const Withdraw = ({ product }) => {
@@ -101,6 +118,12 @@ const Withdraw = ({ product }) => {
   const { myStore } = state;
   const [available, setAvailable] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [validAction, setValidAction] = useState({
+    isValid: true,
+    message: "",
+    confirmMessage: "",
+    cancelMessage: "",
+  });
 
   useEffect(() => {
     if (myStore && product) {
@@ -116,8 +139,36 @@ const Withdraw = ({ product }) => {
     }
   }, [myStore, product]);
 
+  const clearCartAndRetryAddToCart = async () => {
+    localStorage.removeItem("productList");
+    await addToCart(myStore, product, "pickup", true);
+    router.push("/cart", undefined, { shallow: true });
+  };
+
+  const cancelAction = () => {
+    setValidAction({
+      isValid: true,
+      message: "",
+      confirmMessage: "",
+      cancelMessage: "",
+    });
+  };
+
+  const pickupClick = async () => {
+    let cartActionResponse = await addToCart(myStore, product, "pickup", false);
+    if (cartActionResponse.isValid)
+      router.push("/cart", undefined, { shallow: true });
+    else
+      setValidAction({
+        ...cartActionResponse,
+        confirm: clearCartAndRetryAddToCart,
+        cancel: cancelAction,
+      });
+  };
+
   return (
     <WithdrawStyled available={available}>
+      {!validAction.isValid ? <ActionDialog data={validAction} /> : null}
       <p>
         <span className="stock">
           {available ? "Retire hoje " : "Sem estoque "}
@@ -134,31 +185,7 @@ const Withdraw = ({ product }) => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <button
-          disabled={!product.stockAvailable}
-          onClick={() => {
-            let response = false;
-
-            if (addToCart(myStore, product, "pickup", dispatch))
-              setTimeout(
-                () => router.push("/cart", undefined, { shallow: true }),
-                1000
-              );
-            else {
-              response = confirm(
-                "Você não pode ter produtos de lojas diferentes! Deseja limpar o carrinho?"
-              );
-              if (response) {
-                localStorage.removeItem("products");
-                addToCart(myStore, product, "pickup", dispatch);
-                setTimeout(
-                  () => router.push("/cart", undefined, { shallow: true }),
-                  1000
-                );
-              }
-            }
-          }}
-        >
+        <button disabled={!available} onClick={pickupClick}>
           comprar e retirar na loja
         </button>
       )}
@@ -166,7 +193,7 @@ const Withdraw = ({ product }) => {
   );
 };
 
-const ShippingCard = ({ product }) => {
+const ShippingCard = ({ product, updatePrices }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(store);
   const { myStore, geo } = state;
@@ -175,7 +202,30 @@ const ShippingCard = ({ product }) => {
     deliveryAvailable: false,
     expressDeliveryAvailable: false,
   });
+  const [validAction, setValidAction] = useState({
+    isValid: true,
+    message: "",
+    confirmMessage: "",
+    cancelMessage: "",
+  });
   const [loading, setLoading] = useState(false);
+  const [inputPostalCode, setInputPostalCode] = useState("");
+
+  const checkStateAndSetStore = (postalCode) => {
+    if (!myStore || myStore.id === "cd") {
+      updatePrices();
+      dispatch({ type: "CHANGE_POSTALCODE", payload: postalCode });
+    }
+  };
+
+  useEffect(() => {
+    setInputPostalCode(localStorage.getItem("postalcode-delivery") || "");
+    const lsPostalCode = localStorage.getItem("postalcode-delivery");
+    if (lsPostalCode) {
+      setShippingPostalCode(lsPostalCode);
+      checkStateAndSetStore(lsPostalCode);
+    }
+  }, []);
 
   useEffect(() => {
     if (myStore && product) {
@@ -187,7 +237,6 @@ const ShippingCard = ({ product }) => {
       ).then((options) => {
         setLoading(false);
         if (options && options.data) {
-          console.log(options.data);
           setDeliveryOptionsAvailable(options.data);
         }
       });
@@ -196,10 +245,13 @@ const ShippingCard = ({ product }) => {
 
   const validatePostalCode = (event) => {
     if (event) {
+      setInputPostalCode(event.target.value);
       let value = event.target.value.replace(/\D/g, "");
       let validator = /^[0-9]{8}$/;
       if (validator.test(value)) {
         setShippingPostalCode(value);
+        localStorage.setItem("postalcode-delivery", value);
+        checkStateAndSetStore(value);
       } else {
         setDeliveryOptionsAvailable({
           deliveryAvailable: false,
@@ -210,6 +262,38 @@ const ShippingCard = ({ product }) => {
     }
   };
 
+  const clearCartAndRetryAddToCart = async () => {
+    localStorage.removeItem("productList");
+    await addToCart(myStore, product, "delivery", true);
+    router.push("/cart", undefined, { shallow: true });
+  };
+
+  const cancelAction = () => {
+    setValidAction({
+      isValid: true,
+      message: "",
+      confirmMessage: "",
+      cancelMessage: "",
+    });
+  };
+
+  const deliveryClick = async () => {
+    let cartActionResponse = await addToCart(
+      myStore,
+      product,
+      "delivery",
+      false
+    );
+    if (cartActionResponse.isValid)
+      router.push("/cart", undefined, { shallow: true });
+    else
+      setValidAction({
+        ...cartActionResponse,
+        confirm: clearCartAndRetryAddToCart,
+        cancel: cancelAction,
+      });
+  };
+
   return (
     <ShippingCardStyled
       available={
@@ -217,11 +301,10 @@ const ShippingCard = ({ product }) => {
         deliveryOptionsAvailable.expressDeliveryAvailable
       }
     >
+      {!validAction.isValid ? <ActionDialog data={validAction} /> : null}
       <p>
         Entregar no CEP{" "}
-        {geo.postalCode ? (
-          geo.postalCode
-        ) : (
+        {
           <Input
             style={{
               marginBottom: "20px",
@@ -229,8 +312,9 @@ const ShippingCard = ({ product }) => {
             name="cep"
             onChange={validatePostalCode}
             placeholder="00000-000"
+            value={inputPostalCode}
           />
-        )}
+        }
       </p>
       <span className="change">(alterar loja)</span>
 
@@ -252,35 +336,13 @@ const ShippingCard = ({ product }) => {
         <CircularProgress />
       ) : (
         <button
-          disabled={!shippingPostalCode}
-          onClick={() => {
-            console.log("adicionando");
-            dispatch({
-              type: "CHANGE_POSTALCODE",
-              payload: shippingPostalCode,
-            });
-            let response = false;
-
-            if (addToCart(myStore, product, "delivery", dispatch))
-              setTimeout(
-                () => router.push("/cart", undefined, { shallow: true }),
-                1000
-              );
-            else {
-              response = confirm(
-                "Você não pode ter produtos de lojas diferentes! Deseja limpar o carrinho?"
-              );
-
-              if (response) {
-                localStorage.removeItem("products");
-                addToCart(myStore, product, "delivery", dispatch);
-                setTimeout(
-                  () => router.push("/cart", undefined, { shallow: true }),
-                  1000
-                );
-              }
-            }
-          }}
+          disabled={
+            !(
+              deliveryOptionsAvailable.deliveryAvailable ||
+              deliveryOptionsAvailable.expressDeliveryAvailable
+            )
+          }
+          onClick={deliveryClick}
         >
           comprar e receber em casa
         </button>
@@ -289,10 +351,10 @@ const ShippingCard = ({ product }) => {
   );
 };
 
-const ProductShipping = ({ product }) => (
+const ProductShipping = ({ product, updatePrices }) => (
   <ProductShippingStyled>
     <Withdraw product={product} />
-    <ShippingCard product={product} />
+    <ShippingCard product={product} updatePrices={updatePrices} />
   </ProductShippingStyled>
 );
 

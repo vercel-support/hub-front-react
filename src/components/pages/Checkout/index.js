@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { store } from "../../../store";
 import { Button, Container, Grid, Hidden, Paper } from "@material-ui/core";
 import {
@@ -10,6 +10,7 @@ import {
 } from "../../molecules";
 import { Login, Steppers, Success } from "../../organisms";
 import { Footer, HeaderClen } from "../../organisms";
+import { checkoutPageView } from '../../../../lib/ga';
 
 const steps = ["Identificação", "Endereço", "Pagamento"];
 
@@ -18,9 +19,9 @@ function getStepContent(step, handleNext, shipping) {
     case 0:
       return <Login handleNext={handleNext} />;
     case 1:
-      return <Review handleNext={handleNext} shipping={shipping} total={shipping.shippingOptions.economicalDelivery.total} />;
+      return <Review handleNext={handleNext} />;
     case 2:
-      return <PaymentForm total={shipping.shippingOptions.economicalDelivery.total} />;
+      return <PaymentForm/>;
     default:
       throw new Error("Passo desconhecido");
   }
@@ -28,7 +29,17 @@ function getStepContent(step, handleNext, shipping) {
 
 const Checkout = ({ content }) => {
   const { state, dispatch } = useContext(store);
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const products = JSON.parse(localStorage.getItem("productList") || "[]");
+    setProducts(products);
+  }, []);
+
+  useEffect(() => {
+    checkoutPageView(activeStep + 1, window.dataLayer.push, window.ga, JSON.parse(localStorage.getItem("productList") || "[]"));
+  }, [activeStep]);
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -37,7 +48,6 @@ const Checkout = ({ content }) => {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
-  console.log(state.user, "state.user")
 
   return (
     <Grid container direction="column" justify="space-between">
@@ -66,7 +76,7 @@ const Checkout = ({ content }) => {
               <Hidden mdDown>
                 <Grid item xs={12} lg={4}>
                   <Grid xs={12} lg={12}>
-                    <ResumeForm shipping={state.shippingCart} total={state.shippingCart.shippingOptions && state.shippingCart.shippingOptions.economicalDelivery.total} />
+                    <ResumeForm />
                   </Grid>
                 </Grid>
               </Hidden>

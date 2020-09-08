@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   ProductBrand,
   ProductDescription,
@@ -15,29 +15,67 @@ import ProductStyled, {
   ProductContentStyled,
 } from "./styles";
 
+import { productPageView } from '../../../../lib/ga';
+import { ProductSchema } from '../../../../lib/schemas';
+
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL } = publicRuntimeConfig;
+import axios from "axios";
+
+import { store } from "../../../store";
+
 const Product = ({ content }) => {
   const {
     breadcrumbs,
     name,
     imageGallery,
-    children,
     sku,
     type,
     description,
     specifications = [],
   } = content.data;
-  const [product, setProduct] = useState({
-    name: children[0].name,
-    sku: children[0].sku,
-    price: children[0].price,
-    specialPrice: children[0].specialPrice,
-    discount: children[0].percentagePromotionDiscount,
-    pickupAvailable: children[0].pickupAvailable,
-    quantityAvailableForPickup: children[0].quantityAvailableForPickup,
-  });
+  const [product, setProduct] = useState(null);
   const brand = specifications.filter(
     (specification) => specification.name === "Marca"
   )[0]?.value;
+  const { state } = useContext(store);
+  const { myStore } = state;
+  const [ children, setChildren ] = useState([])
+
+  const fetchPrices = async() => {
+    let url = myStore && myStore.id ?
+      `${API_URL}/catalogs/products/prices?storeId=${myStore.id}&sku=${sku}` :
+      `${API_URL}/catalogs/products/prices?sku=${sku}`;
+    let response = await axios.get(url);
+    if(response.data.data && response.data.status === 200 && response.data.data.length > 0){
+      let new_children = response.data.data;
+      setChildren(new_children);
+      setProduct({
+        name: new_children[0].name,
+        sku: new_children[0].sku,
+        price: new_children[0].price,
+        specialPrice: new_children[0].specialPrice,
+        discount: new_children[0].percentagePromotionDiscount
+      })
+    }
+  }
+
+  useEffect(() => {
+    fetchPrices();
+  }, []);
+
+  useEffect(() => {
+    fetchPrices();
+  }, [myStore]);
+  
+  useEffect(() => {
+    productPageView(window.dataLayer.push, window.ga, {data: content.data, selectedProduct: product});
+  }, [product]);
+
+  const updatePrices = () => {
+    fetchPrices();
+  }
 
   return (
     <OneColumn content={content}>
@@ -50,22 +88,25 @@ const Product = ({ content }) => {
             {/*<ProductRating />*/}
             <ProductBrand brand={brand} />
           </div>
-          <ProductContentStyled>
-            <div>
-              <ProductDiscount discount={product.discount} />
-              <ProductPrice
-                price={product.price}
-                specialPrice={product.specialPrice}
-              />
-              {type.toLocaleLowerCase() === "configurable" && (
-                <ProductOptions change={setProduct} options={children} />
-              )}
-            </div>
-            <ProductShipping product={product} />
-          </ProductContentStyled>
+          { product ? 
+            <ProductContentStyled>
+              <div>
+                <ProductDiscount discount={product.discount} />
+                <ProductPrice
+                  price={product.price}
+                  specialPrice={product.specialPrice}
+                />
+                {type.toLocaleLowerCase() === "configurable" && (
+                  <ProductOptions change={setProduct} options={children} />
+                )}
+              </div>
+              <ProductShipping product={product} updatePrices={updatePrices} />
+            </ProductContentStyled> : null
+          }
         </ProductContainerStyled>
       </ProductStyled>
       <ProductDescription description={description} />
+      <ProductSchema content={content.data}/>
     </OneColumn>
   );
 };

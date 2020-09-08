@@ -5297,7 +5297,7 @@ prop-types-exact@1.2.0:
     object.assign "^4.1.0"
     reflect.ownkeys "^0.2.0"
 
-prop-types@15.7.2, prop-types@^15.5.8, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@15.7.2, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5428,6 +5428,11 @@ react-geolocated@^3.0.1:
   dependencies:
     prop-types "^15.5.8"
 
+react-gtm-module@^2.0.10:
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/react-gtm-module/-/react-gtm-module-2.0.10.tgz#462296c3d622b82413d0917d430bec557a586237"
+  integrity sha512-7fRxphVxbJVCNWDQyegugZOrOw97vqwzbTSZlHM2n+otg2iBQvKa0SzFxwcLi9monXADjWGX6xQER6IOl75FPw==
+
 react-hook-form@^6.0.1:
   version "6.5.3"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.5.3.tgz#77c153731a96950ea1875a934b2e5d39a5673087"
@@ -5465,6 +5470,13 @@ react-refresh@0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
+
+react-structured-data@0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/react-structured-data/-/react-structured-data-0.0.14.tgz#7a851cb65ef26d63244e3b6d5370c751d0a86a33"
+  integrity sha512-B1elbCypGIuLGSrJ3ESqLKepYotELbCpAZBAxsn1DeH2c40XI01Ll568xjGvipTqxvetscuCqm9/wD4GF+DIXw==
+  dependencies:
+    prop-types "^15.6.0"
 
 react-swipeable@^5.2.0:
   version "5.5.1"

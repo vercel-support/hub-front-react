@@ -13,28 +13,40 @@ import {
 import { Alert } from "@material-ui/lab";
 import { AddressFormStyles, TitleStyles } from "./styles";
 
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL } = publicRuntimeConfig;
+import axios from "axios";
+
 const RegisterForm = ({handleNext, emailIdentification}) => {
   const { state, dispatch } = useContext(store);
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => {
-    const login = { email: data.email, password: data.password };
-    dispatch({
-      type: "LOGIN_REQUEST",
-      login: login,
-      handleNext: handleNext,
-    });
+  const [ loginError, setLoginError ] = useState(null);
+  const onSubmit = async(data) => {
+
+    try{
+      let loginResponse = await axios.post(`${API_URL}/customers/login`, { email: data.email, password: data.password });
+      if(loginResponse && loginResponse.data && loginResponse.data.status == 200){
+        localStorage.setItem("customer-token", loginResponse.data.token);
+        localStorage.setItem("customer-email", data.email);
+        handleNext();
+      }
+    }
+    catch(error){
+      setLoginError(error.response.data.message);
+    }
   };
 
   const [isEmail, setIsEmail] = useState();
   const [logged, setLogged] = useState(false);
-  const [newRegister, setNewRegister] = useState(false);
+  const [newRegister, setNewRegister] = useState(!emailIdentification.isRegistered);
   const intialValues = {
-    email: emailIdentification,
+    email: emailIdentification.email
   };
 
   useEffect(() => {
-    setIsEmail(state.login.isEmailAvailable);
-  }, [state]);
+    setIsEmail(emailIdentification.isRegistered);
+  }, []);
   return (
     <AddressFormStyles>
       <Grid container spacing={3}>
@@ -50,6 +62,7 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
               ) : (
                 <Alert severity="error">Usuário não cadastrado.</Alert>
               )}
+              { loginError ? <Alert severity="error">{loginError}</Alert> : null }
             </Grid>
             <Hidden mdDown>
               <Grid item xs={5} sm={5}>
@@ -68,7 +81,6 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
                       <input
                         name="email"
                         defaultValue={intialValues.email}
-                        placeholder="marco@marco.com"
                         ref={register}
                       />
                     </div>
@@ -105,7 +117,7 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
                 </TitleStyles>
 
                 <Typography variant="p" component="p">
-                  Criar nova conta, com outro e-mail
+                  Criar a conta, com outro e-mail
                 </Typography>
 
                 <form>
@@ -140,7 +152,6 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
                       <input
                         name="email"
                         defaultValue={intialValues.email}
-                        placeholder="marco@marco.com"
                         ref={register}
                       />
                     </div>

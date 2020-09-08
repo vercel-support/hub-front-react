@@ -3,9 +3,14 @@ import { ProductCart } from "../../molecules";
 
 import { ColumnStyles } from "./styles";
 
-const ColumnCart = ({ product }) => (
+const ColumnCart = ({ products, handleProductChange }) => (
   <ColumnStyles>
-    {product && product.map((item) => <ProductCart product={item} allProducts={product} />)}
+    {products && products.map((item) => 
+      <ProductCart 
+        product={item} 
+        handleProductChange={handleProductChange} 
+      />
+    )}
   </ColumnStyles>
 );
 

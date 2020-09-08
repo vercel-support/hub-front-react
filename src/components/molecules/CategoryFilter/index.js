@@ -103,13 +103,14 @@ const CategoryFilter = ({
       params = [...params, ...selecteds[filter]];
     });
 
-    const newProducts = await requestProducts(
+    const { products } = await requestProducts(
       categoryUrl,
       0,
       "5e8e1c6e43a61128433f0eed",
       params
     );
-    setProducts(newProducts);
+
+    setProducts(products);
   };
 
   useEffect(() => {

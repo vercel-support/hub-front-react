@@ -5,7 +5,7 @@ import { CartTotalStyles, LabelSyles, ValueSyles } from "./styles";
 const CartTotal = ({ subPrice }) => {
   return (
     <CartTotalStyles>
-      <LabelSyles>Total</LabelSyles>
+      <LabelSyles>Subtotal</LabelSyles>
       <ValueSyles>{numberToPrice(subPrice)}</ValueSyles>
     </CartTotalStyles>
   );

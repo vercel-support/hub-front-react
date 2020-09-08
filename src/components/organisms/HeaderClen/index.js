@@ -32,7 +32,7 @@ const HeaderClen = ({ content }) => {
                 <Button onClick={() => setTop(true)} className={classes.button}><span className={classes.span}>2 itens</span>R$ 350,00</Button>
                 <Drawer anchor={"top"} open={top} onClose={() => setTop(false)}>
                   <ResumeForm />
-                  <InformationForm />
+                  {/* <InformationForm /> */}
                 </Drawer>
               </Grid>
               <Grid item lg={1} xs={1}>

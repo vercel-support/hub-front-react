@@ -23,6 +23,11 @@ const GeoLocation = () => {
   const [geo, setGeo] = useState(false);
 
   useEffect(() => {
+    const ls_store = localStorage.getItem("myStore");
+    console.log(ls_store);
+  }, []);
+  
+  useEffect(() => {
   }, [myStore, stores]);
 
   const onSubmit = () =>
@@ -75,7 +80,7 @@ const GeoLocation = () => {
           <GeoLocationListStyled>
             <GeoLocationStoreStyled selected>
               <h4>{myStore.name}</h4>
-              <p>{formatAddress(myStore.address)}</p>
+              { myStore.id !== "cd" ? <p>{formatAddress(myStore.address)}</p> : null }
               <span>(minha loja)</span>
             </GeoLocationStoreStyled>
             {stores.map((store) => (

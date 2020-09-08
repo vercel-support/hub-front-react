@@ -5,17 +5,14 @@ import { IdentificationForm, RegisterForm, NewAddressForm, AddressForm } from ".
 // import { Container } from './styles';
 
 const Login = ({handleNext}) => {
-  const { state } = useContext(store);
-  const [onEmail, setOnEmail] = useState(false);
-  const [emailIdentification, setEmailIdentification] = useState();
-
-  useEffect(() => {
-    setOnEmail(state.login.onLogin);
-  }, [state]);
+  const [emailIdentification, setEmailIdentification] = useState({
+    email: null,
+    isRegistered: false
+  });
   
   return (
     <React.Fragment>
-      {onEmail ? <RegisterForm handleNext={handleNext} emailIdentification={emailIdentification} />:<IdentificationForm setEmailIdentification={setEmailIdentification} />}
+      {emailIdentification.email ? <RegisterForm handleNext={handleNext} emailIdentification={emailIdentification} />:<IdentificationForm setEmailIdentification={setEmailIdentification} />}
     </React.Fragment>
   );
 };

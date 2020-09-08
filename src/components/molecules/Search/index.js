@@ -15,12 +15,23 @@ import {
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const {
+  FRONTEND_URL,
+  ALGOLIA_APP_KEY,
+  ALGOLIA_ACCESS_KEY,
+} = publicRuntimeConfig;
+
 const algoliaSearch = require("algoliasearch");
-const algoliaClient = algoliaSearch(
-  "GPCHY1L0BB",
-  "9dcf2e26798c61432a707c12c049ad28"
+const algoliaClient = algoliaSearch(ALGOLIA_APP_KEY, ALGOLIA_ACCESS_KEY);
+const productsIndex = algoliaClient.initIndex(
+  `${FRONTEND_URL !== "https://www.geracaopet.com.br" ? "dev_" : ""}PRODUCTS`
 );
-const productsIndex = algoliaClient.initIndex("dev_PRODUCTS");
+
+const redirectURL = (url) => {
+  return url.replace("https://www.geracaopet.com.br", FRONTEND_URL);
+};
 
 const Search = () => {
   const router = useRouter();
@@ -50,7 +61,10 @@ const Search = () => {
 
   useEffect(() => {
     document.addEventListener("mousedown", (e) => {
-      if (document.getElementById("search_container").contains(e.target)) {
+      if (
+        document.getElementById("search_container") &&
+        document.getElementById("search_container").contains(e.target)
+      ) {
         setBarOpened(true);
       } else {
         setBarOpened(false);
@@ -96,7 +110,7 @@ const Search = () => {
           suggestions={suggestions}
         >
           {suggestions.map((suggestion) => (
-            <a href={suggestion.url_key} key={suggestion.sku}>
+            <a href={redirectURL(suggestion.url_key)} key={suggestion.sku}>
               <ResultItem>
                 <Grid container spacing={1}>
                   <Grid item xs={2}>

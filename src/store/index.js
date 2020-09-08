@@ -128,10 +128,8 @@ function* emailRequest({ email }) {
 
 function* setCart({ payload }) {
   try {
-    const dataStores = yield call(
-      service.requestStores,
-      "5e8e1c6e43a61128433f0eed"
-    );
+    const currentStore = yield select(({ myStore }) => myStore);
+    const dataStores = yield call(service.requestStores, currentStore.id);
     if (payload) {
       const { data } = yield call(service.requestCart, payload);
       yield put({
@@ -173,6 +171,10 @@ function* changeStore({ payload }) {
   const { data } = yield call(service.requestGetStore, { params });
   const updatedStores = data.filter((store) => store.id !== payload.id);
   yield put({ type: "UPDATE_STORES", payload: updatedStores });
+  localStorage.setItem(
+    "myStore",
+    JSON.stringify(data.find((st) => st.id === payload.id))
+  );
 
   try {
     yield put({ type: "CHANGE_STORE_SUCCESS" });
@@ -182,18 +184,33 @@ function* changeStore({ payload }) {
 }
 
 function* setMyStore({ payload }) {
-  const currentStore = yield select(({ myStore }) => myStore);
-  localStorage.setItem("storeID", payload[0].id);
-  if (payload && payload.length > 0) {
-    if (!currentStore || currentStore.id === "cd") {
-      yield put({ type: "CHANGE_STORE", payload: { id: payload[0].id } });
-    }
+  let savedStore = localStorage.getItem("myStore");
+  if (savedStore) savedStore = JSON.parse(savedStore);
+
+  if (!savedStore || savedStore.id === "cd") {
+    const newStore = JSON.stringify(payload[0]);
+    localStorage.setItem("myStore", newStore);
+    yield put({ type: "CHANGE_STORE", payload: { id: payload[0].id } });
+  } else {
+    yield put({ type: "CHANGE_STORE", payload: { id: savedStore.id } });
   }
 }
 
-function* changePostalCode() {
-  const postal_code = yield select(({ geo }) => geo.postalCode);
-  localStorage.setItem("postalcode-delivery", postal_code);
+function* changePostalCode({ payload }) {
+  const params = { postalCode: payload };
+  const { data } = yield call(service.requestGetStore, { params });
+  const myNewStore = data[0];
+  yield put({ type: "UPDATE_STORES", payload: data });
+  yield put({ type: "CHANGE_STORE", payload: { id: myNewStore.id } });
+  localStorage.setItem("myStore", JSON.stringify(myNewStore));
+
+  try {
+    yield put({ type: "CHANGE_STORE_SUCCESS" });
+  } catch (error) {
+    yield put({ type: "CHANGE_STORE_ERROR" });
+  }
+
+  localStorage.setItem("postalcode-delivery", payload);
 }
 
 function* watchPayments() {

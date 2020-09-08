@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { requestProducts } from "../../../services";
 import { store } from "../../../store";
 import { Grid } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
 import { ProductCard } from "../../molecules";
-import ListProductsStyled from "./styles";
+import ListProductsStyled, { PaginationStyled } from "./styles";
 
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
-const ListProducts = ({ content, products, setProducts }) => {
-  const [page, setPage] = useState(content.data.currentPage);
+const ListProducts = ({ content, products, setProducts, currentPage }) => {
+  const {
+    state: {
+      myStore: { id: storeID },
+    },
+  } = useContext(store);
+  const [page, setPage] = useState(currentPage);
   let {
     categoryUrl = "",
     productsPerPage = 32,
@@ -19,14 +23,15 @@ const ListProducts = ({ content, products, setProducts }) => {
   } = content.data;
 
   const handleSetProducts = async () => {
-    const newProducts = await requestProducts(
+    const { products, currentPage } = await requestProducts(
       categoryUrl,
       page,
-      "5e8e1c6e43a61128433f0eed",
+      storeID,
       []
     );
 
-    setProducts(newProducts);
+    setProducts(products);
+    setPage(currentPage);
   };
 
   const handlePagination = (action) => {
@@ -36,7 +41,7 @@ const ListProducts = ({ content, products, setProducts }) => {
 
   useEffect(() => {
     handleSetProducts();
-  }, [page]);
+  }, [page, storeID]);
 
   return (
     <ListProductsStyled>
@@ -53,15 +58,17 @@ const ListProducts = ({ content, products, setProducts }) => {
           />
         ))}
         <Grid item xs={12} alignItems="center" justify="center">
-          <ArrowBackIosIcon
-            fontSize="small"
-            onClick={() => handlePagination("less")}
-          />
-          {` ${page + 1} `}
-          <ArrowForwardIosIcon
-            fontSize="small"
-            onClick={() => handlePagination("more")}
-          />
+          <PaginationStyled>
+            <ArrowBackIosIcon
+              fontSize="small"
+              onClick={() => handlePagination("less")}
+            />
+            {` ${page + 1} `}
+            <ArrowForwardIosIcon
+              fontSize="small"
+              onClick={() => handlePagination("more")}
+            />
+          </PaginationStyled>
         </Grid>
       </Grid>
     </ListProductsStyled>

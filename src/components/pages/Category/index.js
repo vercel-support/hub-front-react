@@ -9,12 +9,22 @@ import {
 } from "../../molecules";
 import { ListProducts } from "../../organisms";
 import { TwoColumns } from "../../templates";
+import { categoryPageView } from "../../../../lib/ga";
 
 const Category = ({ content }) => {
   const { state, dispatch } = useContext(store);
   const { action } = state.category;
   const [products, setProducts] = useState(content.data.products);
   const [filterOpen, setFilterOpen] = useState(false);
+
+  console.log("Produtos", products);
+  useEffect(() => {
+    categoryPageView(window.dataLayer.push, window.ga, {
+      products,
+      url: content.data.categoryUrl,
+      pageName: content.data.pageName,
+    });
+  }, []);
 
   useEffect(() => {
     // dispatch({ type: "SET_CATEGORY", payload: products });
@@ -62,6 +72,7 @@ const Category = ({ content }) => {
         content={content}
         products={products}
         setProducts={setProducts}
+        currentPage={content.data.currentPage}
       />
     </TwoColumns>
   );

@@ -112,7 +112,7 @@ export const requestProducts = async (
 ) => {
   const {
     data: {
-      data: { products: response },
+      data: { products, currentPage },
     },
   } = await axios.get(
     `http://18.229.234.11:3000/api/V2/catalogs/redirect?url=${url}${
@@ -121,5 +121,5 @@ export const requestProducts = async (
       params.length ? `&filters=${params.join(",")}` : ""
     }`
   );
-  return response;
+  return { products, currentPage };
 };

@@ -57,6 +57,7 @@ const Search = ({ content }) => {
         content={content}
         products={products}
         setProducts={setProducts}
+        currentPage={content.data.currentPage}
       />
     </TwoColumns>
   );
