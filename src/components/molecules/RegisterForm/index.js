@@ -13,7 +13,7 @@ import {
 import { Alert } from "@material-ui/lab";
 import { AddressFormStyles, TitleStyles } from "./styles";
 
-const RegisterForm = ({handleNext}) => {
+const RegisterForm = ({handleNext, emailIdentification}) => {
   const { state, dispatch } = useContext(store);
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
@@ -29,7 +29,7 @@ const RegisterForm = ({handleNext}) => {
   const [logged, setLogged] = useState(false);
   const [newRegister, setNewRegister] = useState(false);
   const intialValues = {
-    email: "ggssouzab@gmail.com",
+    email: emailIdentification,
   };
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const RegisterForm = ({handleNext}) => {
     <AddressFormStyles>
       <Grid container spacing={3}>
         {newRegister ? (
-          <NewUser setNewRegister={setNewRegister} />
+          <NewUser setNewRegister={setNewRegister} handleNext={handleNext} />
         ) : (
           <React.Fragment>
             <Grid item xs={12} sm={12}>

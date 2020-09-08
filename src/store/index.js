@@ -9,7 +9,7 @@ const initialState = {
     currentPage: 0,
     loading: false,
     products: [],
-    productsPerPage: 16,
+    productsPerPage: 32,
     sortedBy: "Nome do produto",
   },
   user: {
@@ -32,21 +32,21 @@ const initialState = {
     error: false,
   },
   myStore: {
-    id: "5e8e1c6e43a61128433f0eed",
-    name: "Petshop do Reberth",
-    phone: "(15) 3591-2542",
+    id: "cd",
+    name: "Centro de distribuição",
+    phone: "",
     address: {
-      postalCode: "04650-140",
-      street: "Rua José Neves",
-      state: "SP",
-      complement: "até 379/380",
-      neighborhood: "Vila São Paulo",
-      city: "São Paulo",
-      number: "364",
-      latitude: -23.65914,
-      longitude: -46.6761561,
+      postalCode: "",
+      street: "",
+      state: "",
+      complement: "",
+      neighborhood: "",
+      city: "",
+      number: "",
+      latitude: null,
+      longitude: null,
     },
-    distance: "109057",
+    distance: "",
   },
   stores: [],
   changedStore: false,
@@ -57,9 +57,19 @@ const store = createContext(initialState);
 const { Provider } = store;
 
 // Saga
+function* payments({ paymentCard }) {
+  try {
+    const { data } = yield call(service.requestPaymentsCard, paymentCard);
+    console.log(data, "paymentsCard");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* newAddress({ newAddress }) {
   try {
     const { data } = yield call(service.requestNewAddress, newAddress);
+    yield put({ type: "LOGIN_SUCCESS" });
   } catch (error) {
     console.log(error);
   }
@@ -85,12 +95,26 @@ function* isLogin({ login, handleNext }) {
   }
 }
 
-function* registerUser({ register, setNewRegister }) {
+function* registerUser({ register, handleNext }) {
   try {
+    const login = { email: register.email, password: register.password };
     const { data } = yield call(service.requestRegister, register);
     if (data) {
-      setNewRegister(false);
+      const isLogin = yield call(service.requestLogin, login);
+      if (isLogin.data.status === 200) {
+        localStorage.setItem("app-token", isLogin.data.token);
+      }
+      const address = yield call(
+        service.requestAddresses,
+        localStorage.getItem("app-token")
+      );
+      window.Mercadopago.setPublishableKey(
+        "TEST-6ff57941-ef53-460f-b875-80eec81400ac"
+      );
+      yield put({ type: "LOGIN_SUCCESS", address: address.data.addresses });
+      handleNext();
     }
+
     console.log(data, newUser);
   } catch (error) {}
 }
@@ -108,12 +132,14 @@ function* setCart({ payload }) {
       service.requestStores,
       "5e8e1c6e43a61128433f0eed"
     );
-    const { data } = yield call(service.requestCart, payload);
-    yield put({
-      type: "CART_SUCCESS",
-      payload: data,
-      stores: dataStores.data.data,
-    });
+    if (payload) {
+      const { data } = yield call(service.requestCart, payload);
+      yield put({
+        type: "CART_SUCCESS",
+        payload: data,
+        stores: dataStores.data.data,
+      });
+    }
   } catch (error) {}
 }
 
@@ -131,7 +157,6 @@ function* getStores() {
         ? { postalCode: geo.postalCode }
         : { latitude: geo.latitude, longitude: geo.longitude }
     );
-
     const { data } = yield call(service.requestGetStore, { params });
     yield put({ type: "STORES_SUCCESS", payload: data });
   } catch (error) {
@@ -140,13 +165,39 @@ function* getStores() {
 }
 
 function* changeStore({ payload }) {
-  // const { id } = payload;
+  const params = yield select(({ geo }) =>
+    geo.postalCode
+      ? { postalCode: geo.postalCode }
+      : { latitude: geo.latitude, longitude: geo.longitude }
+  );
+  const { data } = yield call(service.requestGetStore, { params });
+  const updatedStores = data.filter((store) => store.id !== payload.id);
+  yield put({ type: "UPDATE_STORES", payload: updatedStores });
+
   try {
-    // yield take("GEO_SUCCESS");
     yield put({ type: "CHANGE_STORE_SUCCESS" });
   } catch (error) {
     yield put({ type: "CHANGE_STORE_ERROR" });
   }
+}
+
+function* setMyStore({ payload }) {
+  const currentStore = yield select(({ myStore }) => myStore);
+  localStorage.setItem("storeID", payload[0].id);
+  if (payload && payload.length > 0) {
+    if (!currentStore || currentStore.id === "cd") {
+      yield put({ type: "CHANGE_STORE", payload: { id: payload[0].id } });
+    }
+  }
+}
+
+function* changePostalCode() {
+  const postal_code = yield select(({ geo }) => geo.postalCode);
+  localStorage.setItem("postalcode-delivery", postal_code);
+}
+
+function* watchPayments() {
+  yield takeEvery("PAYMENTS_REQUEST", payments);
 }
 
 function* watchRegisterUser() {
@@ -181,6 +232,14 @@ function* watchChangeStore() {
   yield takeEvery("CHANGE_STORE", changeStore);
 }
 
+function* watchPostalCode() {
+  yield takeEvery("CHANGE_POSTALCODE", changePostalCode);
+}
+
+function* watchStores() {
+  yield takeEvery("STORES_SUCCESS", setMyStore);
+}
+
 function* rootSaga() {
   yield all([
     watchGetPostcode(),
@@ -191,6 +250,9 @@ function* rootSaga() {
     watchIsLogin(),
     watchNewAddress(),
     watchRegisterUser(),
+    watchPayments(),
+    watchPostalCode(),
+    watchStores(),
   ]);
 }
 // Saga
@@ -200,12 +262,13 @@ const StateProvider = ({ children, value }) => {
   const [state, dispatch] = useReducerAndSaga(
     (state, action) => {
       switch (action.type) {
+        case "PAYMENTS_REQUEST":
+          return { ...state };
         case "CHANGE_POSTALCODE":
           return {
             ...state,
             geo: { ...state.geo, postalCode: action.payload },
           };
-
         case "REGISTERUSER_REQUEST":
           return { ...state };
         case "NEWADDRESS_REQUEST":
@@ -246,6 +309,11 @@ const StateProvider = ({ children, value }) => {
             stores: [],
           };
         case "STORES_SUCCESS":
+          return {
+            ...state,
+            stores: [...action.payload],
+          };
+        case "UPDATE_STORES":
           return {
             ...state,
             stores: [...action.payload],

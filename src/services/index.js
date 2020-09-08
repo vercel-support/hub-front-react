@@ -95,3 +95,31 @@ export const requestNewAddress = async (newAddress) => {
   );
   return response;
 };
+
+export const requestPaymentsCard = async (paymentCard) => {
+  const response = await axios.post(
+    `http://18.229.234.11:3000/api/V2/payments/card`,
+    paymentCard
+  );
+  return response;
+};
+
+export const requestProducts = async (
+  url = "",
+  page = 0,
+  storeId = "",
+  params = []
+) => {
+  const {
+    data: {
+      data: { products: response },
+    },
+  } = await axios.get(
+    `http://18.229.234.11:3000/api/V2/catalogs/redirect?url=${url}${
+      storeId ? `&storeId=${storeId}` : ""
+    }&page=${page}&perPage=32${
+      params.length ? `&filters=${params.join(",")}` : ""
+    }`
+  );
+  return response;
+};

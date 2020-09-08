@@ -14,6 +14,7 @@ const Search = ({ content }) => {
   const { state, dispatch } = useContext(store);
   const { action } = state.category;
   const [products, setProducts] = useState(content.data.products);
+  const [filterOpen, setFilterOpen] = useState(false);
 
   useEffect(() => {
     setProducts(content.data.products);
@@ -24,7 +25,10 @@ const Search = ({ content }) => {
       beforeContent={
         <React.Fragment>
           <CategoryBanner categoryName={content.data.pageName} />
-          <CategoryTools />
+          <CategoryTools
+            filterOpen={filterOpen}
+            setFilterOpen={setFilterOpen}
+          />
         </React.Fragment>
       }
       content={content}
@@ -32,11 +36,17 @@ const Search = ({ content }) => {
         action === "sort" ? (
           // <CategorySort sorters={content.data.sortOptions} />
           <CategoryFilter
+            filterOpen={filterOpen}
+            setFilterOpen={setFilterOpen}
+            content={content}
             filters={content.data.filtersAvailable}
             setProducts={setProducts}
           />
         ) : (
           <CategoryFilter
+            filterOpen={filterOpen}
+            setFilterOpen={setFilterOpen}
+            content={content}
             filters={content.data.filtersAvailable}
             setProducts={setProducts}
           />

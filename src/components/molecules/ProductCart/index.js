@@ -6,11 +6,19 @@ import { Paper } from "@material-ui/core";
 
 import { ProductCartStyles } from "./styles";
 
-const ProductCart = ({ product }) => {
-  const [state, setState] = React.useState({
-    quantity: "",
-  });
+const ProductCart = ({ product, allProducts }) => {
   const { dispatch } = useContext(store);
+  const [state, setState] = React.useState({
+    quantity: 1,
+  });
+
+  const setQuantity = () => {
+    let qty = []
+    for(let i = 1; i<product.quantity;i++) {
+        qty.push(<option value={i}>{i}</option>)
+    }
+    return qty
+  }
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -18,19 +26,13 @@ const ProductCart = ({ product }) => {
       ...state,
       [name]: event.target.value,
     });
+    const newPorducts = allProducts.map(item => item.sku !== product.sku ? item:{...item, quantity: event.target.value})
 
     dispatch({
       type: "SHIPPING_REQUEST",
       payload: {
         postalCode: "04650140",
-        items: [
-          {
-            sku: product.sku,
-            quantity: event.target.value,
-            price: 189,
-            specialPrice: 170.1,
-          },
-        ],
+        items: newPorducts,
         storeId: "5e8e1c6e43a61128433f0eed",
       },
     });
@@ -45,7 +47,10 @@ const ProductCart = ({ product }) => {
         <div className="goods-info">
           <p className="goods-title">{product.name}</p>
           <div className="goods-price">
-            <CartPrice price={product.specialPrice} specialPrice={product.price} />
+            <CartPrice
+              price={product.specialPrice}
+              specialPrice={product.price}
+            />
           </div>
           <span className="save">
             <FormControl variant="outlined">
@@ -58,15 +63,7 @@ const ProductCart = ({ product }) => {
                   id: "outlined-age-native-simple",
                 }}
               >
-                <option aria-label="None" value={product.quantity}>
-                  {product.quantity}
-                </option>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
-                <option value={6}>6</option>
+                {setQuantity()}
               </Select>
             </FormControl>
 

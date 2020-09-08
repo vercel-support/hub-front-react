@@ -1,24 +1,42 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { requestProducts } from "../../../services";
 import { store } from "../../../store";
 import { Grid } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import { ProductCard } from "../../molecules";
 import ListProductsStyled from "./styles";
 
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+
 const ListProducts = ({ content, products, setProducts }) => {
   const [page, setPage] = useState(content.data.currentPage);
   let {
-    // products = [],
-    productsPerPage = 16,
+    categoryUrl = "",
+    productsPerPage = 32,
     sortedBy = "Nome do produto",
     sortOptions = [],
   } = content.data;
-  // const [items, setItems] = useState(products);
+
+  const handleSetProducts = async () => {
+    const newProducts = await requestProducts(
+      categoryUrl,
+      page,
+      "5e8e1c6e43a61128433f0eed",
+      []
+    );
+
+    setProducts(newProducts);
+  };
+
+  const handlePagination = (action) => {
+    if (action === "more") setPage(page + 1);
+    else setPage(page > 1 ? page - 1 : page);
+  };
 
   useEffect(() => {
-    setPage(0);
-  }, [products]);
+    handleSetProducts();
+  }, [page]);
 
   return (
     <ListProductsStyled>
@@ -35,23 +53,14 @@ const ListProducts = ({ content, products, setProducts }) => {
           />
         ))}
         <Grid item xs={12} alignItems="center" justify="center">
-          <Pagination
-            count={10}
-            page={page}
-            size="large"
-            onChange={(event, cpage) => {
-              setPage(cpage);
-              /*axios
-                .get(
-                  `http://18.229.234.11:3000/api/V2/catalogs/redirect?url=marcas/royal-canin&storeId=5e8e1c6e43a61128433f0eed&page=${
-                    cpage - 1
-                  }&perPage=${productsPerPage}`
-                )
-                .then(({ data }) => {
-                  console.log(data);
-                  setProducts(data.data.products);
-                });*/
-            }}
+          <ArrowBackIosIcon
+            fontSize="small"
+            onClick={() => handlePagination("less")}
+          />
+          {` ${page + 1} `}
+          <ArrowForwardIosIcon
+            fontSize="small"
+            onClick={() => handlePagination("more")}
           />
         </Grid>
       </Grid>

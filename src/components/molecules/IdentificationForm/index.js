@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { store } from "../../../store";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Grid, Typography } from "@material-ui/core";
 import { AddressFormStyles, TitleStyles, EmailStyles } from "./styles";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-const IdentificationForm = () => {
+const IdentificationForm = ({ setEmailIdentification }) => {
   const { state, dispatch } = useContext(store);
   const { register, errors, handleSubmit } = useForm({
-    mode: "onBlur"
+    mode: "onBlur",
   });
+
   const onSubmit = (data) => {
+    setEmailIdentification(data.email);
     dispatch({
       type: "EMAIL_REQUEST",
-      email: data.email
+      email: data.email,
     });
   };
   console.log(state, "state");
@@ -29,10 +29,21 @@ const IdentificationForm = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="email">E-mail</label>
             <EmailStyles>
-            <input name="email" type="text" placeholder="marco@marco.com" ref={register({ required: true })} />
-            <input type="submit" value="Continuar" />
+              <input
+                name="email"
+                type="text"
+                placeholder="marco@marco.com"
+                ref={register({
+                  required: true,
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  },
+                })}
+              />
+              {errors.email && errors.email.message}
+              <input type="submit" value="Continuar" />
             </EmailStyles>
-            {errors.email && <p>E-mail obrigatório</p>}
+            {errors.email && <p>Insira um e-mail válido.</p>}
           </form>
         </Grid>
       </Grid>

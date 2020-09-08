@@ -58,6 +58,28 @@ export const PaymentFormStyles = styled.div`
     border-radius: 5px;
   }
 
+  select#installments {
+    display: block;
+    box-sizing: border-box;
+    width: 98%;
+    padding: 7px 9px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    border: 3px solid #dedede;
+    border-radius: 5px;
+  }
+
+  select#docType {
+    display: block;
+    box-sizing: border-box;
+    width: 97%;
+    padding: 7px 9px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    border: 3px solid #dedede;
+    border-radius: 5px;
+  }
+
   input[type="text"]:focus {
     box-shadow: 0 0 0 0;
     outline: 0;
@@ -74,6 +96,7 @@ export const PaymentFormStyles = styled.div`
     margin-top: 20px;
     border-radius: 5px;
     width: 100%;
+    margin-bottom: 20px;
   }
 
   .button {
@@ -82,19 +105,5 @@ export const PaymentFormStyles = styled.div`
 
   fieldset {
     border: none;
-  }
-`;
-
-export const ReviewCepStyles = styled.div`
-  display: flex;
-  padding: 0 !important;
-
-  input[type="text"] {
-    width: 40%;
-  }
-
-  input[type="text"]:focus {
-    box-shadow: 0 0 0 0;
-    outline: 0;
   }
 `;

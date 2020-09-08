@@ -4,23 +4,26 @@ import TuneIcon from "@material-ui/icons/Tune";
 import { store } from "../../../store";
 import CategoryToolsStyled from "./styles";
 
-const CategoryTools = () => {
+const CategoryTools = ({ filterOpen, setFilterOpen }) => {
   const { dispatch } = useContext(store);
 
   return (
     <CategoryToolsStyled>
       <Button
         variant="outlined"
-        onClick={() => dispatch({ type: "CATEGORY_ACTION", payload: "filter" })}
+        onClick={() => {
+          // dispatch({ type: "CATEGORY_ACTION", payload: "filter" });
+          setFilterOpen(!filterOpen);
+        }}
       >
         <TuneIcon /> filtrar
       </Button>
-      <Button
+      {/* <Button
         variant="outlined"
         onClick={() => dispatch({ type: "CATEGORY_ACTION", payload: "sort" })}
       >
         <TuneIcon /> ordenar
-      </Button>
+      </Button> */}
     </CategoryToolsStyled>
   );
 };

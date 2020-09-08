@@ -7,9 +7,11 @@ import {
   CardContent,
   CardMedia,
 } from "@material-ui/core";
+import { CardImage, CartPrice } from "../../atoms";
+import { numberToPrice } from "../../../utils/helpers";
 import { ResumeFormStyles, ResumeFormAmountStyles } from "./styles";
 
-const ResumeForm = () => {
+const ResumeForm = ({ shipping, total }) => {
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = (data) => console.log(data);
 
@@ -19,51 +21,28 @@ const ResumeForm = () => {
         Resumo
       </Typography>
       <React.Fragment>
-        <Card>
-          <CardMedia title="Resume Title">
-            <img src="/assets/images/resume.jpg" />
-          </CardMedia>
-          <CardContent>
-            <p>
-              Ração Royal Canin para Cães Adultos de Porte Pequeno Pelo Longo
-              Castrado
-            </p>
-            <span>R$ 239,90</span>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardMedia title="Resume Title">
-            <img src="/assets/images/resume.jpg" />
-          </CardMedia>
-          <CardContent>
-            <p>
-              Ração Royal Canin para Cães Adultos de Porte Pequeno Pelo Longo
-              Castrado
-            </p>
-            <span>R$ 239,90</span>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardMedia title="Resume Title">
-            <img src="/assets/images/resume.jpg" />
-          </CardMedia>
-          <CardContent>
-            <p>
-              Ração Royal Canin para Cães Adultos de Porte Pequeno Pelo Longo
-              Castrado
-            </p>
-            <span>R$ 239,90</span>
-          </CardContent>
-        </Card>
+        {shipping && shipping.items.map((item) => (
+          <Card>
+            <CardMedia title="Resume Title">
+              <CardImage image={item.image} />
+            </CardMedia>
+            <CardContent>
+              <p>{item.name}</p>
+              <span>{numberToPrice(item.specialPrice)}</span>
+            </CardContent>
+          </Card>
+        ))}
 
         <ResumeFormAmountStyles>
           <div className="resume-label">
-            <Typography variant="h5" component="h6">Total:</Typography>
+            <Typography variant="h5" component="h6">
+              Total:
+            </Typography>
           </div>
           <div className="resume-total">
-            <Typography variant="h5" component="h6">R$ 239,90</Typography>
+            <Typography variant="h5" component="h6">
+              {numberToPrice(total)}
+            </Typography>
           </div>
         </ResumeFormAmountStyles>
       </React.Fragment>

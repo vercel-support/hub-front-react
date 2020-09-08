@@ -4,27 +4,31 @@ import MenuStyled from "./styles";
 
 const MenuSecond = ({ items }) => (
   <ul>
-    {items.map((item) => (
-      <li key={item.id}>
-        {/*<Link
+    {items.map((item, i) => {
+      if (i >= 30) return;
+
+      return (
+        <li key={item.id}>
+          {/*<Link
           href={{
             pathname: "/[...page]",
             query: { name: "test" },
           }}
           as={`/${item.url}`}
         >*/}
-        <Link href={`/${item.url}`}>
-          <a>{item.name}</a>
-        </Link>
-        {
-          item?.children?.length ? (
-            <MenuThird items={item.children} />
-          ) : null /*(
+          <Link href={`/${item.url}`}>
+            <a>{item.name}</a>
+          </Link>
+          {
+            item?.children?.length ? (
+              <MenuThird items={item.children} />
+            ) : null /*(
           <MenuBanner />
         )*/
-        }
-      </li>
-    ))}
+          }
+        </li>
+      );
+    })}
   </ul>
 );
 

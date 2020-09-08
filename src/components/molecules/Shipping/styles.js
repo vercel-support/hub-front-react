@@ -11,7 +11,7 @@ export const ShippingStyles = styled.div`
 
         label {
             background: #f6f6f6;
-            width: 90%;
+            width: 100%;
             padding: 0;
             margin: 0;
             margin-bottom: 5px;

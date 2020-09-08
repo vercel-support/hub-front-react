@@ -1,41 +1,102 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { store } from "../../../store";
 import { useForm } from "react-hook-form";
-import { CardAddress } from "../../atoms"
-import {
-  Grid,
-  Hidden,
-} from "@material-ui/core";
-import { ReviewStyles, ReviewCepStyles, TitleStyles } from "./styles";
+import { CardAddress, InputAlternative } from "../../atoms";
+import ValidationAddress from "../ValidationAddress";
+import Shipping from "../Shipping";
+import { Grid, Hidden } from "@material-ui/core";
+import { ReviewStyles, TitleStyles } from "./styles";
 
-const Review = ({handleNext}) => {
+const Review = ({ handleNext, shipping, total }) => {
   const { state, dispatch } = useContext(store);
-  const { register, handleSubmit } = useForm();
+  const [validationCep, setValidationCep] = React.useState(false);
+  const {
+    handleSubmit,
+    register,
+    errors,
+    setError,
+    setValue,
+    watch,
+    getValues,
+  } = useForm({ mode: "onBlur" });
+
+  const cep = watch("zip", 0);
+  const hasZipLength = cep.toString().length === 9;
+
+  const requestAddress = async (cep) => {
+    try {
+      const url = `https://viacep.com.br/ws/${cep}/json/`;
+      const response = await fetch(url);
+      const address = await response.json();
+      setValue("street", address.logradouro);
+      setValue("neighborhood", address.bairro);
+      setValue("cidade", address.localidade);
+      setValue("estado", address.uf);
+      return address;
+    } catch (error) {
+      err;
+    }
+  };
+
   const onSubmit = (data) => {
     const token = localStorage.getItem("app-token");
-    console.log(token, "token");
+
     dispatch({
       type: "NEWADDRESS_REQUEST",
       newAddress: {
-        "token": `${token}`,
-        "postalCode": data.postalCode,
-        "street": data.street,
-        "number": data.number,
-        "neighborhood": data.neighborhood,
-        "phone": data.phone,
-        "firstName": data.firstName,
-        "lastName": data.lastName,
-        "defaultBilling": true,
+        token: `${token}`,
+        postalCode: data.zip,
+        street: data.street,
+        number: data.number,
+        neighborhood: data.neighborhood,
+        phone: data.telephone,
+        firstName: data.firstname,
+        lastName: data.lastname,
+        defaultBilling: true,
       },
     });
   };
 
-  console.log(state, "state")
+  const FunValidationCep = (cepCad, item) => {
+    if (state.geo.postalCode) {
+      if (state.geo.postalCode === cepCad) {
+        handleNext();
+        localStorage.setItem("addressSelected", JSON.stringify(item));
+      } else setValidationCep(true);
+    } else {
+      handleNext(item);
+      localStorage.setItem("addressSelected", JSON.stringify(item));
+    }
+  };
+
+  useEffect(() => {
+    if (hasZipLength) requestAddress(cep);
+  }, [cep, setValue]);
 
   return (
     <ReviewStyles>
       <Grid container spacing={3}>
-        {state && state.user.address && <CardAddress address={state && state.user.address} handleNext={handleNext} />}
+        <Grid xs={12} sm={12}>
+          <TitleStyles>
+            {state.geo.postalCode ? "receber em casa" : "retirar na loja"}
+          </TitleStyles>
+        </Grid>
+        <Grid xs={12}>
+          {state.geo.postalCode ? (
+            <Shipping shipping={shipping.shippingOptions} />
+          ) : (
+            state.myStore.name
+          )}
+        </Grid>
+        {state && state.user.address && (
+          <CardAddress
+            validationCep={FunValidationCep}
+            address={state && state.user.address}
+            handleNext={handleNext}
+          />
+        )}
+
+        <Grid xs={12}>{validationCep && <ValidationAddress />}</Grid>
 
         <Grid xs={12} sm={12}>
           <TitleStyles>novo endereço</TitleStyles>
@@ -44,57 +105,186 @@ const Review = ({handleNext}) => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
-          <Grid xs={12} sm={12}>
-            <label htmlFor="CEP">CEP</label>
-            <ReviewCepStyles>
-              <input type="text" name="postalCode" ref={register} />
-            </ReviewCepStyles>
+          <Grid xs={12} sm={8}>
+            <label htmlFor="CEP">CEP*</label>
+            <InputAlternative
+              ref={register({ required: true, minLength: 9 })}
+              invert={true}
+              mask="maskCep"
+              qa="account_input_cep"
+              width={50}
+              config={{
+                type: "text",
+                id: "zip",
+                name: "zip",
+                placeholder: "Digite apenas números",
+                error: errors.zip,
+                message:
+                  errors.zip && errors.zip.types && errors.zip.types.notFound
+                    ? "CEP não encontrado"
+                    : "Este é um campo obrigatório.",
+              }}
+            />
           </Grid>
           <Grid xs={12} sm={8}>
-            <label htmlFor="street">Rua</label>
-            <input type="text" name="street" ref={register}></input>
+            <label htmlFor="street">Rua*</label>
+            <InputAlternative
+              ref={register({ required: true })}
+              invert={true}
+              width={100}
+              config={{
+                type: "text",
+                id: "street",
+                name: "street",
+                error: errors.street,
+                message: "Este é um campo obrigatório.",
+              }}
+            />
           </Grid>
 
           <Grid xs={6} sm={4}>
-            <label htmlFor="number">Número</label>
-            <input type="text" name="numero" ref={register}></input>
+            <label htmlFor="number">Número*</label>
+            <InputAlternative
+              ref={register({ required: true })}
+              invert={true}
+              width={100}
+              config={{
+                type: "text",
+                id: "number",
+                name: "number",
+                error: errors.number,
+                message: "Este é um campo obrigatório.",
+              }}
+            />
           </Grid>
 
           <Hidden only={["lg", "sm"]}>
             <Grid xs={6}>
-              <label htmlFor="neighborhood">Bairro</label>
-              <input type="text" name="bairro" ref={register}></input>
+              <label htmlFor="neighborhood">Bairro*</label>
+              <InputAlternative
+                ref={register({ required: true })}
+                invert={true}
+                width={100}
+                config={{
+                  type: "text",
+                  id: "neighborhood",
+                  name: "neighborhood",
+                  error: errors.neighborhood,
+                  message: "Este é um campo obrigatório.",
+                }}
+              />
             </Grid>
           </Hidden>
 
           <Grid xs={12} sm={8}>
             <label htmlFor="complemento">Complemento</label>
-            <input type="text" name="complemento" ref={register}></input>
+            <InputAlternative
+              ref={register}
+              invert={true}
+              width={100}
+              config={{
+                type: "text",
+                id: "complemento",
+                name: "complemento",
+                error: errors.complemento,
+                message: "Este é um campo obrigatório.",
+              }}
+            />
           </Grid>
 
           <Hidden only="xs">
             <Grid xs={12} sm={4}>
-              <label htmlFor="neighborhood">Bairro</label>
-              <input type="text" name="bairro" ref={register}></input>
+              <label htmlFor="neighborhood">Bairro*</label>
+              <InputAlternative
+                ref={register({ required: true })}
+                invert={true}
+                width={100}
+                config={{
+                  type: "text",
+                  id: "neighborhood",
+                  name: "neighborhood",
+                  error: errors.neighborhood,
+                  message: "Este é um campo obrigatório.",
+                }}
+              />
             </Grid>
           </Hidden>
 
           <Grid xs={6} sm={8}>
-            <label htmlFor="cidade">Cidade</label>
-            <input type="text" name="cidade" ref={register}></input>
+            <label htmlFor="cidade">Cidade*</label>
+            <InputAlternative
+              ref={register({ required: true })}
+              invert={true}
+              width={100}
+              config={{
+                type: "text",
+                id: "cidade",
+                name: "cidade",
+                error: errors.cidade,
+                message: "Este é um campo obrigatório.",
+              }}
+            />
           </Grid>
           <Grid xs={6} sm={4}>
-            <label htmlFor="estado">Estado</label>
-            <input type="text" name="estado" ref={register}></input>
+            <label htmlFor="estado">Estado*</label>
+            <InputAlternative
+              ref={register({ required: true })}
+              invert={true}
+              width={100}
+              config={{
+                type: "text",
+                id: "estado",
+                name: "estado",
+                error: errors.estado,
+                message: "Este é um campo obrigatório.",
+              }}
+            />
           </Grid>
-          <Grid xs={12} sm={6}>
-            <label htmlFor="destinatario">Nome do destinatário</label>
-            <input type="text" name="firstName" ref={register}></input>
-            <p>Nome de quem retira ou recebe o pedido</p>
+          <Grid xs={12} sm={4}>
+            <label htmlFor="firstname">Nome*</label>
+            <InputAlternative
+              ref={register({ required: true })}
+              invert={true}
+              mask="maskName"
+              config={{
+                type: "text",
+                id: "firstname",
+                name: "firstname",
+                error: errors.firstname,
+                message: "Entre com um nome válido",
+              }}
+            />
           </Grid>
-          <Grid xs={12} sm={6}>
+          <Grid xs={12} sm={5}>
+            <label htmlFor="lastname">Sobrenome*</label>
+            <InputAlternative
+              ref={register({ required: true })}
+              invert={true}
+              mask="maskName"
+              qa="account_input_lastname"
+              config={{
+                type: "text",
+                id: "lastname",
+                name: "lastname",
+                error: errors.lastname,
+                message: "Entre com um nome válido",
+              }}
+            />
+          </Grid>
+          <Grid xs={12} sm={3}>
             <label htmlFor="tel">Telefone</label>
-            <input type="text" name="phone" ref={register}></input>
+            <InputAlternative
+              ref={register}
+              mask="maskTelCel"
+              config={{
+                type: "text",
+                id: "telephone",
+                name: "telephone",
+                placeholder: "DDD + Telefone",
+                error: errors.telephone,
+                message: "Este é um campo obrigatório.",
+              }}
+            />
           </Grid>
         </Grid>
 

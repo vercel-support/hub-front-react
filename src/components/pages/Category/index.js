@@ -14,11 +14,9 @@ const Category = ({ content }) => {
   const { state, dispatch } = useContext(store);
   const { action } = state.category;
   const [products, setProducts] = useState(content.data.products);
-
-  console.log("Produtos", products);
+  const [filterOpen, setFilterOpen] = useState(false);
 
   useEffect(() => {
-    console.log("useEffect", state, dispatch);
     // dispatch({ type: "SET_CATEGORY", payload: products });
   }, [products, state]);
 
@@ -30,7 +28,10 @@ const Category = ({ content }) => {
             categoryName={content.data.pageName}
             items={content.data.breadcrumbs}
           />
-          {/* <CategoryTools /> */}
+          <CategoryTools
+            filterOpen={filterOpen}
+            setFilterOpen={setFilterOpen}
+          />
         </React.Fragment>
       }
       content={content}
@@ -48,6 +49,9 @@ const Category = ({ content }) => {
           />
         ) */
         <CategoryFilter
+          filterOpen={filterOpen}
+          setFilterOpen={setFilterOpen}
+          content={content}
           filters={content.data.filtersAvailable}
           setProducts={setProducts}
         />

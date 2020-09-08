@@ -29,34 +29,29 @@ const SubMenu = () => (
   </ul>
 );
 
-const HeaderLinks = () => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <HeaderLinksStyled>
-      <li>
-        <Link href={`/[...page]`} as="/atendimento">
-          <a>
-            <Sms />
-            atendimento
-          </a>
-        </Link>
-      </li>
-      <li
-        onClick={() => setOpen(!open)}
-        onMouseOver={() => setOpen(true)}
-        onMouseOut={() => setOpen(false)}
-        style={{ position: "relative" }}
-      >
-        <Person />
-        entrar | cadastrar
-        {open ? <ExpandLess /> : <ExpandMore />}
-        <DropDown open={open}>
-          <SubMenu />
-        </DropDown>
-      </li>
-    </HeaderLinksStyled>
-  );
-};
+const HeaderLinks = () => (
+  <HeaderLinksStyled>
+    <li>
+      <Link href={`/[...page]`} as="/central-de-atendimento">
+        <a>
+          <Sms />
+          atendimento
+        </a>
+      </Link>
+    </li>
+    <li>
+      <Link href={`/[...page]`} as="/customer/account/">
+        <a>
+          <Person />
+          Minha conta
+        </a>
+      </Link>
+      {/* {open ? <ExpandLess /> : <ExpandMore />}
+      <DropDown open={open}>
+        <SubMenu />
+      </DropDown> */}
+    </li>
+  </HeaderLinksStyled>
+);
 
 export default HeaderLinks;

@@ -11,10 +11,10 @@ export const ShippingCardStyled = styled.div`
 
   button {
     align-self: flex-end;
-    background: ${(props) => (props.stock ? "#cfd601" : "#EDEDED")};
+    background: ${(props) => (props.available ? "#cfd601" : "#EDEDED")};
     border: 0;
     border-radius: 5px;
-    color: ${(props) => (props.stock ? "#ffffff" : "#B4B4B4")};
+    color: ${(props) => (props.available ? "#ffffff" : "#B4B4B4")};
     cursor: pointer;
     display: flex;
     font-size: 13px;
@@ -71,7 +71,7 @@ export const ShippingCardStyled = styled.div`
     text-decoration: underline;
   }
   .stock {
-    color: ${(props) => (props.stock ? "#03DA0B" : "#cf4e0f")};
+    color: ${(props) => (props.available ? "#03DA0B" : "#cf4e0f")};
   }
   .store {
     font-weight: bold;

@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { OneColumn } from "../../templates";
+import React, { useEffect, useState, useContext } from "react";
+import { store } from "../../../store";
 import { Grid } from "@material-ui/core";
-
+import { regex } from '../../../utils/regex';
 import { PaymentFormStyles } from "./styles";
 
-const PaymentForm = ({ content }) => {
+const PaymentForm = ({ total }) => {
+  const { state, dispatch } = useContext(store);
   const [doSubmit, setDoSubmit] = useState(false);
+
   useEffect(() => {
     window.Mercadopago.setPublishableKey(
       "TEST-6ff57941-ef53-460f-b875-80eec81400ac"
@@ -13,6 +15,20 @@ const PaymentForm = ({ content }) => {
     window.Mercadopago.getIdentificationTypes();
     document.querySelector("#pay").addEventListener("submit", doPay);
   });
+  
+  const mask = "maskCpfCnpj";
+  const onChange = null;
+
+  const onInputChange = (e) => {
+    const event = e;
+
+    if (mask) {
+      event.target.value = regex[mask](event.target.value);
+    }
+
+    if (onChange) onChange(event);
+  };
+
   const sdkResponseHandler = (status, response) => {
     if (status != 200 && status != 201) {
       alert("verify filled data");
@@ -20,6 +36,64 @@ const PaymentForm = ({ content }) => {
       const token = response.id;
       alert(`token = ${token}`);
       console.log(response);
+      dispatch({
+        type: "PAYMENTS_REQUEST",
+        paymentCard: {
+          "payment": {
+              "transactionAmount": total && total,
+              "token": token,
+              "description": 'COMPRA GERACAO PET', 
+              "method": 'master'
+          }
+          ,
+          "order": {
+              "salesChannel": "geracaopet.com.br",
+              "customer": {
+                  "firstname": "Leo",
+                  "lastname": "Accept",
+                  "email": "tste@teste.com",
+                  "telephone": "(15) 995122784",
+                  "cpf": "177.529.640-77",
+                  "address": {
+                    "city": "Sorocaba",
+                    "postalCode": "18030-005",
+                    "region": "São Paulo",
+                    "regionId": 508,
+                    "countryId": "BR",
+                    "uf": "SP",
+                    "street": "Av. Comendador Pereira Inácio",
+                    "number": "800",
+                    "neighborhood": "Jd. Sandra",
+                    "complement": "Ap 83 Bloco A",
+                    "firstname": "Leo",
+                    "lastname": "Okumura"
+                }
+              },
+              "address": JSON.parse(localStorage.getItem("addressSelected")),
+              "couponCode": "",
+              "discount": 35,
+              "items": state && state.shippingCart.items,
+              "shippingType": "delivery",
+              "shippings": [
+                  {
+                      "storeId": "5e8e1c6e43a61128433f0eed",
+                      "id": "5e8e1c6e43a61128433f0ef5",
+                      "price": 10,
+                      "time": 5,
+                      "timeUnits": "hours"
+                  },
+                  {
+                      "storeId": "cd",
+                      "shippingId": "11589028151",
+                      "shippingMethodId": 4,
+                      "price": 0,
+                      "time": 2,
+                      "timeUnits": "days"
+                  }
+              ]
+          }
+      },
+      });
     }
   };
   const doPay = (event) => {
@@ -75,32 +149,25 @@ const PaymentForm = ({ content }) => {
       );
     }
   };
-  const submitForm = (value) => {
-    console.log(value);
+  const submitForm = () => {      
   };
   return (
     <PaymentFormStyles>
       <form action={submitForm} method="post" id="pay" name="pay">
         <fieldset>
           <Grid container spacing={3}>
-            <Grid xs={6} sm={6}>
-              <label for="description">Descrição</label>
-              <input
-                type="text"
-                name="description"
-                id="description"
-                value="Ítem selecionado"
-              />
-            </Grid>
-            <Grid xs={6} sm={6}>
-              <label for="transaction_amount">Valor a pagar</label>
-              <input
-                type="text"
-                name="transaction_amount"
-                id="transaction_amount"
-                value="300"
-              />
-            </Grid>
+            <input
+              type="hidden"
+              name="description"
+              id="description"
+              value="Ítem selecionado"
+            />
+            <input
+              type="hidden"
+              name="transaction_amount"
+              id="transaction_amount"
+              value={total && total}
+            />
             <Grid xs={6} sm={6}>
               <label for="cardNumber">Número do cartão</label>
               <input
@@ -170,7 +237,7 @@ const PaymentForm = ({ content }) => {
                 autocomplete={"off"}
               />
             </Grid>
-            <Grid xs={12} sm={12}>
+            <Grid xs={12} sm={4}>
               <label for="installments">Parcelas</label>
               <select
                 id="installments"
@@ -178,23 +245,25 @@ const PaymentForm = ({ content }) => {
                 name="installments"
               ></select>
             </Grid>
-            <Grid xs={12} sm={12}>
+            <Grid xs={12} sm={2}>
               <label for="docType">Tipo de documento</label>
               <select id="docType" data-checkout="docType"></select>
             </Grid>
-            <Grid xs={12} sm={12}>
+            <Grid xs={12} sm={6}>
               <label for="docNumber">Número do documento</label>
-              <input type="text" id="docNumber" data-checkout="docNumber" />
-            </Grid>
-            <Grid xs={12} sm={12}>
-              <label for="email">E-mail</label>
               <input
-                type="email"
-                id="email"
-                name="email"
-                value="test@test.com"
+                type="text"
+                id="docNumber"
+                data-checkout="docNumber"
+                placeholder="000.000.000-00"
               />
             </Grid>
+            <input
+              type="hidden"
+              id="email"
+              name="email"
+              value="test@test.com"
+            />
             <input
               type="hidden"
               name="payment_method_id"
