@@ -27,7 +27,7 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
       const cartId = localStorage.getItem("cartId");
       localStorage.setItem("selected-shipping-method", "");
       localStorage.setItem("shipping-type", shippingType);
-      localStorage.setItem("cart-address", end);
+      localStorage.setItem("postalcode-delivery", end);
       await axios.post(`${API_URL}/cart-shipping`, { 
         cartId, 
         shippingOptionSelected: selectedShippingMethod, 
@@ -40,7 +40,7 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
       const cartId = localStorage.getItem("cartId");
       localStorage.setItem("selected-shipping-method", selectedShippingMethod);
       localStorage.setItem("shipping-type", shippingType);
-      localStorage.setItem("cart-address", end);
+      localStorage.setItem("postalcode-delivery", end);
       await axios.post(`${API_URL}/cart-shipping`, { 
         cartId, 
         shippingOptionSelected: selectedShippingMethod, 

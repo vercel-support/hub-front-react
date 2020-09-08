@@ -14,6 +14,9 @@ import { ShippingStyles } from "./styles";
 const Shipping = ({ shipping, handleSelectedShipping }) => {
   const [value, setValue] = React.useState();
 
+  React.useEffect(() => {
+  }, [shipping]);
+
   const handleChange = (event) => {
     handleSelectedShipping(event.target.value);
     //setValue(event.target.value);
@@ -31,29 +34,24 @@ const Shipping = ({ shipping, handleSelectedShipping }) => {
         >
           {shipping && shipping.expressDelivery.available && (
             <React.Fragment>
-              {shipping.expressDelivery.detailedShipping.map((item) => (
-                <FormLabel>
-                  <Radio value={"expressDelivery"} /> Expressa em até {item.time} horas
-                  <span>
-                    {item.price === 0 ? "Grátis" : numberToPrice(item.price)}
-                  </span>
-                </FormLabel>
-              ))}
+              <FormLabel>
+                <Radio value={"expressDelivery"} /> Expressa em até {shipping.expressDelivery.time} horas
+                <span>
+                  {shipping.expressDelivery.price === 0 ? "Grátis" : numberToPrice(shipping.expressDelivery.price)}
+                </span>
+              </FormLabel>
             </React.Fragment>
           )}
           {shipping && shipping.economicalDelivery.available && (
             <React.Fragment>
-              {shipping.economicalDelivery.detailedShipping.map((item) => (
-                <React.Fragment>
-                  <FormLabel>
-                    
-                    <Radio value={"economicalDelivery"} /> Econômica em até {item.time} dias úteis
-                    <span>
-                      {item.price === 0 ? "Grátis" : numberToPrice(item.price)}
-                    </span>
-                  </FormLabel>
-                </React.Fragment>
-              ))}
+              <React.Fragment>
+                <FormLabel>
+                  <Radio value={"economicalDelivery"} /> Econômica em até {shipping.economicalDelivery.time} dias úteis
+                  <span>
+                    {shipping.economicalDelivery.price === 0 ? "Grátis" : numberToPrice(shipping.economicalDelivery.price)}
+                  </span>
+                </FormLabel>
+              </React.Fragment>
             </React.Fragment>
           )}
         </RadioGroup>

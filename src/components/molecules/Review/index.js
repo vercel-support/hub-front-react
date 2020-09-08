@@ -84,7 +84,7 @@ const Review = ({ handleNext }) => {
   };
 
   const FunValidationCep = (cepCad, item) => {
-    const cartAddress = localStorage.getItem("cart-address");
+    const cartAddress = localStorage.getItem("postalcode-delivery");
     if (cartAddress) {
       if(shippingType == "pickup"){
         handleNext();
@@ -103,7 +103,7 @@ const Review = ({ handleNext }) => {
   useEffect(() => {
     if (hasZipLength) {
       requestAddress(cep);
-      const cartAddress = localStorage.getItem("cart-address");
+      const cartAddress = localStorage.getItem("postalcode-delivery");
       if(shippingType == "delivery"){
         if(cep.replace(/\D/g, '').trim() !== cartAddress.replace(/\D/g, '').trim()) setValidationCep(true);
         else setValidationCep(false);

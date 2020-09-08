@@ -20,6 +20,7 @@ const Delivery = ({ icon, end, setCep }) => {
       const validacep = /^[0-9]{8}$/;
       if (validacep.test(cep)) {
         setCep(cep);
+        localStorage.setItem("postalcode-delivery", cep);
       } else {
         alert("Formato de CEP inválido.");
       }

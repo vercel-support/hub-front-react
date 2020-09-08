@@ -6,9 +6,17 @@ export const ColumnShippingStyles = styled.div`
     align-items: center;
     text-align: center;
     display: flex;
-    margin-top: 15px
+    margin-top: 15px;
+  }
 
-    
+  button {
+    background-color: #CFD601;
+    border: none;
+    padding: 13px 15px;
+    color: #fff;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
   }
 
   a.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSizeLarge.MuiButton-sizeLarge.MuiButton-fullWidth {
