@@ -10,6 +10,8 @@ const { publicRuntimeConfig } = getConfig();
 const { API_URL, MERCADOPAGO_KEY } = publicRuntimeConfig;
 import axios from "axios";
 
+import { purchase as gaPurchase } from '../../../../lib/ga';
+
 const PaymentForm = () => {
   const router = useRouter();
   const [ doSubmit, setDoSubmit ] = useState(false);
@@ -76,6 +78,7 @@ const PaymentForm = () => {
 
       axios.post(`${API_URL}/payments/card`, requestBody).then(serviceResponse => {
         if(serviceResponse && serviceResponse.data){
+          if(serviceResponse.data.data) gaPurchase(window.dataLayer.push, serviceResponse.data);
           localStorage.setItem("payment-response", JSON.stringify(serviceResponse.data));
           setTimeout(() => { router.push("/success", undefined, { shallow: true }); }, 1000);
         }
@@ -118,7 +121,6 @@ const PaymentForm = () => {
   };
   const setPaymentMethod = (status, response) => {
     if (status == 200) {
-      console.log(response);
       let paymentMethodId = response[0].id;
       let element = document.getElementById("payment_method_id");
       element.value = paymentMethodId;

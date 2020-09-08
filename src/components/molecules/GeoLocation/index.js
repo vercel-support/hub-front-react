@@ -21,11 +21,6 @@ const GeoLocation = () => {
   const { register, handleSubmit } = useForm();
 
   const [geo, setGeo] = useState(false);
-
-  useEffect(() => {
-    const ls_store = localStorage.getItem("myStore");
-    console.log(ls_store);
-  }, []);
   
   useEffect(() => {
   }, [myStore, stores]);

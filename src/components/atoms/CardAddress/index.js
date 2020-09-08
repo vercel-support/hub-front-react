@@ -9,13 +9,13 @@ import {
 
 import { CardAddressStyles, TitleStyles } from "./styles";
 
-const CardAddress = ({ address, validationCep }) => {
+const CardAddress = ({ address, validationCep, shippingType }) => {
   return (
     <React.Fragment>
       {address.length === 0 ? null : (
         <React.Fragment>
           <Grid xs={12} sm={12}>
-            <TitleStyles>endereços cadastrados</TitleStyles>
+{/*             <TitleStyles>endereços cadastrados</TitleStyles> */}
           </Grid>
 
           {address.map((item) => (
@@ -34,7 +34,7 @@ const CardAddress = ({ address, validationCep }) => {
                 <CardActions>
                   <input
                     type="submit"
-                    value="Entregar nesse endereço"
+                    value={ shippingType == "delivery" ? "Entregar nesse endereço" : "Usar esse endereço" }
                     onClick={() => validationCep(item.postalCode, item)}
                   />
                 </CardActions>
