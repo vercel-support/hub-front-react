@@ -104,7 +104,10 @@ const Review = ({ handleNext }) => {
     if (hasZipLength) {
       requestAddress(cep);
       const cartAddress = localStorage.getItem("cart-address");
-      if(cep.replace(/\D/g, '').trim() !== cartAddress.replace(/\D/g, '').trim()) setValidationCep(true);
+      if(shippingType == "delivery"){
+        if(cep.replace(/\D/g, '').trim() !== cartAddress.replace(/\D/g, '').trim()) setValidationCep(true);
+        else setValidationCep(false);
+      }
       else setValidationCep(false);
     }
   }, [cep, setValue]);
