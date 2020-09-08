@@ -20,7 +20,7 @@ const { API_URL } = publicRuntimeConfig;
 import axios from "axios";
 import { addToCart as gaAddToCart } from '../../../../lib/ga';
 
-const addToCart = async(myStore, product, shippingType, clearFirst) => {
+const addToCart = async(myStore, product, shippingType, clearFirst, dispatch) => {
   const products = JSON.parse(localStorage.getItem("productList") || "[]");
 
   if(products.length > 0 && myStore.id !== "cd"){
@@ -55,11 +55,18 @@ const addToCart = async(myStore, product, shippingType, clearFirst) => {
   product.storeId = myStore.id;
   product.shippingType = shippingType;
   product.quantity = 1;
-  let serviceResponse = await axios.post(`${API_URL}/cart`, { products: [product], cartId, clearFirst });
 
-  if(serviceResponse.data && (serviceResponse.status === 200 || serviceResponse.status === 201)){
-    localStorage.setItem("productList", JSON.stringify(serviceResponse.data.products));
-    localStorage.setItem("cartId", serviceResponse.data.cartId);
+  dispatch({ type: "LOADING_DATA", payload: true });
+  try{
+    let serviceResponse = await axios.post(`${API_URL}/cart`, { products: [product], cartId, clearFirst });
+    dispatch({ type: "LOADING_DATA", payload: false });
+    if(serviceResponse.data && (serviceResponse.status === 200 || serviceResponse.status === 201)){
+      localStorage.setItem("productList", JSON.stringify(serviceResponse.data.products));
+      localStorage.setItem("cartId", serviceResponse.data.cartId);
+    }
+  }
+  catch(error){
+    dispatch({ type: "LOADING_DATA", payload: false });
   }
 
   gaAddToCart(window.dataLayer.push, product);
@@ -128,7 +135,7 @@ const Withdraw = ({ product }) => {
 
   const clearCartAndRetryAddToCart = async() => {
     localStorage.removeItem("productList");
-    await addToCart(myStore, product, "pickup", true);
+    await addToCart(myStore, product, "pickup", true, dispatch);
     router.push("/cart", undefined, { shallow: true });
   }
 
@@ -142,7 +149,7 @@ const Withdraw = ({ product }) => {
   };
 
   const pickupClick = async() => {
-    let cartActionResponse = await addToCart(myStore, product, "pickup", false);
+    let cartActionResponse = await addToCart(myStore, product, "pickup", false, dispatch);
     if (cartActionResponse.isValid)
         router.push("/cart", undefined, { shallow: true });
     else
@@ -250,7 +257,7 @@ const ShippingCard = ({ product, updatePrices }) => {
 
   const clearCartAndRetryAddToCart = async() => {
     localStorage.removeItem("productList");
-    await addToCart(myStore, product, "delivery", true);
+    await addToCart(myStore, product, "delivery", true, dispatch);
     router.push("/cart", undefined, { shallow: true });
   }
 
@@ -264,7 +271,7 @@ const ShippingCard = ({ product, updatePrices }) => {
   };
 
   const deliveryClick = async() => {
-    let cartActionResponse = await addToCart(myStore, product, "delivery", false);
+    let cartActionResponse = await addToCart(myStore, product, "delivery", false, dispatch);
     if (cartActionResponse.isValid)
         router.push("/cart", undefined, { shallow: true });
     else

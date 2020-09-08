@@ -23,7 +23,7 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
   const { register, handleSubmit } = useForm();
   const [ loginError, setLoginError ] = useState(null);
   const onSubmit = async(data) => {
-
+    dispatch({ type: "LOADING_DATA", payload: true });  
     try{
       let loginResponse = await axios.post(`${API_URL}/customers/login`, { email: data.email, password: data.password });
       if(loginResponse && loginResponse.data && loginResponse.data.status == 200){
@@ -31,8 +31,10 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
         localStorage.setItem("customer-email", data.email);
         handleNext();
       }
+      dispatch({ type: "LOADING_DATA", payload: false });
     }
     catch(error){
+      dispatch({ type: "LOADING_DATA", payload: false });
       setLoginError(error.response.data.message);
     }
   };

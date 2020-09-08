@@ -39,6 +39,7 @@ const Cart = ({ content }) => {
 
   const calcShipping = async() => {
     try{
+      dispatch({ type: "LOADING_DATA", payload: true });
       const cartId = localStorage.getItem("cartId");
       if(cep && cartId && products && products.length > 0){
         const anyStoreInProducts = products.find(product => product.storeId !== "cd");
@@ -51,8 +52,9 @@ const Cart = ({ content }) => {
           localStorage.setItem("shipping-options", JSON.stringify(serviceResponse.data.shippingOptions));
         }
       }
+      dispatch({ type: "LOADING_DATA", payload: false });
     }
-    catch(error){ console.log(error.message); }
+    catch(error){ console.log(error.message); dispatch({ type: "LOADING_DATA", payload: false }); }
   }
 
   useEffect(() => {

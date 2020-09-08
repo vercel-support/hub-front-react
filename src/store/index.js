@@ -50,6 +50,7 @@ const initialState = {
   },
   stores: [],
   changedStore: false,
+  loadingData: false
 };
 
 const store = createContext(initialState);
@@ -381,6 +382,11 @@ const StateProvider = ({ children, value }) => {
               products: action.payload,
             },
           };
+        
+        case "LOADING_DATA":
+          return {
+            ...state, loadingData: action.payload
+          }
         default:
           return state;
       }
