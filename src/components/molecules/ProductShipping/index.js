@@ -164,16 +164,20 @@ const Withdraw = ({ product }) => {
   return (
     <WithdrawStyled available={available}>
       { !validAction.isValid ? <ActionDialog data={validAction}/> : null }
-      <p>
-        <span className="stock">
-          {available ? "Retire hoje " : "Sem estoque "}
-        </span>
-        na loja
-        <span className="store"> {myStore.name}</span>
-      </p>
-      <p>
-      {getStoreDistance() ? `A ${getStoreDistance()} de você` : null}
-      </p>
+      { myStore.id === "cd" ? 
+        <p>Encontre a loja mais próxima para retirada</p> :
+        <p>
+          <span className="stock">
+            {available ? "Retire hoje " : "Sem estoque "}
+          </span>
+          na loja
+          <span className="store"> {myStore.name}</span>
+          <p>
+          {getStoreDistance() ? `A ${getStoreDistance()} de você` : null}
+          </p>
+        </p>
+      }
+
       <span className="change">(alterar loja)</span>
       {available && (
         <span className="available">
@@ -281,7 +285,9 @@ const ShippingCard = ({ product, updatePrices }) => {
   return (
     <ShippingCardStyled available={ deliveryOptionsAvailable.deliveryAvailable || deliveryOptionsAvailable.expressDeliveryAvailable }>
       { !validAction.isValid ? <ActionDialog data={validAction}/> : null }
-      <p>Entregar no CEP {
+      <p>Digite seu CEP para ver a disponibilidade na sua região </p> 
+      <p>
+      {
         <Input
         style={{
           marginBottom: "20px",
@@ -292,7 +298,7 @@ const ShippingCard = ({ product, updatePrices }) => {
         value={inputPostalCode}
       />
       }</p>
-      <span className="change">(alterar loja)</span>
+{/*       <span className="change">(alterar loja)</span> */}
 
       { deliveryOptionsAvailable.expressDeliveryAvailable ? 
         <span className={"available"}>
