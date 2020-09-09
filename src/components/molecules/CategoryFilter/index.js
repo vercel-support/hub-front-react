@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { store } from "../../../store";
 import { requestProducts } from "../../../services";
 import CategoryFilterStyled, {
   DrawerContentStyled,
@@ -49,6 +50,11 @@ const CategoryFilter = ({
   const [selecteds, setSelecteds] = useState({});
   const router = useRouter();
   const { query } = router;
+  const {
+    state: {
+      myStore: { id: storeID },
+    },
+  } = useContext(store);
 
   const initParams = () => {
     const params = { ...query };
@@ -97,20 +103,23 @@ const CategoryFilter = ({
   };
 
   const handleProducts = async () => {
-    let params = [];
+    if(categoryUrl){
+      let params = [];
 
-    Object.keys(selecteds).forEach((filter) => {
-      params = [...params, ...selecteds[filter]];
-    });
+      Object.keys(selecteds).forEach((filter) => {
+        params = [...params, ...selecteds[filter]];
+      });
+  
+      const { products } = await requestProducts(
+        categoryUrl,
+        0,
+        myStore.id,
+        params
+      );
+  
+      setProducts(products);
+    }
 
-    const { products } = await requestProducts(
-      categoryUrl,
-      0,
-      "5e8e1c6e43a61128433f0eed",
-      params
-    );
-
-    setProducts(products);
   };
 
   useEffect(() => {

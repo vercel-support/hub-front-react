@@ -13,14 +13,14 @@ export const requestCart = async (params = {}) => {
 
 export const requestStores = async (params = "5e8e1c6e43a61128433f0eed") => {
   const response = await axios.get(
-    `http://18.229.234.11:3000/api/V2/logistic/store?storeId=${params}`
+    `${API_URL}/logistic/store?storeId=${params}`
   );
   return response;
 };
 
 export const requestShipping = async (params = {}) => {
   const response = await axios.post(
-    `http://18.229.234.11:3000/api/V2/logistic/shipping`,
+    `${API_URL}/logistic/shipping`,
     { ...params }
   );
   return response;
@@ -28,7 +28,7 @@ export const requestShipping = async (params = {}) => {
 
 export const requestCategories = async () => {
   const response = await axios.get(
-    `http://18.229.234.11:3000/api/V2/catalogs/categories`
+    `${API_URL}/catalogs/categories`
   );
   return response;
 };
@@ -40,7 +40,7 @@ export const requestGetStore = async (params = {}) => {
 
 export const requestRedirect = async (url) => {
   const response = await axios.get(
-    `http://18.229.234.11:3000/api/V2/catalogs/redirect`,
+    `${API_URL}/catalogs/redirect`,
     {
       params: { url },
     }
@@ -50,14 +50,14 @@ export const requestRedirect = async (url) => {
 
 export const requestSearch = async (param = {}) => {
   const response = await axios.get(
-    `http://18.229.234.11:3000/api/V2/catalogs/products/search?text=${param.query}`
+    `${API_URL}/catalogs/products/search?text=${param.query}`
   );
   return response;
 };
 
 export const requestEmail = async (email) => {
   const response = await axios.post(
-    `http://18.229.234.11:3000/api/V2/customers/isEmailAvailable`,
+    `${API_URL}/customers/isEmailAvailable`,
     {
       email: email,
     }
@@ -67,7 +67,7 @@ export const requestEmail = async (email) => {
 
 export const requestLogin = async (login) => {
   const response = await axios.post(
-    `http://18.229.234.11:3000/api/V2/customers/login`,
+    `${API_URL}/customers/login`,
     login
   );
   return response;
@@ -75,7 +75,7 @@ export const requestLogin = async (login) => {
 
 export const requestRegister = async (register) => {
   const response = await axios.post(
-    `http://18.229.234.11:3000/api/V2/customers/register`,
+    `${API_URL}/customers/register`,
     register
   );
   return response;
@@ -83,14 +83,14 @@ export const requestRegister = async (register) => {
 
 export const requestAddresses = async (token) => {
   const response = await axios.get(
-    `http://18.229.234.11:3000/api/V2/customers/addresses?token=${token}`
+    `${API_URL}/customers/addresses?token=${token}`
   );
   return response;
 };
 
 export const requestNewAddress = async (newAddress) => {
   const response = await axios.post(
-    `http://18.229.234.11:3000/api/V2/customers/addresses/new`,
+    `${API_URL}/customers/addresses/new`,
     newAddress
   );
   return response;
@@ -98,7 +98,7 @@ export const requestNewAddress = async (newAddress) => {
 
 export const requestPaymentsCard = async (paymentCard) => {
   const response = await axios.post(
-    `http://18.229.234.11:3000/api/V2/payments/card`,
+    `${API_URL}/payments/card`,
     paymentCard
   );
   return response;
@@ -115,7 +115,7 @@ export const requestProducts = async (
       data: { products, currentPage },
     },
   } = await axios.get(
-    `http://18.229.234.11:3000/api/V2/catalogs/redirect?url=${url}${
+    `${API_URL}/catalogs/redirect?url=${url}${
       storeId ? `&storeId=${storeId}` : ""
     }&page=${page}&perPage=32${
       params.length ? `&filters=${params.join(",")}` : ""

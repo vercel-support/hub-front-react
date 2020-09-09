@@ -23,15 +23,17 @@ const ListProducts = ({ content, products, setProducts, currentPage }) => {
   } = content.data;
 
   const handleSetProducts = async () => {
-    const { products, currentPage } = await requestProducts(
-      categoryUrl,
-      page,
-      storeID,
-      []
-    );
-
-    setProducts(products);
-    setPage(currentPage);
+    if(categoryUrl){
+      const { products, currentPage } = await requestProducts(
+        categoryUrl,
+        page,
+        storeID,
+        []
+      );
+  
+      setProducts(products);
+      setPage(currentPage);
+    }
   };
 
   const handlePagination = (action) => {
