@@ -115,8 +115,6 @@ function* registerUser({ register, handleNext }) {
       yield put({ type: "LOGIN_SUCCESS", address: address.data.addresses });
       handleNext();
     }
-
-    console.log(data, newUser);
   } catch (error) {}
 }
 
@@ -149,12 +147,25 @@ function* postShipping({ payload }) {
   } catch (error) {}
 }
 
+function* getRandomStores() {
+  try{
+    const userPostalCode = localStorage.getItem("postalcode-delivery");
+    let params = { postalCode: '01001-000' };
+    if(userPostalCode) params = { postalCode: userPostalCode };
+    const { data } = yield call(service.requestGetStore, { params });
+    yield put({ type: "UPDATE_STORES", payload: data });
+  }
+  catch(error){
+
+  }
+}
+
 function* getStores() {
   try {
     const userPostalCode = localStorage.getItem("postalcode-delivery");
     let params
 
-    if(userPostalCode) params = { postalCode: userPostalCode }
+    if(userPostalCode) params = { postalCode: userPostalCode };
     else params = yield select(({ geo }) =>
       geo.postalCode
         ? { postalCode: geo.postalCode }
@@ -255,6 +266,10 @@ function* watchGetPostcode() {
   yield takeEvery("GEO_SUCCESS", getStores);
 }
 
+function* watchGetPostcodeError() {
+  yield takeEvery("GEO_ERROR", getRandomStores);
+}
+
 function* watchChangeStore() {
   yield takeEvery("CHANGE_STORE", changeStore);
 }
@@ -280,6 +295,7 @@ function* rootSaga() {
     watchPayments(),
     watchPostalCode(),
     watchStores(),
+    watchGetPostcodeError()
   ]);
 }
 // Saga

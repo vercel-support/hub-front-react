@@ -79,14 +79,14 @@ const GeoLocation = () => {
           <GeoLocationListStyled>
             <GeoLocationStoreStyled selected>
               <h4>{myStore.name}</h4>
-              <p>A {formatStoreDistance(myStore.distance)} de você</p>
+              { myStore.id !== "cd" ? <p>A {formatStoreDistance(myStore.distance)} de você</p>: null }
               { myStore.id !== "cd" ? <p>{formatAddress(myStore.address)}</p> : null }
               <span>(minha loja)</span>
             </GeoLocationStoreStyled>
             {stores.slice(0, 10).map((store) => (
               <GeoLocationStoreStyled key={store.id}>
                 <h4>{store.name}</h4>
-                <p>A {formatStoreDistance(store.distance)} de você</p>
+                { store.id !== "cd" ? <p>A {formatStoreDistance(store.distance)} de você</p> : null }
                 <p>{formatAddress(store.address)}</p>
                 <span
                   onClick={() =>

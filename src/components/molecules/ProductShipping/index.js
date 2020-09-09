@@ -193,15 +193,21 @@ const Withdraw = ({ product }) => {
 
   return (
     <WithdrawStyled available={available}>
-      {!validAction.isValid ? <ActionDialog data={validAction} /> : null}
-      <p>
-        <span className="stock">
-          {available ? "Retire hoje " : "Sem estoque "}
-        </span>
-        na loja
-        <span className="store"> {myStore.name}</span>
-      </p>
-      <p>{getStoreDistance() ? `A ${getStoreDistance()} de você` : null}</p>
+      { !validAction.isValid ? <ActionDialog data={validAction}/> : null }
+      { myStore.id === "cd" ? 
+        <p>Encontre a loja mais próxima para retirada</p> :
+        <p>
+          <span className="stock">
+            {available ? "Retire hoje " : "Sem estoque "}
+          </span>
+          na loja
+          <span className="store"> {myStore.name}</span>
+          <p>
+          {getStoreDistance() ? `A ${getStoreDistance()} de você` : null}
+          </p>
+        </p>
+      }
+
       <span className="change">(alterar loja)</span>
       {available && (
         <span className="available">
@@ -322,28 +328,22 @@ const ShippingCard = ({ product, updatePrices }) => {
   };
 
   return (
-    <ShippingCardStyled
-      available={
-        deliveryOptionsAvailable.deliveryAvailable ||
-        deliveryOptionsAvailable.expressDeliveryAvailable
-      }
-    >
-      {!validAction.isValid ? <ActionDialog data={validAction} /> : null}
+    <ShippingCardStyled available={ deliveryOptionsAvailable.deliveryAvailable || deliveryOptionsAvailable.expressDeliveryAvailable }>
+      { !validAction.isValid ? <ActionDialog data={validAction}/> : null }
+      <p>Digite seu CEP para ver a disponibilidade na sua região </p> 
       <p>
-        Entregar no CEP{" "}
-        {
-          <Input
-            style={{
-              marginBottom: "20px",
-            }}
-            name="cep"
-            onChange={validatePostalCode}
-            placeholder="00000-000"
-            value={inputPostalCode}
-          />
-        }
-      </p>
-      <span className="change">(alterar loja)</span>
+      {
+        <Input
+        style={{
+          marginBottom: "20px",
+        }}
+        name="cep"
+        onChange={validatePostalCode}
+        placeholder="00000-000"
+        value={inputPostalCode}
+      />
+      }</p>
+{/*       <span className="change">(alterar loja)</span> */}
 
       {deliveryOptionsAvailable.expressDeliveryAvailable ? (
         <span className={"available"}>
