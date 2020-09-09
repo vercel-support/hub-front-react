@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { store } from "../../../store";
 import Link from "next/link";
 import { ColumnShippingStyles } from "./styles";
 import { Delivery, CartTotal, Pickup } from "../../atoms";
@@ -16,38 +17,47 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
 
   const [ errorMessage, setErrorMessage ] = useState(null);
   const router = useRouter();
+  const { dispatch } = useContext(store);
 
   useEffect(() => {
   }, [handleSelectedShipping, shippingType]);
 
   const confirm = async() => {
     if(shippingType == "delivery" && !selectedShippingMethod) setErrorMessage("Selecione um método de entrega");
-    if(shippingType == "delivery" && !shipping) setErrorMessage("Não há entrega disponível para esse cep")
+    if(shippingType == "delivery" && !shipping) setErrorMessage("Não há entrega disponível para esse cep");
+    const cartId = localStorage.getItem("cartId");
+    let goToCheckout = false;
+
     if(shippingType == "pickup"){
-      const cartId = localStorage.getItem("cartId");
       localStorage.setItem("selected-shipping-method", "");
       localStorage.setItem("shipping-type", shippingType);
-      localStorage.setItem("cart-address", end);
-      await axios.post(`${API_URL}/cart-shipping`, { 
-        cartId, 
-        shippingOptionSelected: selectedShippingMethod, 
-        shippingType, 
-        postalCodeDelivery: end
-      });
-      router.push("/checkout", undefined, { shallow: true });
+      localStorage.setItem("postalcode-delivery", end);
+      goToCheckout = true;
     }
     if(shippingType == "delivery" && selectedShippingMethod && shipping){
-      const cartId = localStorage.getItem("cartId");
+
       localStorage.setItem("selected-shipping-method", selectedShippingMethod);
       localStorage.setItem("shipping-type", shippingType);
-      localStorage.setItem("cart-address", end);
-      await axios.post(`${API_URL}/cart-shipping`, { 
-        cartId, 
-        shippingOptionSelected: selectedShippingMethod, 
-        shippingType, 
-        postalCodeDelivery: end 
-      });
-      router.push("/checkout", undefined, { shallow: true });
+      localStorage.setItem("postalcode-delivery", end);
+      goToCheckout = true;
+    }
+
+    if(goToCheckout){
+      dispatch({ type: "LOADING_DATA", payload: true });
+      try{
+        await axios.post(`${API_URL}/cart-shipping`, { 
+          cartId, 
+          shippingOptionSelected: selectedShippingMethod, 
+          shippingType, 
+          postalCodeDelivery: end 
+        });
+        router.push("/checkout", undefined, { shallow: true });
+        dispatch({ type: "LOADING_DATA", payload: false });
+      }
+      catch(error){
+        dispatch({ type: "LOADING_DATA", payload: false });
+        console.log(error.response);
+      }
     }
   }
   

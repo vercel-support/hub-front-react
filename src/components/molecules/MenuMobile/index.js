@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import Collapse from "@material-ui/core/Collapse";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
@@ -32,7 +33,11 @@ const ItemCollapse = ({ listItem }) => {
             item?.children?.length ? (
               <ItemCollapse listItem={item} key={i} />
             ) : (
-              <Item item={item} key={i} />
+              <Link href={`/${item.url}`}>
+                <a>
+                  <Item item={item} key={i} />
+                </a>
+              </Link>
             )
           )}
         </List>
@@ -54,37 +59,25 @@ const MenuMobile = ({ categories = [] }) => {
       <Drawer open={open} onClose={() => setOpen(false)}>
         <div style={{ width: "300px" }} role="presentation">
           <List>
-            <ListItem button onClick={() => setOpenMenu(!openMenu)}>
-              <ListItemText primary="Entre ou Cadastre-se" />
-              <ListItemIcon>
-                {openMenu ? <ExpandLess /> : <ExpandMore />}
-              </ListItemIcon>
-            </ListItem>
-            <Collapse in={openMenu} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItem button>
+            <ListItem button>
+              <Link href={`/customer/account`}>
+                <a>
                   <ListItemText primary="Minha Conta" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemText primary="Meus Pedidos" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemText primary="Atendimento" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemText primary="Sair" />
-                </ListItem>
-              </List>
-            </Collapse>
+                </a>
+              </Link>
+            </ListItem>
             <Divider />
           </List>
-
           <List>
             {categories.map((item, i) =>
               item?.children?.length ? (
                 <ItemCollapse listItem={item} key={i} />
               ) : (
-                <Item item={item} key={i} />
+                <Link href={`/${item.url}`}>
+                  <a>
+                    <Item item={item} key={i} />
+                  </a>
+                </Link>
               )
             )}
           </List>

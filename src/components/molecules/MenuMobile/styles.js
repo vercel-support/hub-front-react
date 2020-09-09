@@ -6,6 +6,10 @@ const Wrapper = styled(React.Fragment)`
     margin-left: 25px;
     border-left: 1px solid #dcdcdc;
   }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 `;
 
 export default Wrapper;

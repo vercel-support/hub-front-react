@@ -14,6 +14,7 @@ const NewUser = ({ setNewRegister, handleNext }) => {
   const { register, handleSubmit, watch } = useForm();
   const [error, setError] = useState(null);
   const onSubmit = async(data) => {
+    dispatch({ type: "LOADING_DATA", payload: true });
     try{
       let serviceResponse = await axios.post(`${API_URL}/customers/register`, {
         "email": data.email,
@@ -31,9 +32,11 @@ const NewUser = ({ setNewRegister, handleNext }) => {
         }
         handleNext();
       }
+      dispatch({ type: "LOADING_DATA", payload: false });
     }
     catch(error){
       if(error.response.data){
+        dispatch({ type: "LOADING_DATA", payload: false });
         setError(error.response.data.message);
       }
     }
@@ -75,7 +78,7 @@ const NewUser = ({ setNewRegister, handleNext }) => {
         {error && <p>{error}</p>}
         <Grid container spacing={3} justify="flex-end">
           <Grid xs={12} sm={6} className="submit">
-            <input type="submit" value="Cadastrar Endereço" />
+            <input type="submit" value="Cadastrar" />
           </Grid>
         </Grid>
       </form>

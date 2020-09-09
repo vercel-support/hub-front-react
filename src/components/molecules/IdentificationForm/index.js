@@ -16,13 +16,21 @@ const IdentificationForm = ({ setEmailIdentification }) => {
   });
 
   const onSubmit = async(data) => {
-    let serviceResponse = await axios.post(`${API_URL}/customers/isEmailAvailable`, { email: data.email });
-    if(serviceResponse && serviceResponse.data && serviceResponse.status === 200){
-      setEmailIdentification({
-        email: data.email,
-        isRegistered: serviceResponse.data.isAvailable
-      });
+    dispatch({ type: "LOADING_DATA", payload: true });  
+    try{
+      let serviceResponse = await axios.post(`${API_URL}/customers/isEmailAvailable`, { email: data.email });
+      if(serviceResponse && serviceResponse.data && serviceResponse.status === 200){
+        setEmailIdentification({
+          email: data.email,
+          isRegistered: serviceResponse.data.isAvailable
+        });
+      }
+      dispatch({ type: "LOADING_DATA", payload: false }); 
     }
+    catch(error){
+      dispatch({ type: "LOADING_DATA", payload: false }); 
+    }
+
   };
 
   return (

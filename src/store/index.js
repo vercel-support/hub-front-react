@@ -50,6 +50,7 @@ const initialState = {
   },
   stores: [],
   changedStore: false,
+  loadingData: false
 };
 
 const store = createContext(initialState);
@@ -150,11 +151,16 @@ function* postShipping({ payload }) {
 
 function* getStores() {
   try {
-    const params = yield select(({ geo }) =>
+    const userPostalCode = localStorage.getItem("postalcode-delivery");
+    let params
+
+    if(userPostalCode) params = { postalCode: userPostalCode }
+    else params = yield select(({ geo }) =>
       geo.postalCode
         ? { postalCode: geo.postalCode }
         : { latitude: geo.latitude, longitude: geo.longitude }
     );
+
     const { data } = yield call(service.requestGetStore, { params });
     yield put({ type: "STORES_SUCCESS", payload: data });
   } catch (error) {
@@ -163,7 +169,11 @@ function* getStores() {
 }
 
 function* changeStore({ payload }) {
-  const params = yield select(({ geo }) =>
+  const userPostalCode = localStorage.getItem("postalcode-delivery");
+  let params
+
+  if(userPostalCode) params = { postalCode: userPostalCode }
+  else params = yield select(({ geo }) =>
     geo.postalCode
       ? { postalCode: geo.postalCode }
       : { latitude: geo.latitude, longitude: geo.longitude }
@@ -371,6 +381,11 @@ const StateProvider = ({ children, value }) => {
               products: action.payload,
             },
           };
+        
+        case "LOADING_DATA":
+          return {
+            ...state, loadingData: action.payload
+          }
         default:
           return state;
       }

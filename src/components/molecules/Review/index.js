@@ -51,7 +51,6 @@ const Review = ({ handleNext }) => {
     try{
       let serviceResponse = await axios.get(`${API_URL}/customers/addresses?token=${token}&cartId=${cartId}`);
       if(serviceResponse && serviceResponse.data){
-        console.log(serviceResponse.data.addresses);
         setUserAddresses(serviceResponse.data.addresses);
         if(serviceResponse.data.cartAddress) setCartAddress(serviceResponse.data.cartAddress);
       }
@@ -85,8 +84,12 @@ const Review = ({ handleNext }) => {
   };
 
   const FunValidationCep = (cepCad, item) => {
-    const cartAddress = localStorage.getItem("cart-address");
+    const cartAddress = localStorage.getItem("postalcode-delivery");
     if (cartAddress) {
+      if(shippingType == "pickup"){
+        handleNext();
+        localStorage.setItem("addressSelected", JSON.stringify(item));
+      }
       if (cartAddress.replace(/\D/g, '').trim() === cepCad.replace(/\D/g, '').trim()) {
         handleNext();
         localStorage.setItem("addressSelected", JSON.stringify(item));
@@ -100,8 +103,11 @@ const Review = ({ handleNext }) => {
   useEffect(() => {
     if (hasZipLength) {
       requestAddress(cep);
-      const cartAddress = localStorage.getItem("cart-address");
-      if(cep.replace(/\D/g, '').trim() !== cartAddress.replace(/\D/g, '').trim()) setValidationCep(true);
+      const cartAddress = localStorage.getItem("postalcode-delivery");
+      if(shippingType == "delivery"){
+        if(cep.replace(/\D/g, '').trim() !== cartAddress.replace(/\D/g, '').trim()) setValidationCep(true);
+        else setValidationCep(false);
+      }
       else setValidationCep(false);
     }
   }, [cep, setValue]);
@@ -118,12 +124,16 @@ const Review = ({ handleNext }) => {
           <TitleStyles>
             {shippingType == "delivery" ? "receber em casa" : "retirar na loja"}
           </TitleStyles>
+          <TitleStyles>
+            {shippingType == "pickup" ? "selecione um endereço para cadastro" : null}
+          </TitleStyles>
         </Grid>
         {userAddresses && userAddresses.length > 0 && (
           <CardAddress
             validationCep={FunValidationCep}
             address={cartAddress ? [cartAddress] : []}
             handleNext={handleNext}
+            shippingType={shippingType}
           />
         )}
 

@@ -27,12 +27,14 @@ const ResumeForm = () => {
 
     const selectedShippingMethod = localStorage.getItem("selected-shipping-method");
     const shippingOptions = JSON.parse(localStorage.getItem("shipping-options"), "{}");
-    const selectedShippingOption = shippingOptions[selectedShippingMethod];
-    if(selectedShippingMethod != "")
+    
+    if(selectedShippingMethod != ""){
+      const selectedShippingOption = shippingOptions[selectedShippingMethod];
       setResumeInfo({
         ...resumeInfo,
         subtotal, shipping: selectedShippingMethod.price, total: subtotal + selectedShippingOption.price
       });
+    }
     else
       setResumeInfo({
         ...resumeInfo,

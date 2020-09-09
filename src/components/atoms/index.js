@@ -13,6 +13,7 @@ export { default as DropDown } from "./DropDown";
 export { default as FreeShipping } from "./FreeShipping";
 export { default as GetGeolocation } from "./GetGeolocation";
 export { default as InputAlternative } from "./InputAlternative";
+export { default as LoadingOverlay } from "./Loading";
 export { default as Logo } from "./Logo";
 export { default as LogoFooter } from "./LogoFooter";
 export { default as Pickup } from "./Pickup";

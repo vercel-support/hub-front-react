@@ -9,13 +9,6 @@ const MenuSecond = ({ items }) => (
 
       return (
         <li key={item.id}>
-          {/*<Link
-          href={{
-            pathname: "/[...page]",
-            query: { name: "test" },
-          }}
-          as={`/${item.url}`}
-        >*/}
           <Link href={`/${item.url}`}>
             <a>{item.name}</a>
           </Link>
@@ -37,7 +30,6 @@ const MenuThird = ({ items }) => (
     <ul>
       {items.map((item) => (
         <li key={item.id}>
-          {/* {<Link href={`/[...page]`} as={`/${item.url}`}>} */}
           <Link href={`/${item.url}`}>
             <a>{item.name}</a>
           </Link>
@@ -64,7 +56,6 @@ const Menu = ({ categories = [] }) => (
   <MenuStyled>
     {categories.map((item) => (
       <li key={item.id}>
-        {/*<Link href={`/[...page]`} as={`/${item.url}`}>*/}
         <Link href={`/${item.url}`}>
           <a>{item.name}</a>
         </Link>

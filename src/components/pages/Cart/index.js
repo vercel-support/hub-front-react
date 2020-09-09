@@ -38,12 +38,23 @@ const Cart = ({ content }) => {
   }
 
   const calcShipping = async() => {
-    const cartId = localStorage.getItem("cartId");
-    let serviceResponse = await axios.post(`${API_URL}/logistic/shipping`, { items: products, storeId: myStore.id, postalCode: cep, cartId });
-    if(serviceResponse && serviceResponse.data && (serviceResponse.status === 200)){
-      setShippingOptions(serviceResponse.data.shippingOptions);
-      localStorage.setItem("shipping-options", JSON.stringify(serviceResponse.data.shippingOptions));
+    try{
+      dispatch({ type: "LOADING_DATA", payload: true });
+      const cartId = localStorage.getItem("cartId");
+      if(cep && cartId && products && products.length > 0){
+        const anyStoreInProducts = products.find(product => product.storeId !== "cd");
+        const storeId = anyStoreInProducts ? anyStoreInProducts.storeId : "cd";
+        let serviceResponse = await axios.post(`${API_URL}/logistic/shipping`, 
+          { items: products, storeId, postalCode: cep, cartId }
+        );
+        if(serviceResponse && serviceResponse.data && (serviceResponse.status === 200)){
+          setShippingOptions(serviceResponse.data.shippingOptions);
+          localStorage.setItem("shipping-options", JSON.stringify(serviceResponse.data.shippingOptions));
+        }
+      }
+      dispatch({ type: "LOADING_DATA", payload: false });
     }
+    catch(error){ console.log(error.message); dispatch({ type: "LOADING_DATA", payload: false }); }
   }
 
   useEffect(() => {

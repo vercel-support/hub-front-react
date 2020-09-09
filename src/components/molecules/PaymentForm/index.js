@@ -10,8 +10,11 @@ const { publicRuntimeConfig } = getConfig();
 const { API_URL, MERCADOPAGO_KEY } = publicRuntimeConfig;
 import axios from "axios";
 
+import { purchase as gaPurchase } from '../../../../lib/ga';
+
 const PaymentForm = () => {
   const router = useRouter();
+  const { dispatch } = useContext(store);
   const [ doSubmit, setDoSubmit ] = useState(false);
   const [ cartTotalAmount, setCartTotalAmount ] = useState();
   const [ customerEmail, setCustomerEmail ] = useState();
@@ -73,13 +76,23 @@ const PaymentForm = () => {
               cartId
           }
       }
-
-      axios.post(`${API_URL}/payments/card`, requestBody).then(serviceResponse => {
-        if(serviceResponse && serviceResponse.data){
-          localStorage.setItem("payment-response", JSON.stringify(serviceResponse.data));
-          setTimeout(() => { router.push("/success", undefined, { shallow: true }); }, 1000);
-        }
-      });
+      dispatch({ type: "LOADING_DATA", payload: true });
+      try{
+        axios.post(`${API_URL}/payments/card`, requestBody).then(serviceResponse => {
+          if(serviceResponse && serviceResponse.data){
+            if(serviceResponse.data.data) gaPurchase(window.dataLayer.push, serviceResponse.data);
+            localStorage.setItem("payment-response", JSON.stringify(serviceResponse.data));
+            localStorage.setItem("productList", "[]");
+            setTimeout(() => { 
+              router.push("/success", undefined, { shallow: true });
+              dispatch({ type: "LOADING_DATA", payload: false });
+            }, 1000);
+          }
+        });
+      }
+      catch(error){
+        dispatch({ type: "LOADING_DATA", payload: false });
+      }
     }
     else{
       console.log(response);
@@ -118,7 +131,6 @@ const PaymentForm = () => {
   };
   const setPaymentMethod = (status, response) => {
     if (status == 200) {
-      console.log(response);
       let paymentMethodId = response[0].id;
       let element = document.getElementById("payment_method_id");
       element.value = paymentMethodId;
