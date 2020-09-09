@@ -5,13 +5,13 @@ const { publicRuntimeConfig } = getConfig();
 const { API_URL } = publicRuntimeConfig;
 
 export const requestCart = async (params = {}) => {
-  const response = await axios.post(`http://18.229.234.11:3000/api/V2/cart`, {
+  const response = await axios.post(`${API_URL}/cart`, {
     ...params,
   });
   return response;
 };
 
-export const requestStores = async (params = "5e8e1c6e43a61128433f0eed") => {
+export const requestStores = async (params) => {
   const response = await axios.get(
     `${API_URL}/logistic/store?storeId=${params}`
   );

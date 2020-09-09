@@ -10,12 +10,16 @@ import { AddressFormStyles, TitleStyles } from "./styles";
 
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL } = publicRuntimeConfig;
+
 const AddressForm = () => {
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = (data) => {
     axios
       .post(
-        `http://18.229.234.11:3000/api/V2/customers/isEmailAvailable`, {"email":data.email}
+        `${API_URL}/customers/isEmailAvailable`, {"email":data.email}
       )
       .then(({ data }) => console.log(data));
   };
