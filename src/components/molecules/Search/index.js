@@ -77,7 +77,7 @@ const Search = () => {
         onSubmit={(event) => {
           event.preventDefault();
           if(input){
-            alert(`pesquisando ${input}`);
+            //alert(`pesquisando ${input}`);
           }
         }}
         barOpened={barOpened}
