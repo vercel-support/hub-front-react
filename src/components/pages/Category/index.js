@@ -17,7 +17,6 @@ const Category = ({ content }) => {
   const [products, setProducts] = useState(content.data.products);
   const [filterOpen, setFilterOpen] = useState(false);
 
-  console.log("Produtos", products);
   useEffect(() => {
     categoryPageView(window.dataLayer.push, window.ga, {
       products,

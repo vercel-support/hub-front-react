@@ -50,11 +50,8 @@ const CategoryFilter = ({
   const [selecteds, setSelecteds] = useState({});
   const router = useRouter();
   const { query } = router;
-  const {
-    state: {
-      myStore: { id: storeID },
-    },
-  } = useContext(store);
+  const { state } = useContext(store);
+  const { myStore = {} } = state;
 
   const initParams = () => {
     const params = { ...query };
@@ -103,7 +100,7 @@ const CategoryFilter = ({
   };
 
   const handleProducts = async () => {
-    if(categoryUrl){
+    if(categoryUrl && myStore){
       let params = [];
 
       Object.keys(selecteds).forEach((filter) => {
