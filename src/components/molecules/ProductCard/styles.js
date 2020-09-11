@@ -7,4 +7,4 @@ const ProductCardStyled = styled(Grid)`
   }
 `;
 
-export default ProductCardStyled;
+export default ProductCardStyled ;

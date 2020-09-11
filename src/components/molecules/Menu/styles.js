@@ -16,14 +16,22 @@ const MenuStyled = styled.ul`
     position: relative;
     a {
       color: #ffffff;
-      font-size: 14px;
-      font-weight: bold;
+      font-size: 16px;
+      font-weight: normal;
       text-decoration: none;
+      line-height: 24px;
     }
     &:hover a {
       color: #2983b9;
     }
   }
+  
+  svg {
+    overflow: hidden;
+    fill: #bcbcbc;
+    height: 24px;
+    float: right;
+}
 
   li {
     cursor: pointer;
@@ -35,6 +43,10 @@ const MenuStyled = styled.ul`
     }
   }
 
+  ul > li > ul > li > ul {
+    margin-top: -10px;
+  }
+
   ul {
     background-color: #fff;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -42,16 +54,22 @@ const MenuStyled = styled.ul`
     left: 0;
     list-style: none;
     margin: 0;
-    min-height: 290px;
+    min-height: 350px;
     padding: 15px 0;
     position: absolute;
     top: 100%;
-    width: 170px;
+    width: 250px;
     z-index: 5;
+    margin-top: -10px;
 
     li {
-      padding: 0 10px;
+      padding: 5px 10px;
     }
+
+    li:hover {
+      background: #f6f6f6;
+    }
+
     ul {
       left: 100%;
       top: 0;

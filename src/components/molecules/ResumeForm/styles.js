@@ -14,8 +14,7 @@ export const ResumeFormStyles = styled.div`
         margin-right: 15px;
 
         img {
-            width: 87px;
-            height: 74px;
+            height: 75px;
         }
     }
 

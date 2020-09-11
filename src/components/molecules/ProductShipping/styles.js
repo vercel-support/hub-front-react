@@ -10,32 +10,36 @@ export const ShippingCardStyled = styled.div`
   width: 275px;
 
   button {
-    align-self: flex-end;
     background: ${(props) => (props.available ? "#cfd601" : "#EDEDED")};
     border: 0;
     border-radius: 5px;
     color: ${(props) => (props.available ? "#ffffff" : "#B4B4B4")};
     cursor: pointer;
     display: flex;
-    font-size: 13px;
-    font-style: normal;
-    font-weight: normal;
+    font-size: 14px;
+    font-weight: bold;
     line-height: 18px;
-    max-width: 175px;
-    padding: 10px 5px;
+    padding: 10px 15px;
     text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 15px;
     &:disabled {
       background: #ededed;
       color: #b4b4b4;
       cursor: auto;
+    }
+    span {
+      text-align:center;
     }
   }
   p {
     color: #666666;
     font-style: normal;
     font-weight: normal;
-    font-size: 12px;
-    line-height: 19px;
+    font-size: 14px;
+    line-height: 22px;
     margin: 0;
     padding: 0;
   }
@@ -56,7 +60,7 @@ export const ShippingCardStyled = styled.div`
   .unavailable {
     align-self: flex-end;
     color: #cf4e0f;
-    font-size: 10px;
+    font-size: 12px;
     font-style: normal;
     font-weight: normal;
     line-height: 19px;
@@ -66,7 +70,7 @@ export const ShippingCardStyled = styled.div`
     cursor: pointer;
     font-style: normal;
     font-weight: normal;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 19px;
     text-decoration: underline;
   }
