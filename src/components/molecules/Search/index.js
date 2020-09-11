@@ -29,7 +29,7 @@ const productsIndex = algoliaClient.initIndex(
   `${FRONTEND_URL !== "https://www.geracaopet.com.br" ? "dev_" : ""}PRODUCTS`
 );
 
-const redirectURL = (url) => {
+const redirectURL = (url) =>{
   return url.replace("https://www.geracaopet.com.br", FRONTEND_URL);
 };
 
