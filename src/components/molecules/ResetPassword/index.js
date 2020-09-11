@@ -17,7 +17,6 @@ const ResetPassword = () => {
       email: data.email
     });
   };
-  console.log(state, "state");
 
   return (
     <AddressFormStyles>

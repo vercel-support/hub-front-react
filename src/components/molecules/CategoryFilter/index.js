@@ -18,7 +18,6 @@ const FilteringBy = ({ selecteds, setSelecteds }) =>
       <p>Filtrando por:</p>
       <ul>
         {Object.keys(selecteds).map((selected) => {
-          console.log("selecteds", selecteds);
           return (
             <li>
               <strong>{`${selected}: `}</strong>

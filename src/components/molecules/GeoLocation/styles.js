@@ -5,7 +5,7 @@ const GeoLocationStyled = styled.div`
   color: #000000;
   cursor: pointer;
   display: flex;
-  height: 40px;
+  height: 60px;
   position: relative;
   max-width: 100%;
   &:hover {

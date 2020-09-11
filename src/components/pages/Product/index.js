@@ -66,6 +66,7 @@ const Product = ({ content }) => {
   }, []);
 
   useEffect(() => {
+    console.log(myStore);
     fetchPrices();
   }, [myStore]);
   

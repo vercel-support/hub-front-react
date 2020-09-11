@@ -56,7 +56,6 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
       }
       catch(error){
         dispatch({ type: "LOADING_DATA", payload: false });
-        console.log(error.response);
       }
     }
   }

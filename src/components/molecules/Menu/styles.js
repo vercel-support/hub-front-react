@@ -3,7 +3,7 @@ import styled from "styled-components";
 const MenuStyled = styled.ul`
   align-items: center;
   display: flex;
-  height: 40px;
+  height: 60px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -11,7 +11,7 @@ const MenuStyled = styled.ul`
   & > li {
     align-items: center;
     display: flex;
-    height: 40px;
+    height: 60px;
     padding: 0 20px;
     position: relative;
     a {
