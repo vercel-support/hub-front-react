@@ -371,7 +371,7 @@ const ShippingCard = ({ product, updatePrices }) => {
           }
           onClick={deliveryClick}
         >
-          comprar e receber em casa
+          <span>comprar e receber em casa</span>
         </button>
       )}
     </ShippingCardStyled>

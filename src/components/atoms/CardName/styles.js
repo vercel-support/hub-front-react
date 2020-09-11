@@ -9,6 +9,8 @@ const CardNameStyled = styled.h3`
   justify-content: center;
   line-height: 19px;
   display: flex;
+  text-align: center;
+  padding: 0 10px;
 `;
 
 export default CardNameStyled;

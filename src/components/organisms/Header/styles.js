@@ -20,7 +20,7 @@ export default makeStyles((theme) =>
       alignItems: "center",
       backgroundColor: "#2D7AA9",
       display: "flex",
-      height: "60px",
+      height: "45px",
     },
     vcenter: {
       alignItems: "center",
