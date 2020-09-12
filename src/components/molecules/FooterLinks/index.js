@@ -5,18 +5,19 @@ import FooterLinksStyled from "./styles";
 const FooterLinks = () => (
   <FooterLinksStyled>
     <li>
-      <Link href="/central-de-ajuda">
-        <a>institucional</a>
+      <Link href={`/[...page]`} as="/central-de-atendimento">
+        <a>
+          <Sms />
+          institucional
+        </a>
       </Link>
     </li>
     <li>
-      <Link href="/central-de-ajuda">
-        <a>central de ajuda</a>
-      </Link>
-    </li>
-    <li>
-      <Link href="/blog">
-        <a>blog</a>
+    <Link href={`/[...page]`} as="/central-de-atendimento">
+        <a>
+          <Sms />
+          central de ajuda
+        </a>
       </Link>
     </li>
   </FooterLinksStyled>
