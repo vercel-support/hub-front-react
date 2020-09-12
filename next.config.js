@@ -8,6 +8,7 @@ module.exports = {
     FRONTEND_URL: process.env.FRONTEND_URL,
     ALGOLIA_APP_KEY: process.env.ALGOLIA_APP_KEY,
     ALGOLIA_ACCESS_KEY: process.env.ALGOLIA_ACCESS_KEY,
-    MERCADOPAGO_KEY: process.env.MERCADOPAGO_KEY
+    MERCADOPAGO_KEY: process.env.MERCADOPAGO_KEY,
+    GTM_ID: process.env.GTM_ID
   },
 };

@@ -6,8 +6,11 @@ import { GetGeolocation } from "../src/components/atoms";
 import { LoadingOverlay } from "../src/components/atoms";
 import "react-image-gallery/styles/css/image-gallery.css";
 
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { GTM_ID } = publicRuntimeConfig;
 import TagManager from 'react-gtm-module';
-const tagManagerArgs = { gtmId: process.env.GTM_ID };
+const tagManagerArgs = { gtmId: GTM_ID };
 
 const App = ({ Component, pageProps }) => {
   useEffect(() => {
