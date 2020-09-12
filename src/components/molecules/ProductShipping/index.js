@@ -347,7 +347,7 @@ const ShippingCard = ({ product, updatePrices }) => {
 
       {deliveryOptionsAvailable.expressDeliveryAvailable ? (
         <span className={"available"}>
-          {"receba em até 4 horas"}
+          {"receba em até 4 horas"} 
         </span>
       ) : null}
 
