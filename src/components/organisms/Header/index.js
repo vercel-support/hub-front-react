@@ -47,11 +47,11 @@ const Header = ({ content }) => {
       <Box component="div" className={classes.subheader}>
         <Container>
           <Grid container>
-            <Grid item lg={2} xs={12}>
+            <Grid item lg={3} xs={12}>
               <GeoLocation />
             </Grid>
             <Hidden mdDown>
-              <Grid item lg={10}>
+              <Grid item lg={9}>
                 <Menu categories={content?.data?.categories?.data} />
               </Grid>
             </Hidden>

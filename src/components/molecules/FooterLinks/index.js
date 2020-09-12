@@ -7,7 +7,6 @@ const FooterLinks = () => (
     <li>
       <Link href={`/[...page]`} as="/central-de-atendimento">
         <a>
-          <Sms />
           institucional
         </a>
       </Link>
@@ -15,7 +14,6 @@ const FooterLinks = () => (
     <li>
     <Link href={`/[...page]`} as="/central-de-atendimento">
         <a>
-          <Sms />
           central de ajuda
         </a>
       </Link>
