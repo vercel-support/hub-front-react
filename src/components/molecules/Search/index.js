@@ -30,7 +30,7 @@ const productsIndex = algoliaClient.initIndex(
 );
 
 const redirectURL = (url) => {
-  return url.replace("https://www.geracaopet.com.br", FRONTEND_URL);
+  return url.replace("https://www.geracaopet.com.br",FRONTEND_URL);
 };
 
 const Search = () => {
