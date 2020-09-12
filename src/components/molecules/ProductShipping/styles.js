@@ -24,7 +24,7 @@ export const ShippingCardStyled = styled.div`
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin-top: 15px;
+
     &:disabled {
       background: #ededed;
       color: #b4b4b4;
@@ -45,25 +45,28 @@ export const ShippingCardStyled = styled.div`
   }
   .available {
     align-items: center;
-    align-self: flex-end;
     color: #2983b9;
     display: flex;
-    font-size: 10px;
+    font-size: 12px;
     font-style: normal;
     font-weight: normal;
-    justify-content: flex-end;
+    justify-content: center;
     line-height: 19px;
+    margin-top: 15px;
     svg {
       margin-right: 5px;
     }
   }
   .unavailable {
-    align-self: flex-end;
     color: #cf4e0f;
     font-size: 12px;
     font-style: normal;
     font-weight: normal;
+    justify-content: center;
+    align-items: center;
     line-height: 19px;
+    margin-top: 15px;
+    text-align: center;
   }
   .change {
     color: #666666;

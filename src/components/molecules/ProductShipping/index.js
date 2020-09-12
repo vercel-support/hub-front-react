@@ -211,7 +211,7 @@ const Withdraw = ({ product }) => {
       <span className="change">(alterar loja)</span>
       {available && (
         <span className="available">
-          <StoreIcon /> pedido disponível em até 1 hora
+         pedido disponível em até 1 hora
         </span>
       )}
       {loading ? (
@@ -347,7 +347,6 @@ const ShippingCard = ({ product, updatePrices }) => {
 
       {deliveryOptionsAvailable.expressDeliveryAvailable ? (
         <span className={"available"}>
-          {<FlightIcon />}
           {"receba em até 4 horas"}
         </span>
       ) : null}

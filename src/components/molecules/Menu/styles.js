@@ -11,7 +11,7 @@ const MenuStyled = styled.ul`
   & > li {
     align-items: center;
     display: flex;
-    height: 60px;
+    height: 45px;
     padding: 0 20px;
     position: relative;
     a {
@@ -60,7 +60,6 @@ const MenuStyled = styled.ul`
     top: 100%;
     width: 250px;
     z-index: 5;
-    margin-top: -10px;
 
     li {
       padding: 5px 10px;
