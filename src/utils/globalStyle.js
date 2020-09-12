@@ -8,4 +8,10 @@ export default createGlobalStyle`
     margin-left: 25px;
     border-left: 1px solid #dcdcdc;
   }
+
+  html, body {
+    background-color: #FFF !important;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+  }
+  
 `;
