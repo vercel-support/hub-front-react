@@ -26,11 +26,11 @@ const {
 const algoliaSearch = require("algoliasearch");
 const algoliaClient = algoliaSearch(ALGOLIA_APP_KEY, ALGOLIA_ACCESS_KEY);
 const productsIndex = algoliaClient.initIndex(
-  `${FRONTEND_URL !== "https://preprod.geracaopet.com.br" ? "dev_" : ""}PRODUCTS`
+  `${FRONTEND_URL !== "https://www.geracaopet.com.br" ? "dev_" : ""}PRODUCTS`
 );
 
 const redirectURL = (url) => {
-  return url.replace("https://www.geracaopet.com.br",FRONTEND_URL);
+  return url.replace("https://www.geracaopet.com.br", FRONTEND_URL);
 };
 
 const Search = () => {
