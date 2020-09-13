@@ -11,6 +11,7 @@ const { API_URL, MERCADOPAGO_KEY } = publicRuntimeConfig;
 import axios from "axios";
 
 import { purchase as gaPurchase } from '../../../../lib/ga';
+const MAX_INSTALLMENTS = 3;
 
 const PaymentForm = () => {
   const router = useRouter();
@@ -119,9 +120,11 @@ const PaymentForm = () => {
           document.getElementById("installments").options.length = 0;
           response[0].payer_costs.forEach((installment) => {
             let opt = document.createElement("option");
-            opt.text = installment.recommended_message;
-            opt.value = installment.installments;
-            document.getElementById("installments").appendChild(opt);
+            if(parseInt(installment.installments) <= MAX_INSTALLMENTS){
+              opt.text = installment.recommended_message;
+              opt.value = installment.installments;
+              document.getElementById("installments").appendChild(opt);
+            }
           });
         } else {
           alert(`installments method info error: ${response}`);
