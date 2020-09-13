@@ -5,11 +5,13 @@ const GeoLocationStyled = styled.div`
   color: #000000;
   cursor: pointer;
   display: flex;
-  height: 60px;
+  height: 45px;
   position: relative;
   max-width: 100%;
+  margin-top: 7px;
   &:hover {
     background-color: #ffffff;
+    color: #2983B9;
   }
   & > svg {
     margin: 0 5px;
