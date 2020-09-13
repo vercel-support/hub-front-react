@@ -8,7 +8,7 @@ export default createGlobalStyle`
 
 
   .MuiCollapse-wrapperInner {
-    margin-left: 25px;
+    margin-left: 25px; 
     border-left: 1px solid #dcdcdc;
   }
 
@@ -18,6 +18,5 @@ export default createGlobalStyle`
   }
   a {
     text-decoration: none;
-  }
-  
+  }  
 `;
