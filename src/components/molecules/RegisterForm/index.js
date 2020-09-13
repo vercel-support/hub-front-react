@@ -99,7 +99,7 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
 
                     <input type="submit" value="Enviar" />
 
-                    <Link href="#">esqueci minha senha</Link>
+                    <Link href={`/[...page]`} as="/customer/account/forgotpassword/">esqueci minha senha</Link>
                   </form>
                 </Grid>
               </Grid>
@@ -170,7 +170,7 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
 
                     <input type="submit" value="Enviar" />
 
-                    <Link href="#">esqueci minha senha</Link>
+                    <Link href={`/[...page]`} as="/customer/account/forgotpassword/">esqueci minha senha</Link>
                   </form>
                 </Grid>
               </Grid>
