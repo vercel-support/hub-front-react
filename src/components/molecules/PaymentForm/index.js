@@ -118,11 +118,12 @@ const PaymentForm = () => {
         if (status == 200) {
           document.getElementById("installments").options.length = 0;
           response[0].payer_costs.forEach((installment) => {
-            let opt = document.createElement("option");
-            opt.text = installment.recommended_message;
-            opt.value = installment.installments;
-            document.getElementById("installments").appendChild(opt);
-            
+            if(parseInt(installment.installments) <= 3){
+              let opt = document.createElement("option");
+              opt.text = installment.recommended_message;
+              opt.value = installment.installments;
+              document.getElementById("installments").appendChild(opt);
+            }            
           });
         } else {
           alert(`installments method info error: ${response}`);
