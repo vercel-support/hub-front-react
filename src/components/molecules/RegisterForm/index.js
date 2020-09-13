@@ -99,7 +99,8 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
 
                     <input type="submit" value="Enviar" />
 
-                    <Link href={`/[...page]`} as="/customer/account/forgotpassword/">esqueci minha senha</Link>
+                    <a href="https://www.geracaopet.com.br/customer/account/forgotpassword/">esqueci minha senha</a>
+                    {/* <Link href={`/[...page]`} as="/customer/account/forgotpassword/">esqueci minha senha</Link> */}
                   </form>
                 </Grid>
               </Grid>
@@ -170,7 +171,8 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
 
                     <input type="submit" value="Enviar" />
 
-                    <Link href={`/[...page]`} as="/customer/account/forgotpassword/">esqueci minha senha</Link>
+                    <a href="https://www.geracaopet.com.br/customer/account/forgotpassword/">esqueci minha senha</a>
+                    {/* <Link href={`/[...page]`} as="/customer/account/forgotpassword/">esqueci minha senha</Link> */}
                   </form>
                 </Grid>
               </Grid>
