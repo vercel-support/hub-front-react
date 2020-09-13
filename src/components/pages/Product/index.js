@@ -51,15 +51,15 @@ const Product = ({ content }) => {
     if(response.data.data && response.data.status === 200 && response.data.data.length > 0){
       let new_children = response.data.data;
       setChildren(new_children);
-      //if(!product){
-      setProduct({
-        name: new_children[0].name,
-        sku: new_children[0].sku,
-        price: new_children[0].price,
-        specialPrice: new_children[0].specialPrice,
-        discount: new_children[0].percentagePromotionDiscount
-      });
-      //}
+      if(!product){
+        setProduct({
+          name: new_children[0].name,
+          sku: new_children[0].sku,
+          price: new_children[0].price,
+          specialPrice: new_children[0].specialPrice,
+          discount: new_children[0].percentagePromotionDiscount
+        });
+      }
     }
   }
 
