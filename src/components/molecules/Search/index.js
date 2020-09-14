@@ -73,8 +73,7 @@ const Search = () => {
   }, []);
 
   useEffect(() => {
-    if (input && input.length > 0) {
-      //&& input.length % 2 == 0){
+    if (input && input.length > 3 && input.length % 2 == 0) {
       algoliaSearch(input);
     }
   }, [input]);

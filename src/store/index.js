@@ -223,14 +223,20 @@ function* changeStore({ payload }) {
 
 function* setMyStore({ payload }) {
   let savedStore = localStorage.getItem("myStore");
-  if (savedStore) savedStore = JSON.parse(savedStore);
+
+  if(savedStore){
+    if(savedStore == "undefined") savedStore = null;
+    else savedStore = JSON.parse(savedStore);
+  }
 
   if (!savedStore || savedStore.id === "cd") {
     if(payload && payload.length > 0){
       if(payload[0].distance < maxStoreDistance){
         const newStore = JSON.stringify(payload[0]);
-        localStorage.setItem("myStore", newStore);
-        yield put({ type: "CHANGE_STORE", payload: { id: payload[0].id } });
+        if(newStore !== "undefined"){
+          localStorage.setItem("myStore", newStore);
+          yield put({ type: "CHANGE_STORE", payload: { id: payload[0].id } });
+        }
       }
     }
   } else {
