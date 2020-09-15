@@ -15,18 +15,32 @@ import GeoLocationStyled, {
 
 const GeoLocation = () => {
   const { state, dispatch } = useContext(store);
-  const { myStore = {}, stores = [] } = state;
+  const { myStore = {}, stores = [], geoLocationOpen } = state;
   const [open, setOpen] = useState(false);
-  const [postalcode, setPostalcode] = useState("00000-000");
+  const [postalcode, setPostalcode] = useState();
   const { register, handleSubmit } = useForm();
 
   const [geo, setGeo] = useState(false);
+
+  useEffect(() => {
+    setOpen(geoLocationOpen);
+  }, [geoLocationOpen]);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", (e) => {
+      if (!document.getElementById("geolocation_container").contains(e.target)) {
+        setOpen(false);
+        dispatch({ type: "SET_GEOLOCATION_OPEN", payload: false });
+      }
+    });
+  }, []);
   
   useEffect(() => {
   }, [myStore, stores]);
 
-  const onSubmit = () =>
-    dispatch({ type: "CHANGE_POSTALCODE", payload: postalcode });
+  const onSubmit = () => {
+    dispatch({ type: "SEARCH_BY_POSTAL_CODE", payload: postalcode });
+  }
 
   const formatAddress = (address) => {
     if (!address) return null;
@@ -36,12 +50,13 @@ const GeoLocation = () => {
   };
 
   const formatStoreDistance = (distance) => {
-      return distance >= 1000 ? `${(distance/1000).toFixed(1)} km` : `${distance} m`;
+    return distance >= 1000 ? `${(distance/1000).toFixed(1)} km` : `${distance} m`;
   }
 
   return (
     <GeoLocationStyled
-      onMouseOut={() => setOpen(false)}
+      id="geolocation_container"
+      onMouseOut={() => { if(!geoLocationOpen) setOpen(false)}}
       onMouseOver={() => setOpen(true)}
     >
       <Room htmlColor="white" />
@@ -63,11 +78,12 @@ const GeoLocation = () => {
           </GeoLocationTriggerStyled>
 
           <GeoLocationFormStyled onSubmit={handleSubmit(onSubmit)}>
-            <TextField
+            <input
               name="cep"
               label="CEP"
               variant="outlined"
-              value={postalcode}
+/*               value={postalcode} */
+              placeholder="Digite seu cep"
               ref={register}
               onChange={({ target }) => setPostalcode(target.value)}
             />
@@ -84,20 +100,21 @@ const GeoLocation = () => {
               <span>(minha loja)</span>
             </GeoLocationStoreStyled>
             {stores.slice(0, 10).map((store) => (
-              <GeoLocationStoreStyled key={store.id}>
+              <GeoLocationStoreStyled 
+                key={store.id}
+                onClick={() =>{
+                  setOpen(false);
+                  dispatch({ type: "SET_GEOLOCATION_OPEN", payload: false });
+                  dispatch({ type: "CHANGE_STORE", payload: { store } })
+                }}
+              >
                 <h4>{store.name}</h4>
                 { store.id !== "cd" ? <p>A {formatStoreDistance(store.distance)} de você</p> : null }
                 <p>{formatAddress(store.address)}</p>
-                <span
-                  onClick={() =>
-                    dispatch({
-                      type: "CHANGE_STORE",
-                      payload: { id: store.id },
-                    })
-                  }
+{/*                 <span
                 >
                   (alterar para essa loja)
-                </span>
+                </span> */}
               </GeoLocationStoreStyled>
             ))}
           </GeoLocationListStyled>

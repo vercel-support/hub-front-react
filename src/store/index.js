@@ -50,7 +50,8 @@ const initialState = {
   },
   stores: [],
   changedStore: false,
-  loadingData: false
+  loadingData: false,
+  geoLocationOpen: false
 };
 const maxStoreDistance = 60000;
 const store = createContext(initialState);
@@ -161,6 +162,8 @@ function* handleGeoError() {
     if(savedStore){
       const { data } = yield call(service.requestGetStore, { postalCode: savedStore.address.postalCode });
       const updatedStores = data.filter((store) => store.id !== savedStore.id);
+      console.log(savedStore);
+      console.log(updatedStores);
       yield put({ type: "SET_STORE_STATE", payload: { myStore: savedStore, stores: updatedStores } });
     }
     else{
@@ -175,6 +178,34 @@ function* handleGeoError() {
   catch(error){
 
   }
+}
+
+function* getStoresByPostalCode({ payload }) {
+    try{
+        let postalCode = payload;
+        postalCode = postalCode.replace(/\D/g, "");
+        let validator = /^[0-9]{8}$/;
+        if (validator.test(postalCode)) {
+            localStorage.setItem("postalcode-delivery", postalCode);
+            const params = { postalCode };
+            const { data } = yield call(service.requestGetStore, { params });
+            yield put({ type: "UPDATE_STORES", payload: data });
+
+            if(data[0] && data[0].distance < maxStoreDistance){
+              const myNewStore = data[0];
+              yield put({ type: "CHANGE_STORE", payload: { store: myNewStore } });
+              localStorage.setItem("myStore", JSON.stringify(myNewStore));
+              try {
+                yield put({ type: "CHANGE_STORE_SUCCESS" });
+              } catch (error) {
+                yield put({ type: "CHANGE_STORE_ERROR" });
+              }
+            }
+        }
+    }
+    catch(error){
+        yield put({ type: "STORES_ERROR" });
+    }
 }
 
 function* getStores() {
@@ -206,12 +237,17 @@ function* changeStore({ payload }) {
       ? { postalCode: geo.postalCode }
       : { latitude: geo.latitude, longitude: geo.longitude }
   );
+  
+  if(!params.postalCode || !params.latitude || !params.longitude){
+    params = { postalCode: payload.store.address.postalCode }
+  }
+
   const { data } = yield call(service.requestGetStore, { params });
-  const updatedStores = data.filter((store) => store.id !== payload.id);
+  const updatedStores = data.filter((store) => store.id !== payload.store.id);
   yield put({ type: "UPDATE_STORES", payload: updatedStores });
   localStorage.setItem(
     "myStore",
-    JSON.stringify(data.find((st) => st.id === payload.id))
+    JSON.stringify(data.find((st) => st.id === payload.store.id))
   );
 
   try {
@@ -235,12 +271,12 @@ function* setMyStore({ payload }) {
         const newStore = JSON.stringify(payload[0]);
         if(newStore !== "undefined"){
           localStorage.setItem("myStore", newStore);
-          yield put({ type: "CHANGE_STORE", payload: { id: payload[0].id } });
+          yield put({ type: "CHANGE_STORE", payload: { store: payload[0] } });
         }
       }
     }
   } else {
-    yield put({ type: "CHANGE_STORE", payload: { id: savedStore.id } });
+    yield put({ type: "CHANGE_STORE", payload: { store: savedStore } });
   }
 }
 
@@ -263,7 +299,7 @@ function* changePostalCode({ payload }) {
     }
     if(myNewStore){
       yield put({ type: "UPDATE_STORES", payload: data });
-      yield put({ type: "CHANGE_STORE", payload: { id: myNewStore.id } });
+      yield put({ type: "CHANGE_STORE", payload: { store: myNewStore } });
       localStorage.setItem("myStore", JSON.stringify(myNewStore));
       try {
         yield put({ type: "CHANGE_STORE_SUCCESS" });
@@ -326,6 +362,10 @@ function* watchStores() {
   yield takeEvery("STORES_SUCCESS", setMyStore);
 }
 
+function* watchSearchByPostalCode() {
+  yield takeEvery("SEARCH_BY_POSTAL_CODE", getStoresByPostalCode)
+}
+
 function* rootSaga() {
   yield all([
     watchGetPostcode(),
@@ -340,7 +380,8 @@ function* rootSaga() {
     watchPostalCode(),
     watchStores(),
     watchGetPostcodeError(),
-    watchSavedStore()
+    watchSavedStore(),
+    watchSearchByPostalCode()
   ]);
 }
 // Saga
@@ -357,6 +398,11 @@ const StateProvider = ({ children, value }) => {
             ...state,
             geo: { ...state.geo, postalCode: action.payload },
           };
+        case "SEARCH_BY_POSTAL_CODE":
+          return {
+            ...state,
+            postalCode: action.payload.postalCode
+          }
         case "REGISTERUSER_REQUEST":
           return { ...state };
         case "NEWADDRESS_REQUEST":
@@ -414,10 +460,10 @@ const StateProvider = ({ children, value }) => {
           };
         case "CHANGE_STORE":
           const newMyStore = state.stores.filter(
-            (store) => store.id === action.payload.id
+            (store) => store.id === action.payload.store.id
           )[0];
           const newStores = state.stores.filter(
-            (store) => store.id !== action.payload.id
+            (store) => store.id !== action.payload.store.id
           );
 
           return {
@@ -439,19 +485,23 @@ const StateProvider = ({ children, value }) => {
             category: { ...state.category, action: action.payload },
           };
 
-        case "PRODUCTS_SUCCSS":
+        case "SET_STORE_STATE":
           return {
             ...state,
-            category: {
-              ...state.category,
-              products: action.payload,
-            },
+            myStore: action.payload.myStore,
+            stores: action.payload.stores
           };
         
         case "LOADING_DATA":
           return {
             ...state, loadingData: action.payload
           }
+
+        case "SET_GEOLOCATION_OPEN":
+          return {
+            ...state, geoLocationOpen: action.payload
+          }
+
         default:
           return state;
       }

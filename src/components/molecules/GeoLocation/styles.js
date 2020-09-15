@@ -114,6 +114,10 @@ export const GeoLocationStoreStyled = styled.li`
     line-height: 14px;
     text-decoration: ${(props) => (props.selected ? "none" : "underline")};
   }
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export default GeoLocationStyled;

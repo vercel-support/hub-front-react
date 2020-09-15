@@ -191,6 +191,10 @@ const Withdraw = ({ product }) => {
         : `${myStore.distance} m`;
   };
 
+  const handleChangeStoreClick = () => {
+    dispatch({ type: "SET_GEOLOCATION_OPEN", payload: true });
+  }
+
   return (
     <WithdrawStyled available={available}>
       { !validAction.isValid ? <ActionDialog data={validAction}/> : null }
@@ -208,7 +212,7 @@ const Withdraw = ({ product }) => {
         </p>
       }
 
-      <span className="change">(alterar loja)</span>
+      <span className="change" onClick={handleChangeStoreClick} >(alterar loja)</span>
       {available && (
         <span className="available">
          pedido disponível em até 1 hora
