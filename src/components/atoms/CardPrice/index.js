@@ -5,9 +5,9 @@ import CardPriceStyled from "./styles";
 const CardPrice = ({ price, specialPrice }) => (
   <CardPriceStyled specialPrice={!!specialPrice}>
     <span>
-      {!specialPrice ? "a partir" : `de ${numberToPrice(specialPrice)} por`}
+      {!specialPrice ? "a partir" : `de ${numberToPrice(price)} por`}
     </span>
-    <p>{numberToPrice(price)}</p>
+    <p>{numberToPrice(specialPrice)}</p>
   </CardPriceStyled>
 );
 
