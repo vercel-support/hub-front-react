@@ -10,7 +10,7 @@ export const ProductCartStyles = styled.li`
         position: relative;
         margin-right: 4%;
         display: block;
-        width: 13%;
+        width: 10%;
 
         img {
             position: absolute;

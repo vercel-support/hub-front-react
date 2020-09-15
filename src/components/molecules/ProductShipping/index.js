@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { store } from "../../../store";
-import FlightIcon from "@material-ui/icons/Flight";
-import StoreIcon from "@material-ui/icons/Store";
 import { Input } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from "@material-ui/core/Button";
 import ProductShippingStyled, {
   ShippingCardStyled,
@@ -33,9 +33,9 @@ const addToCart = async (
     if (products.find((p) => p.storeId !== myStore.id && p.storeId !== "cd"))
       return {
         isValid: false,
-        message: "Seu carrinho tem produtos de outra loja",
-        cancelMessage: `Cancelar`,
-        confirmMessage: `Limpar carrinho e comprar em ${myStore.name}`,
+        message: `Você já escolheu produtos de outra loja, portanto não pode adicionar produtos da loja ${myStore.name} no mesmo carrinho. Deseja manter o carrinho atual?`,
+        cancelMessage: `Sim`,
+        confirmMessage: `Não`,
       };
   }
 
@@ -48,16 +48,16 @@ const addToCart = async (
     return shippingType === "delivery"
       ? {
           isValid: false,
-          message: "Você já está comprando para retirar na loja.",
-          cancelMessage: `Cancelar`,
-          confirmMessage: `Limpar carrinho e receber em casa`,
+          message: "Você já escolheu produtos para retirar na loja, portanto não pode escolher outro produto neste mesmo carrinho para receber em casa. Deseja continuar com seu carrinho atual e retirar na loja?",
+          cancelMessage: `Sim`,
+          confirmMessage: `Não`,
         }
       : {
           isValid: false,
-          message: "Você já está comprando para receber em casa.",
-          cancelMessage: `Cancelar`,
-          confirmMessage: `Limpar carrinho e retirar na loja`,
-        };
+          message: "Você já escolheu produtos para receber em casa, portanto não pode escolher outro produto neste mesmo carrinho para ir retirar na loja. Deseja continuar com seu carrinho atual e receber em casa?",
+          cancelMessage: `Sim`,
+          confirmMessage: `Não`,
+      };
 
   const cartId = localStorage.getItem("cartId");
   product.storeId = myStore.id;
@@ -107,20 +107,25 @@ const requestStockAvailability = async (postalCode, storeId, sku) => {
 const ActionDialog = ({ data }) => {
   const [open, setOpen] = useState(true);
   return (
-    <Dialog open={open}>
-      <DialogTitle id="alert-dialog-title" align={"center"}>
-        {data.message}
-      </DialogTitle>
-      <DialogActions>
-        <Button onClick={data.confirm} color="primary">
-          {data.confirmMessage}
-        </Button>
-        <br />
-        <Button onClick={data.cancel} color="primary" autoFocus>
-          {data.cancelMessage}
-        </Button>
-      </DialogActions>
-    </Dialog>
+      <Dialog open={open}>
+        <DialogTitle id="alert-dialog-title">
+          OPS! 
+        </DialogTitle>
+        <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {data.message}
+            </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={data.cancel} color="primary">
+            {data.cancelMessage}
+          </Button>
+          <br />
+          <Button onClick={data.confirm} color="primary" autoFocus>
+            {data.confirmMessage}
+          </Button>
+        </DialogActions>
+      </Dialog>
   );
 };
 
@@ -347,7 +352,6 @@ const ShippingCard = ({ product, updatePrices }) => {
         value={inputPostalCode}
       />
       }</p>
-{/*       <span className="change">(alterar loja)</span> */}
 
       {deliveryOptionsAvailable.expressDeliveryAvailable ? (
         <span className={"available"}>
@@ -359,7 +363,7 @@ const ShippingCard = ({ product, updatePrices }) => {
       !deliveryOptionsAvailable.deliveryAvailable &&
       !deliveryOptionsAvailable.expressDeliveryAvailable ? (
         <span className={"unavailable"}>
-          {"Indisponível para entrega em casa"}
+          {"Sem Estoque"}
         </span>
       ) : null}
       {loading ? (
