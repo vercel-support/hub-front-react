@@ -10,11 +10,13 @@ const MenuSecond = ({ items }) => (
       return (
         <li key={item.id}>
           <Link href={`/${item.url}`}>
-            <a>{item.name}</a>
+            <a>
+              <div>{item.name}</div>
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.29492 16.59L12.8749 12L8.29492 7.41L9.70492 6L15.7049 12L9.70492 18L8.29492 16.59Z"></path>
+              </svg>
+            </a>
           </Link>
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8.29492 16.59L12.8749 12L8.29492 7.41L9.70492 6L15.7049 12L9.70492 18L8.29492 16.59Z"></path>
-          </svg>
           {
             item?.children?.length ? (
               <MenuThird items={item.children} />

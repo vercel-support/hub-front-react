@@ -20,6 +20,8 @@ const MenuStyled = styled.ul`
       font-weight: normal;
       text-decoration: none;
       line-height: 24px;
+      display: flex;
+      justify-content: space-between;
     }
     &:hover a {
       color: #2983b9;
@@ -43,9 +45,6 @@ const MenuStyled = styled.ul`
     }
   }
 
-  ul > li > ul > li > ul {
-    margin-top: -10px;
-  }
 
   ul {
     background-color: #fff;
