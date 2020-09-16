@@ -5,7 +5,6 @@ const CategoryBannerStyled = styled.div`
   height: 110px;
   padding: 25px 0;
   width: 100%;
-  margin-top: -20px !important;
 
   & > h2 {
     align-items: center;

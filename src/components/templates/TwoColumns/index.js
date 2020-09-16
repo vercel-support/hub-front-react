@@ -9,16 +9,16 @@ const TwoColumns = ({
   left = null,
 }) => (
   <Grid container direction="column" justify="space-between">
-    <Grid item xs={12}>
+    <Grid item>
       <Header content={content} />
     </Grid>
     <Grid item>
       <main>
+        <Grid item xs={12}>
+          {beforeContent}
+        </Grid>
         <Container>
-          <Grid container>
-            <Grid item xs={12}>
-              {beforeContent}
-            </Grid>
+          <Grid container spacing={4}> 
             <Grid item xs={12} lg={2}>
               {left}
             </Grid>
