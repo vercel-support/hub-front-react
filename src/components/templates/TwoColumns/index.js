@@ -14,11 +14,11 @@ const TwoColumns = ({
     </Grid>
     <Grid item>
       <main>
+        <Grid item xs={12}>
+          {beforeContent}
+        </Grid>
         <Container>
           <Grid container spacing={4}> 
-            <Grid item xs={12}>
-              {beforeContent}
-            </Grid>
             <Grid item xs={12} lg={2}>
               {left}
             </Grid>
