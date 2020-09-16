@@ -24,6 +24,7 @@ const { API_URL } = publicRuntimeConfig;
 import axios from "axios";
 
 import { store } from "../../../store";
+import { Container } from "@material-ui/core";
 
 const Product = ({ content }) => {
   const {
@@ -85,26 +86,28 @@ const Product = ({ content }) => {
       <ProductStyled>
         <Gallery images={imageGallery} />
         <ProductContainerStyled>
-          <ProductName name={name} />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            {/*<ProductRating />*/}
-            <ProductBrand brand={brand} />
-          </div>
-          { product ? 
-            <ProductContentStyled>
-              <div>
-                <ProductDiscount discount={product.discount} />
-                <ProductPrice
-                  price={product.price}
-                  specialPrice={product.specialPrice}
-                />
-                {type.toLocaleLowerCase() === "configurable" && (
-                  <ProductOptions change={setProduct} options={children} />
-                )}
-              </div>
-              <ProductShipping product={product} updatePrices={updatePrices} />
-            </ProductContentStyled> : null
-          }
+          <Container>
+            <ProductName name={name} />
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              {/*<ProductRating />*/}
+              <ProductBrand brand={brand} />
+            </div>
+            { product ? 
+              <ProductContentStyled>
+                <div>
+                  <ProductDiscount discount={product.discount} />
+                  <ProductPrice
+                    price={product.price}
+                    specialPrice={product.specialPrice}
+                  />
+                  {type.toLocaleLowerCase() === "configurable" && (
+                    <ProductOptions change={setProduct} options={children} />
+                  )}
+                </div>
+                <ProductShipping product={product} updatePrices={updatePrices} />
+              </ProductContentStyled> : null
+            }
+          </Container>
         </ProductContainerStyled>
       </ProductStyled>
       <ProductDescription description={description} />

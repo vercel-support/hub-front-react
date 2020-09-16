@@ -4,10 +4,8 @@ import Icon from "./icon";
 export const SearchContainer = styled.div`
   background-color: ${(props) => (props.barOpened ? "white" : "transparent")};
   width: ${(props) => (props.barOpened ? "80vw" : "3rem")};
-  height: 35px;
-  box-shadow: ${(props) =>
-    props.barOpened ? "0 4px 8px rgba(0, 0, 0, 0.2);" : "0"};
-  border-radius: 2px;
+  height: 40px;
+  border-radius: 5px;
   cursor: ${(props) => (props.barOpened ? "auto" : "pointer")};
   transition: width 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
 
@@ -22,7 +20,6 @@ export const SearchContainer = styled.div`
     width: 100%;
     cursor: auto;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -115,7 +112,7 @@ export const Input = styled.input`
 export const Button = styled.button`
   position: absolute;
   right: 1rem;
-  top: 15%;
+  top: 20%;
   line-height: 1;
   pointer-events: ${(props) => (props.barOpened ? "auto" : "none")};
   cursor: ${(props) => (props.barOpened ? "pointer" : "none")};
