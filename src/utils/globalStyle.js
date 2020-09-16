@@ -3,7 +3,6 @@ import { createGlobalStyle } from "styled-components";
 export default createGlobalStyle`
   main > .MuiContainer-root {
     margin-top:20px;
-    padding: 0;
   }
 
 

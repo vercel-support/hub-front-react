@@ -13,7 +13,7 @@ export default makeStyles((theme) =>
       display: "flex",
       height: "55px",
       [theme.breakpoints.up("lg")]: {
-        height: "65px",
+        height: "80px",
       },
     },
     subheader: {
