@@ -72,6 +72,7 @@ const Product = ({ content }) => {
   }, [myStore]);
   
   useEffect(() => {
+    fetchPrices();
     productPageView(window.dataLayer.push, window.ga, {data: content.data, selectedProduct: product});
   }, [product]);
 
