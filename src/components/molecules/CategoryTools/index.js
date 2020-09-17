@@ -9,8 +9,8 @@ const CategoryTools = ({ filterOpen, setFilterOpen }) => {
   const { dispatch } = useContext(store);
 
   return (
-    <CategoryToolsStyled>
-      <Hidden lgUp>
+    <Hidden lgUp>
+      <CategoryToolsStyled>
         <Button
           variant="outlined"
           onClick={() => {
@@ -20,14 +20,15 @@ const CategoryTools = ({ filterOpen, setFilterOpen }) => {
         >
           <TuneIcon /> filtrar
         </Button>
-      </Hidden>
-      {/* <Button
-        variant="outlined"
-        onClick={() => dispatch({ type: "CATEGORY_ACTION", payload: "sort" })}
-      >
-        <TuneIcon /> ordenar
-      </Button> */}
-    </CategoryToolsStyled>
+
+        {/* <Button
+          variant="outlined"
+          onClick={() => dispatch({ type: "CATEGORY_ACTION", payload: "sort" })}
+        >
+          <TuneIcon /> ordenar
+        </Button> */}
+      </CategoryToolsStyled>
+    </Hidden>
   );
 };
 
