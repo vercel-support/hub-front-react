@@ -24,7 +24,6 @@ const getShippingMethod = () => {
 
 const Cart = ({ content }) => {
   const { state, dispatch } = useContext(store);
-  const { myStore, geo } = state;
   const [ cep, setCep ] = useState();
   const [ products, setProducts ] = useState(false);
   const [ shippingType, setShippingType ] = useState(null);
@@ -36,6 +35,26 @@ const Cart = ({ content }) => {
   const handleSelectedShipping = (method) => {
     setSelectedShippingMethod(method);
   }
+
+  const getPickupStore = async() => {
+    const products = JSON.parse(localStorage.getItem("productList") || "[]");
+    const pickupProduct = products.find(product => product.shippingType === "pickup");
+    const storeId = pickupProduct ? pickupProduct.storeId : null
+    if(storeId){
+      try{
+        let serviceResponse = await axios.get(`${API_URL}/logistic/store?storeId=${storeId}`);
+        if(serviceResponse && serviceResponse.data && (serviceResponse.status === 200)){
+          setPickupStore(serviceResponse.data.data);
+        }
+      }
+      catch(error){
+      }
+    }
+  }
+
+  useEffect(() => {
+    getPickupStore();
+  }, [shippingType]);
 
   const calcShipping = async() => {
     try{
@@ -68,11 +87,7 @@ const Cart = ({ content }) => {
       setCartSubTotalAmount(cart_subtotal);
     }
 
-  }, [products, cep, myStore]);
-
-  useEffect(() => {
-    if(myStore && myStore.id !== "cd") setPickupStore(myStore);
-  }, [myStore]);
+  }, [products, cep]);
 
   const updateCart = async() => {
     const cartId = localStorage.getItem("cartId");

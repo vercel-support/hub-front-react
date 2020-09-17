@@ -35,12 +35,16 @@ const GeoLocation = () => {
     if(savedStore && savedStore !== "undefined"){
       setMyStore(JSON.parse(savedStore));
     }
-    document.addEventListener("mousedown", (e) => {
-      if (!document.getElementById("geolocation_container").contains(e.target)) {
-        setOpen(false);
-        dispatch({ type: "SET_GEOLOCATION_OPEN", payload: false });
-      }
-    });
+
+    if(document.getElementById("geolocation_container")){
+      document.addEventListener("mousedown", (e) => {
+        if (!document.getElementById("geolocation_container").contains(e.target)) {
+          setOpen(false);
+          dispatch({ type: "SET_GEOLOCATION_OPEN", payload: false });
+        }
+      });
+    }
+
   }, []);
   
   useEffect(() => {

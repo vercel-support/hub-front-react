@@ -133,6 +133,7 @@ const Withdraw = ({ product }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(store);
   const { myStore } = state;
+  const [savedStore, setSavedStore] = useState({ name: "Centro de Distribuição", id: "cd" });
   const [available, setAvailable] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validAction, setValidAction] = useState({
@@ -141,6 +142,27 @@ const Withdraw = ({ product }) => {
     confirmMessage: "",
     cancelMessage: "",
   });
+
+  useEffect(() => {
+    const lsStore = localStorage.getItem("myStore");
+    if(lsStore){
+      setSavedStore(JSON.parse(lsStore));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (savedStore && product) {
+      setLoading(true);
+      requestStockAvailability(null, savedStore.id, product.sku).then(
+        (options) => {
+          setLoading(false);
+          if (options && options.data) {
+            setAvailable(options.data.pickupAvailable);
+          }
+        }
+      );
+    }
+  }, [savedStore, product])
 
   useEffect(() => {
     if (myStore && product) {
@@ -154,7 +176,10 @@ const Withdraw = ({ product }) => {
         }
       );
     }
-  }, [myStore, product]);
+    if(myStore && myStore.id !== "cd"){
+      setSavedStore(myStore);
+    }
+  }, [myStore]);
 
   const clearCartAndRetryAddToCart = async () => {
     localStorage.removeItem("productList");
@@ -173,7 +198,7 @@ const Withdraw = ({ product }) => {
 
   const pickupClick = async () => {
     let cartActionResponse = await addToCart(
-      myStore,
+      savedStore,
       product,
       "pickup",
       false,
@@ -190,10 +215,10 @@ const Withdraw = ({ product }) => {
   };
 
   const getStoreDistance = () => {
-    if (myStore && myStore.distance)
-      return myStore.distance >= 1000
-        ? `${(myStore.distance / 1000).toFixed(1)} km`
-        : `${myStore.distance} m`;
+    if (savedStore && savedStore.distance)
+      return savedStore.distance >= 1000
+        ? `${(savedStore.distance / 1000).toFixed(1)} km`
+        : `${savedStore.distance} m`;
   };
 
   const handleChangeStoreClick = () => {
@@ -203,14 +228,14 @@ const Withdraw = ({ product }) => {
   return (
     <WithdrawStyled available={available}>
       { !validAction.isValid ? <ActionDialog data={validAction}/> : null }
-      { myStore.id === "cd" ? 
+      { savedStore.id === "cd" ? 
         <p>Encontre a loja mais próxima para retirada</p> :
         <p>
           <span className="stock">
             {available ? "Retire hoje " : "Sem estoque "}
           </span>
           na loja
-          <span className="store"> {myStore.name}</span>
+          <span className="store"> {savedStore.name}</span>
           <p>
           {getStoreDistance() ? `A ${getStoreDistance()} de você` : null}
           </p>
@@ -238,6 +263,7 @@ const ShippingCard = ({ product, updatePrices }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(store);
   const { myStore, geo } = state;
+  const [savedStore, setSavedStore] = useState({ name: "Centro de Distribuição", id: "cd" });
   const [shippingPostalCode, setShippingPostalCode] = useState(null);
   const [deliveryOptionsAvailable, setDeliveryOptionsAvailable] = useState({
     deliveryAvailable: false,
@@ -266,10 +292,31 @@ const ShippingCard = ({ product, updatePrices }) => {
       setShippingPostalCode(lsPostalCode);
       checkStateAndSetStore(lsPostalCode);
     }
+    const lsStore = localStorage.getItem("myStore");
+    if(lsStore){
+      setSavedStore(JSON.parse(lsStore));
+    }
   }, []);
 
   useEffect(() => {
-    if (myStore && product) {
+    if (savedStore && product && shippingPostalCode) {
+      setLoading(true);
+      requestStockAvailability(
+        shippingPostalCode,
+        savedStore.id,
+        product.sku
+      ).then((options) => {
+        setLoading(false);
+        if (options && options.data) {
+          setDeliveryOptionsAvailable(options.data);
+        }
+      });
+    }
+  }, [savedStore, product, shippingPostalCode]);
+
+  useEffect(() => {
+    if(myStore && myStore.id !== "cd"){
+      setSavedStore(myStore);
       setLoading(true);
       requestStockAvailability(
         shippingPostalCode,
@@ -282,7 +329,7 @@ const ShippingCard = ({ product, updatePrices }) => {
         }
       });
     }
-  }, [myStore, product, shippingPostalCode]);
+  }, [myStore]);
 
   const validatePostalCode = (event) => {
     if (event) {
@@ -305,7 +352,7 @@ const ShippingCard = ({ product, updatePrices }) => {
 
   const clearCartAndRetryAddToCart = async () => {
     localStorage.removeItem("productList");
-    await addToCart(myStore, product, "delivery", true, dispatch);
+    await addToCart(savedStore, product, "delivery", true, dispatch);
     router.push("/cart", undefined, { shallow: true });
   };
 
@@ -320,7 +367,7 @@ const ShippingCard = ({ product, updatePrices }) => {
 
   const deliveryClick = async () => {
     let cartActionResponse = await addToCart(
-      myStore,
+      savedStore,
       product,
       "delivery",
       false,
