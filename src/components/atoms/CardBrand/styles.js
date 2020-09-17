@@ -6,7 +6,7 @@ const CardBrandStyled = styled.p`
   display: flex;
   font-style: normal;
   font-weight: normal;
-  font-size: 10px;
+  font-size: 12px;
   justify-content: center;
   line-height: 19px;
   margin: 0;
