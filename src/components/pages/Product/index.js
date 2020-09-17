@@ -42,7 +42,8 @@ const Product = ({ content }) => {
   )[0]?.value;
   const { state } = useContext(store);
   const { myStore } = state;
-  const [ children, setChildren ] = useState([])
+  const [ children, setChildren ] = useState([]);
+  const [ selectedSku, setSelectedSku ] = useState(null);
 
   const fetchPrices = async() => {
     let url = myStore && myStore.id ?
@@ -52,7 +53,8 @@ const Product = ({ content }) => {
     if(response.data.data && response.data.status === 200 && response.data.data.length > 0){
       let new_children = response.data.data;
       setChildren(new_children);
-      if(!product){
+      if(!selectedSku){
+        setSelectedSku(new_children[0].sku);
         setProduct({
           name: new_children[0].name,
           sku: new_children[0].sku,
@@ -60,6 +62,10 @@ const Product = ({ content }) => {
           specialPrice: new_children[0].specialPrice,
           discount: new_children[0].percentagePromotionDiscount
         });
+      }
+      else{
+        const newProduct = new_children.find(ch => ch.sku == selectedSku);
+        if(newProduct) setProduct({...newProduct});
       }
     }
   }
@@ -73,11 +79,17 @@ const Product = ({ content }) => {
   }, [myStore]);
   
   useEffect(() => {
-    productPageView(window.dataLayer.push, window.ga, {data: content.data, selectedProduct: product});
+    //productPageView(window.dataLayer.push, window.ga, {data: content.data, selectedProduct: product});
   }, [product]);
 
   const updatePrices = () => {
     fetchPrices();
+  };
+
+  const handleVariationChange = (event) => {
+    const newProduct = children.find(ch => ch.sku == event);
+    if(newProduct) setProduct({...newProduct});
+    setSelectedSku(event);
   }
 
   return (
@@ -101,7 +113,7 @@ const Product = ({ content }) => {
                     specialPrice={product.specialPrice}
                   />
                   {type.toLocaleLowerCase() === "configurable" && (
-                    <ProductOptions change={setProduct} options={children} />
+                    <ProductOptions change={handleVariationChange} options={children} />
                   )}
                 </div>
                 <ProductShipping product={product} updatePrices={updatePrices} />

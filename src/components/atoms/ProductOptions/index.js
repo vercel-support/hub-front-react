@@ -25,15 +25,7 @@ const ProductOptions = ({ options = [], change }) => {
             value={option.value}
             checked={i === selected}
             onClick={() => {
-              change({
-                sku: option.sku,
-                name: option.name,
-                price: option.price,
-                specialPrice: option.specialPrice,
-                discount: option.percentagePromotionDiscount,
-                pickupAvailable: option.pickupAvailable,
-                quantityAvailableForPickup: option.quantityAvailableForPickup,
-              });
+              change(option.sku);
               setSelected(i);
             }}
           />

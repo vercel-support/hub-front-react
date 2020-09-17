@@ -54,6 +54,7 @@ const PaymentForm = () => {
   };
 
   const sdkResponseHandler = (status, response) => {
+    axios.post(`${API_URL}/payments/card/notify-error`, response);
     if (status == 200 || status == 201){
       const token = response.id;
       let payment_method_element = document.getElementById("payment_method_id");

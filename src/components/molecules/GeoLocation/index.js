@@ -15,7 +15,11 @@ import GeoLocationStyled, {
 
 const GeoLocation = () => {
   const { state, dispatch } = useContext(store);
-  const { myStore = {}, stores = [], geoLocationOpen } = state;
+  const { stores = [], geoLocationOpen } = state;
+  const [myStore, setMyStore] = useState({
+    id: "cd",
+    name: "Centro de distribuição",
+  });
   const [open, setOpen] = useState(false);
   const [postalcode, setPostalcode] = useState();
   const { register, handleSubmit } = useForm();
@@ -27,6 +31,10 @@ const GeoLocation = () => {
   }, [geoLocationOpen]);
 
   useEffect(() => {
+    const savedStore = localStorage.getItem("myStore");
+    if(savedStore && savedStore !== "undefined"){
+      setMyStore(JSON.parse(savedStore));
+    }
     document.addEventListener("mousedown", (e) => {
       if (!document.getElementById("geolocation_container").contains(e.target)) {
         setOpen(false);
@@ -36,7 +44,8 @@ const GeoLocation = () => {
   }, []);
   
   useEffect(() => {
-  }, [myStore, stores]);
+    if(state.myStore && state.myStore.id !== "cd") setMyStore(state.myStore);
+  }, [state.myStore, stores]);
 
   const onSubmit = () => {
     dispatch({ type: "SEARCH_BY_POSTAL_CODE", payload: postalcode });
