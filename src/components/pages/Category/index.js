@@ -26,21 +26,18 @@ const Category = ({ content }) => {
   const [pagination, setPagination] = useState({
     page: 0, perPage: 32
   });
+  const [savedStore, setSavedStore] = useState(null);
 
   const fetchProducts = async(reset) => {
-    try{
-      let savedStore = localStorage.getItem("myStore");
-      if(savedStore && savedStore !== "undefined")
-        savedStore = JSON.parse(savedStore);
-      else savedStore = null;
-  
+    try{  
       const query = content.data.url;
       const filtersSelected = filters.join(",");
+      const page = reset ? 0 : pagination.page;
   
       let url = `${API_URL}/catalogs/redirect?url=${query}`;
       if(savedStore) url += `&storeId=${savedStore.id}`;
       if(filtersSelected.length > 0) url+= `&filters=${filtersSelected}`;
-      url+= `&page=${pagination.page}&perPage=${pagination.perPage}`
+      url+= `&page=${page}&perPage=${pagination.perPage}`
   
       let response = await axios.get(url);
       if(response.data.data && response.data.status === 200){
@@ -56,10 +53,6 @@ const Category = ({ content }) => {
 
   const handleFiltersChange = (filters) => {
     setFilters(filters);
-    setPagination({
-      ...pagination, page: 0
-    });
-
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
@@ -76,13 +69,25 @@ const Category = ({ content }) => {
   }, [pagination]);
 
   useEffect(() => {
-    fetchProducts(true);
+    let lsStore = localStorage.getItem("myStore");
+    if(lsStore && lsStore !== "undefined") setSavedStore(JSON.parse(lsStore));
+
     categoryPageView(window.dataLayer.push, window.ga, {
       products,
       url: content.data.categoryUrl,
       pageName: content.data.pageName,
     });
   }, []);
+
+  useEffect(() => {
+    fetchProducts(true);
+  }, [savedStore]);
+
+  useEffect(() => {
+    if(state.myStore){
+      setSavedStore(state.myStore);
+    }
+  }, [state.myStore]);
 
   return (
     <TwoColumns

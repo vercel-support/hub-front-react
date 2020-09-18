@@ -75,7 +75,7 @@ const GetGeolocation = () => {
   const handlePostalCodeChange = (event) => {
     const validated = validatePostalCode(event.target.value);
     if(validated){
-      dispatch({ type: "CHANGE_POSTALCODE", payload: validated });
+      dispatch({ type: "POSTALCODE_SUCCESS", payload: validated });
       localStorage.setItem("postalcode-delivery", validated);
       setOpen(false);
     }

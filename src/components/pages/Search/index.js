@@ -25,6 +25,7 @@ const Search = ({ content }) => {
   const [pagination, setPagination] = useState({
     page: 0, perPage: 32
   });
+  const [savedStore, setSavedStore] = useState(null);
 
   const fetchProducts = async(reset) => {
     try{
@@ -35,11 +36,12 @@ const Search = ({ content }) => {
   
       const query = content.data.userQuery;
       const filtersSelected = filters.join(",");
+      const page = reset ? 0 : pagination.page;
   
       let url = `${API_URL}/catalogs/products/search?text=${query}`;
       if(savedStore) url += `&storeId=${savedStore.id}`;
       if(filtersSelected.length > 0) url+= `&filters=${filtersSelected}`;
-      url+= `&page=${pagination.page}&perPage=${pagination.perPage}`
+      url+= `&page=${page}&perPage=${pagination.perPage}`
   
       let response = await axios.get(url);
       if(response.data.data && response.data.status === 200){
@@ -63,14 +65,21 @@ const Search = ({ content }) => {
 
   useEffect(() => {
     fetchProducts(true);
+  }, [savedStore]);
+
+  useEffect(() => {
+    let lsStore = localStorage.getItem("myStore");
+    if(lsStore && lsStore !== "undefined") setSavedStore(JSON.parse(lsStore));
   }, []);
+
+  useEffect(() => {
+    if(state.myStore){
+      setSavedStore(state.myStore);
+    }
+  }, [state.myStore]);
 
   const handleFiltersChange = (filters) => {
     setFilters(filters);
-    setPagination({
-      ...pagination, page: 0
-    });
-
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
