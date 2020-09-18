@@ -11,6 +11,11 @@ export default createGlobalStyle`
     border-left: 1px solid #dcdcdc;
   }
 
+  .MuiBackdrop-root {
+    backdrop-filter: blur(5px);
+    background-color: none;
+  }
+
   html, body {
     background-color: #FFF !important;
     font-family: "Open Sans",Helvetica,Arial,sans-serif;

@@ -1,24 +1,28 @@
 import React, { useEffect } from "react";
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
 import { store } from "../../../store";
+import ModalStyled from "./styles";
 
 const useStyles = makeStyles({
   root: {
     margin: 0,
   },
   title: {
-    fontSize: "12px"
+
   },
   contentText: {
   },
   geoButton: {
     position: 'absolute',
   },
+  button: {
+    padding: "15px",
+    color: "#666"
+  },  
 });
 
 const validatePostalCode = (postalcode) => {
@@ -77,23 +81,42 @@ const GetGeolocation = () => {
     }
   }
 
-  return (
-      
-    <div>
-      <Dialog className={classes.root} aria-labelledby="customized-dialog-title" open={open}>
-        <DialogTitle className={classes.title} id="customized-dialog-title">
-          Onde você está?
-        </DialogTitle>
-        <DialogContentText className={classes.contentText} id="alert-dialog-description">
-          Dessa forma você terá acesso aos produtos e ofertas da sua região.
-        </DialogContentText>
-        <Button variant="contained" onClick={geoLocate}>Utilizar localização automática</Button>
-        <DialogContentText className={classes.contentText} id="alert-dialog-description">
-          Você pode também:
-        </DialogContentText>
-        <TextField id="standard-basic" onChange={handlePostalCodeChange} placeholder="Digitar seu cep"/>
-      </Dialog>
-    </div>
+  return (    
+    <>
+        <Dialog fullWidth="true" maxWidth="sm" className={classes.root} aria-labelledby="customized-dialog-title" open={open}>
+          <ModalStyled>
+            <img
+              src="/assets/images/modal-delivery.jpg"
+              alt="formas de pagamento"
+              title="formas de pagamento"
+              width="100"
+            />
+            <h2>Onde você está?</h2>
+            <p>Dessa forma você terá acesso aos produtos e ofertas da sua região.</p>
+
+            <Button
+            variant="outlined"
+            size="large"
+            fullWidth="true"
+            onClick={geoLocate}
+            className={classes.button}
+            startIcon={<MyLocationIcon />}
+            >
+              Usar minha Localização 
+            </Button>
+            
+            <TextField
+              id="outlined-full-width"
+              label="Digite o CEP"
+              onChange={handlePostalCodeChange}
+              placeholder="Digite seu CEP para entrega"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+            />
+          </ModalStyled>
+        </Dialog>
+    </>
   );
 };
 
