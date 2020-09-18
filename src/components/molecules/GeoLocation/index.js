@@ -15,7 +15,8 @@ import GeoLocationStyled, {
 
 const GeoLocation = () => {
   const { state, dispatch } = useContext(store);
-  const { stores = [], geoLocationOpen } = state;
+  const { geoLocationOpen } = state;
+  const [stores, setStores] = useState([]);
   const [myStore, setMyStore] = useState({
     id: "cd",
     name: "Centro de distribuição",
@@ -23,19 +24,36 @@ const GeoLocation = () => {
   const [open, setOpen] = useState(false);
   const [postalcode, setPostalcode] = useState();
   const { register, handleSubmit } = useForm();
-
   const [geo, setGeo] = useState(false);
 
   useEffect(() => {
     setOpen(geoLocationOpen);
   }, [geoLocationOpen]);
 
-  useEffect(() => {
+  const setStore = () => {
     const savedStore = localStorage.getItem("myStore");
     if(savedStore && savedStore !== "undefined"){
       setMyStore(JSON.parse(savedStore));
     }
+  }
 
+  const setNearbyStores = () => {
+    const savedStores = localStorage.getItem("nearby-stores");
+    if(savedStores && savedStores !== "undefined"){
+      setStores(JSON.parse(savedStores));
+    }
+  }
+
+  useEffect(() => {
+    if(state.myStore)
+      setMyStore(state.myStore);
+    if(state.stores && state.stores.length > 0)
+      setStores(state.stores);
+  }, [state.geo, state.myStore, state.stores])
+
+  useEffect(() => {
+    setStore();
+    setNearbyStores();
     if(document.getElementById("geolocation_container")){
       document.addEventListener("mousedown", (e) => {
         if (!document.getElementById("geolocation_container").contains(e.target)) {
@@ -46,13 +64,9 @@ const GeoLocation = () => {
     }
 
   }, []);
-  
-  useEffect(() => {
-    if(state.myStore && state.myStore.id !== "cd") setMyStore(state.myStore);
-  }, [state.myStore, stores]);
 
   const onSubmit = () => {
-    dispatch({ type: "SEARCH_BY_POSTAL_CODE", payload: postalcode });
+    dispatch({ type: "POSTALCODE_SUCCESS", payload: postalcode });
   }
 
   const formatAddress = (address) => {

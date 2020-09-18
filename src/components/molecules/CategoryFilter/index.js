@@ -44,6 +44,7 @@ const CategoryFilter = ({
   filterOpen,
   setFilterOpen,
   setProducts,
+  handleFiltersChange
 }) => {
   let { categoryUrl = "" } = content?.data;
   const [selecteds, setSelecteds] = useState({});
@@ -105,7 +106,7 @@ const CategoryFilter = ({
       Object.keys(selecteds).forEach((filter) => {
         params = [...params, ...selecteds[filter]];
       });
-  
+      console.log(params);
       const { products } = await requestProducts(
         categoryUrl,
         0,
@@ -118,12 +119,17 @@ const CategoryFilter = ({
 
   };
 
-  useEffect(() => {
-    // initParams();
-  }, []);
+  const handleChange = () => {
+    let params = [];
+    Object.keys(selecteds).forEach((filter) => {
+      params = [...params, ...selecteds[filter]];
+    });
+    handleFiltersChange(params);
+  }
+
 
   useEffect(() => {
-    handleProducts();
+    handleChange();
   }, [selecteds]);
 
   return (

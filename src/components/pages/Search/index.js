@@ -10,15 +10,82 @@ import {
 import { ListProducts } from "../../organisms";
 import { TwoColumns } from "../../templates";
 
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL } = publicRuntimeConfig;
+import axios from "axios";
+
 const Search = ({ content }) => {
   const { state, dispatch } = useContext(store);
   const { action } = state.category;
-  const [products, setProducts] = useState(content.data.products);
+
+  const [products, setProducts] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [filters, setFilters] = useState([]);
+  const [pagination, setPagination] = useState({
+    page: 0, perPage: 32
+  });
+  const [savedStore, setSavedStore] = useState(null);
+
+  const fetchProducts = async(reset) => {
+    try{
+      let savedStore = localStorage.getItem("myStore");
+      if(savedStore && savedStore !== "undefined")
+        savedStore = JSON.parse(savedStore);
+      else savedStore = null;
+  
+      const query = content.data.userQuery;
+      const filtersSelected = filters.join(",");
+      const page = reset ? 0 : pagination.page;
+  
+      let url = `${API_URL}/catalogs/products/search?text=${query}`;
+      if(savedStore) url += `&storeId=${savedStore.id}`;
+      if(filtersSelected.length > 0) url+= `&filters=${filtersSelected}`;
+      url+= `&page=${page}&perPage=${pagination.perPage}`
+  
+      let response = await axios.get(url);
+      if(response.data.data && response.data.status === 200){
+        const newProducts = response.data.data.products;
+        if(reset) setProducts(newProducts);
+        else setProducts([...products, ...newProducts]);
+      }
+    }
+    catch(error){
+
+    }
+  }
 
   useEffect(() => {
-    setProducts(content.data.products);
-  }, [content]);
+    fetchProducts(false);
+  }, [pagination]);
+
+  useEffect(() => {
+    fetchProducts(true);
+  }, [filters]);
+
+  useEffect(() => {
+    fetchProducts(true);
+  }, [savedStore]);
+
+  useEffect(() => {
+    let lsStore = localStorage.getItem("myStore");
+    if(lsStore && lsStore !== "undefined") setSavedStore(JSON.parse(lsStore));
+  }, []);
+
+  useEffect(() => {
+    if(state.myStore){
+      setSavedStore(state.myStore);
+    }
+  }, [state.myStore]);
+
+  const handleFiltersChange = (filters) => {
+    setFilters(filters);
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  const handlePageChange = (page) => {
+    setPagination({ ...pagination, page });
+  }
 
   return (
     <TwoColumns
@@ -49,15 +116,14 @@ const Search = ({ content }) => {
             content={content}
             filters={content.data.filtersAvailable}
             setProducts={setProducts}
+            handleFiltersChange={handleFiltersChange}
           />
         )
       }
     >
       <ListProducts
-        content={content}
         products={products}
-        setProducts={setProducts}
-        currentPage={content.data.currentPage}
+        handlePageChange={handlePageChange}
       />
     </TwoColumns>
   );

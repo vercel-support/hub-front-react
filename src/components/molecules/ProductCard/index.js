@@ -19,10 +19,10 @@ const ProductCard = (props) => {
           <CardImage image={product.image} name={product.name} />
           <CardName name={product.name} />
           {product?.brand?.label && <CardBrand brand={product.brand.label} />}
-            {/* <CardPrice
+            <CardPrice
             price={product.price}
             specialPrice={product.specialPrice}
-            /> */}
+            />
           <Availability available={product.stockAvailable} />
         </a>
       </Link>

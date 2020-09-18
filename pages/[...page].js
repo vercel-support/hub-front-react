@@ -30,7 +30,7 @@ export const getServerSideProps = async ({ query }) => {
   const response = await requestCategories();
 
   return {
-    props: { content: { data: { ...route.data, categories: response.data } } },
+    props: { content: { data: { ...route.data, categories: response.data, url} } },
   };
 };
 
