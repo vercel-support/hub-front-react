@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -14,9 +14,9 @@ import { InformationForm, ResumeForm } from "../../molecules";
 import { Logo } from "../../atoms";
 import useStyles from "./styles";
 
-const HeaderClen = ({ content }) => {
+const HeaderClen = ({ cart }) => {
   const classes = useStyles();
-  const [top, setTop] = React.useState(false);
+  const [top, setTop] = useState(false);
 
   return (
     <header className={classes.header}>
@@ -28,13 +28,23 @@ const HeaderClen = ({ content }) => {
             </Grid>
 
             <Hidden lgUp>
-              <Grid item lg={3} xs={3}>
-                <Button onClick={() => setTop(true)} className={classes.button}><span className={classes.span}>2 itens</span>R$ 350,00</Button>
-                <Drawer anchor={"top"} open={top} onClose={() => setTop(false)}>
-                  <ResumeForm />
-                  {/* <InformationForm /> */}
-                </Drawer>
-              </Grid>
+              { cart ? 
+                <Grid item lg={3} xs={3}>
+                  <Button 
+                    onClick={() => setTop(true)} 
+                    className={classes.button}
+                  >  
+                    <span className={classes.span}>{cart.products.length} {cart.products.length == 1 ? " item" : "itens"}</span>R$ {cart.total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </Button>
+                  <Drawer anchor={"top"} open={top} onClose={() => setTop(false)}>
+                    <ResumeForm />
+                    {/* <InformationForm /> */}
+                  </Drawer>
+                </Grid>
+                :
+                null
+              }
+
               <Grid item lg={1} xs={1}>
               <ExpandMore />
               </Grid>

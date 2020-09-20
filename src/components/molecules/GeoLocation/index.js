@@ -54,13 +54,15 @@ const GeoLocation = () => {
   useEffect(() => {
     setStore();
     setNearbyStores();
-    if(document.getElementById("geolocation_container")){
-      document.addEventListener("mousedown", (e) => {
-        if (!document.getElementById("geolocation_container").contains(e.target)) {
-          setOpen(false);
-          dispatch({ type: "SET_GEOLOCATION_OPEN", payload: false });
-        }
-      });
+
+    const geoElement = document.getElementById("geolocation_container");
+    if(geoElement){
+        document.addEventListener("mousedown", (e) => {
+          if (!geoElement.contains(e.target)) {
+            setOpen(false);
+            dispatch({ type: "SET_GEOLOCATION_OPEN", payload: false });
+          }
+        });
     }
 
   }, []);

@@ -12,6 +12,11 @@ import { Login, Steppers, Success } from "../../organisms";
 import { Footer, HeaderClen } from "../../organisms";
 import { checkoutPageView } from '../../../../lib/ga';
 
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL } = publicRuntimeConfig;
+import axios from "axios";
+
 const steps = ["Identificação", "Endereço", "Pagamento"];
 
 function getStepContent(step, handleNext, shipping) {
@@ -30,11 +35,20 @@ function getStepContent(step, handleNext, shipping) {
 const Checkout = ({ content }) => {
   const { state, dispatch } = useContext(store);
   const [activeStep, setActiveStep] = useState(0);
-  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState(null);
+
+  const fetchCart = async() => {
+    const cartId = localStorage.getItem("cartId");
+    if(cartId){
+      let serviceResponse = await axios.get(`${API_URL}/cart?cartId=${cartId}`);
+      if(serviceResponse && serviceResponse.status === 200){
+        setCart(serviceResponse.data.data);
+      }
+    }
+  };
 
   useEffect(() => {
-    const products = JSON.parse(localStorage.getItem("productList") || "[]");
-    setProducts(products);
+    fetchCart();
   }, []);
 
   useEffect(() => {
@@ -52,7 +66,7 @@ const Checkout = ({ content }) => {
   return (
     <Grid container direction="column" justify="space-between">
       <Grid item>
-        <HeaderClen content={content} />
+        <HeaderClen cart={cart} />
       </Grid>
       <Grid item>
         <main>
