@@ -4,50 +4,37 @@ import { store } from "../../../store";
 import { Grid } from "@material-ui/core";
 import { ProductCard } from "../../molecules";
 import ListProductsStyled, { PaginationStyled } from "./styles";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
-const ListProducts = ({ content, products, setProducts, currentPage }) => {
-  const {
-    state: {
-      myStore: { id: storeID },
-    },
-  } = useContext(store);
-  const [page, setPage] = useState(currentPage);
-  let {
-    categoryUrl = "",
-    productsPerPage = 32,
-    sortedBy = "Nome do produto",
-    sortOptions = [],
-  } = content.data;
-
-  const handleSetProducts = async () => {
-    if(categoryUrl){
-      const { products, currentPage } = await requestProducts(
-        categoryUrl,
-        page,
-        storeID,
-        []
-      );
-  
-      setProducts(products);
-      setPage(currentPage);
-    }
-  };
+const ListProducts = ({ products, handlePageChange }) => {
+  const [page, setPage] = useState(0);
 
   const handlePagination = (action) => {
     if (action === "more") setPage(page + 1);
-    else setPage(page > 1 ? page - 1 : page);
+    else setPage(page > 0 ? page - 1 : page);
   };
 
+  const nextPage = () => {
+    setPage(page + 1);
+  }
+
   useEffect(() => {
-    handleSetProducts();
-  }, [page, storeID]);
+    handlePageChange(page);
+  }, [page]);
 
   return (
     <ListProductsStyled>
-      <Grid container>
+      
+      <InfiniteScroll
+        dataLength={products.length}
+        next={nextPage}
+        hasMore={true}
+/*         loader={<h4>Loading...</h4>} */
+      >
+        <Grid container>
         {products.map((product) => (
           <ProductCard
             item
@@ -59,7 +46,12 @@ const ListProducts = ({ content, products, setProducts, currentPage }) => {
             key={product.sku}
           />
         ))}
-        <Grid item xs={12} alignItems="center" justify="center">
+        </Grid>
+        
+      </InfiniteScroll>
+
+
+{/*         <Grid item xs={12} alignItems="center" justify="center">
           <PaginationStyled>
             <ArrowBackIosIcon
               fontSize="small"
@@ -71,8 +63,8 @@ const ListProducts = ({ content, products, setProducts, currentPage }) => {
               onClick={() => handlePagination("more")}
             />
           </PaginationStyled>
-        </Grid>
-      </Grid>
+        </Grid> */}
+
     </ListProductsStyled>
   );
 };

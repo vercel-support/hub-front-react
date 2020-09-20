@@ -132,7 +132,6 @@ const ActionDialog = ({ data }) => {
 const Withdraw = ({ product }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(store);
-  const { myStore } = state;
   const [savedStore, setSavedStore] = useState({ name: "Centro de Distribuição", id: "cd" });
   const [available, setAvailable] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -143,11 +142,15 @@ const Withdraw = ({ product }) => {
     cancelMessage: "",
   });
 
-  useEffect(() => {
+  const getSavedStore = () => {
     const lsStore = localStorage.getItem("myStore");
     if(lsStore){
       setSavedStore(JSON.parse(lsStore));
     }
+  }
+
+  useEffect(() => {
+    getSavedStore();
   }, []);
 
   useEffect(() => {
@@ -162,28 +165,15 @@ const Withdraw = ({ product }) => {
         }
       );
     }
-  }, [savedStore, product])
+  }, [savedStore, product]);
 
   useEffect(() => {
-    if (myStore && product) {
-      setLoading(true);
-      requestStockAvailability(null, myStore.id, product.sku).then(
-        (options) => {
-          setLoading(false);
-          if (options && options.data) {
-            setAvailable(options.data.pickupAvailable);
-          }
-        }
-      );
-    }
-    if(myStore && myStore.id !== "cd"){
-      setSavedStore(myStore);
-    }
-  }, [myStore]);
+    if(state.myStore) setSavedStore(state.myStore);
+  }, [state.myStore]);
 
   const clearCartAndRetryAddToCart = async () => {
     localStorage.removeItem("productList");
-    await addToCart(myStore, product, "pickup", true, dispatch);
+    await addToCart(savedStore, product, "pickup", true, dispatch);
     router.push("/cart", undefined, { shallow: true });
   };
 
@@ -262,7 +252,6 @@ const Withdraw = ({ product }) => {
 const ShippingCard = ({ product, updatePrices }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(store);
-  const { myStore, geo } = state;
   const [savedStore, setSavedStore] = useState({ name: "Centro de Distribuição", id: "cd" });
   const [shippingPostalCode, setShippingPostalCode] = useState(null);
   const [deliveryOptionsAvailable, setDeliveryOptionsAvailable] = useState({
@@ -278,25 +267,25 @@ const ShippingCard = ({ product, updatePrices }) => {
   const [loading, setLoading] = useState(false);
   const [inputPostalCode, setInputPostalCode] = useState("");
 
-  const checkStateAndSetStore = (postalCode) => {
-    if (!myStore || myStore.id === "cd") {
-      updatePrices();
-      dispatch({ type: "CHANGE_POSTALCODE", payload: postalCode });
-    }
-  };
-
-  useEffect(() => {
+  const getSavedData = () => {
     setInputPostalCode(localStorage.getItem("postalcode-delivery") || "");
     const lsPostalCode = localStorage.getItem("postalcode-delivery");
     if (lsPostalCode) {
       setShippingPostalCode(lsPostalCode);
-      checkStateAndSetStore(lsPostalCode);
     }
     const lsStore = localStorage.getItem("myStore");
     if(lsStore){
       setSavedStore(JSON.parse(lsStore));
     }
+  };
+
+  useEffect(() => {
+    getSavedData();
   }, []);
+
+  useEffect(() => {
+    if(state.myStore) setSavedStore(state.myStore);
+  }, [state.myStore]);
 
   useEffect(() => {
     if (savedStore && product && shippingPostalCode) {
@@ -314,23 +303,6 @@ const ShippingCard = ({ product, updatePrices }) => {
     }
   }, [savedStore, product, shippingPostalCode]);
 
-  useEffect(() => {
-    if(myStore && myStore.id !== "cd"){
-      setSavedStore(myStore);
-      setLoading(true);
-      requestStockAvailability(
-        shippingPostalCode,
-        myStore.id,
-        product.sku
-      ).then((options) => {
-        setLoading(false);
-        if (options && options.data) {
-          setDeliveryOptionsAvailable(options.data);
-        }
-      });
-    }
-  }, [myStore]);
-
   const validatePostalCode = (event) => {
     if (event) {
       setInputPostalCode(event.target.value);
@@ -339,7 +311,6 @@ const ShippingCard = ({ product, updatePrices }) => {
       if (validator.test(value)) {
         setShippingPostalCode(value);
         localStorage.setItem("postalcode-delivery", value);
-        checkStateAndSetStore(value);
       } else {
         setDeliveryOptionsAvailable({
           deliveryAvailable: false,
