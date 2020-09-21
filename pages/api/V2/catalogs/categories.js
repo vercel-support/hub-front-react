@@ -1,4 +1,4 @@
-export default (req, res) => {
+/* export default (req, res) => {
   const categories = [
     {
       id: 1,
@@ -285,3 +285,4 @@ export default (req, res) => {
   res.statusCode = 200;
   res.json(categories);
 };
+ */
