@@ -61,11 +61,12 @@ const Search = ({ content }) => {
 
   useEffect(() => {
     fetchProducts(true);
-  }, [filters]);
+  }, [savedStore, filters]);
 
   useEffect(() => {
-    fetchProducts(true);
-  }, [savedStore]);
+    setPagination({ page: 0, perPage: 32 });
+    setFilters([]);
+  }, [content.data]);
 
   useEffect(() => {
     let lsStore = localStorage.getItem("myStore");
