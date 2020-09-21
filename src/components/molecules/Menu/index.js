@@ -1,33 +1,34 @@
 import React from "react";
 import Link from "next/link";
 import MenuStyled from "./styles";
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { FRONTEND_URL } = publicRuntimeConfig;
 
 const MenuSecond = ({ items }) => (
-  <ul>
-    {items.map((item, i) => {
-      if (i >= 10) return;
-
-      return (
-        <li key={item.id}>
-          <Link href={`/${item.url}`}>
-            <a>
-              <div>{item.name}</div>
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8.29492 16.59L12.8749 12L8.29492 7.41L9.70492 6L15.7049 12L9.70492 18L8.29492 16.59Z"></path>
-              </svg>
-            </a>
-          </Link>
-          {
-            item?.children?.length ? (
-              <MenuThird items={item.children} />
-            ) : null /*(
-          <MenuBanner />
-        )*/
-          }
-        </li>
-      );
-    })}
-  </ul>
+    <ul>
+        {items.map((item, i) => {
+        if (i >= 10) return;
+    
+        return (
+            <li key={item.id}>
+                <a href={`${FRONTEND_URL}/${item.url}`}>
+                <div>{item.name}</div>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.29492 16.59L12.8749 12L8.29492 7.41L9.70492 6L15.7049 12L9.70492 18L8.29492 16.59Z"></path>
+                </svg>
+                </a>
+            {
+                item?.children?.length ? (
+                <MenuThird items={item.children} />
+                ) : null /*(
+            <MenuBanner />
+            )*/
+            }
+            </li>
+        );
+        })}
+    </ul>
 );
 
 const MenuThird = ({ items }) => (
@@ -35,9 +36,7 @@ const MenuThird = ({ items }) => (
     <ul>
       {items.map((item) => (
         <li key={item.id}>
-          <Link href={`/${item.url}`}>
-            <a>{item.name}</a>
-          </Link>
+          <a href={`${FRONTEND_URL}/${item.url}`}>{item.name}</a>
         </li>
       ))}
     </ul>
@@ -61,9 +60,7 @@ const Menu = ({ categories = [] }) => (
   <MenuStyled>
     {categories.map((item) => (
       <li key={item.id}>
-        <Link href={`/${item.url}`}>
-          <a>{item.name}</a>
-        </Link>
+          <a href={`${FRONTEND_URL}/${item.url}`}>{item.name}</a>
         {
           item?.children?.length ? (
             <MenuSecond items={item.children} />
