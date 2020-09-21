@@ -35,7 +35,7 @@ const Shipping = ({ shipping, handleSelectedShipping }) => {
           {shipping && shipping.expressDelivery.available && (
             <React.Fragment>
               <FormLabel>
-                <Radio value={"expressDelivery"} /> Expressa em até {shipping.expressDelivery.time} horas
+                <Radio value={"expressDelivery"} /> Expressa em até {shipping.expressDelivery.time} horas úteis
                 <span>
                   {shipping.expressDelivery.price === 0 ? "Grátis" : numberToPrice(shipping.expressDelivery.price)}
                 </span>

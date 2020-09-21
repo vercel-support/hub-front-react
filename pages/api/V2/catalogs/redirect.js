@@ -1,4 +1,4 @@
-export default (req, res) => {
+/* export default (req, res) => {
   const url = req.query.url;
 
   const urls = {
@@ -1428,3 +1428,4 @@ export default (req, res) => {
   res.statusCode = 200;
   res.json(response);
 };
+ */

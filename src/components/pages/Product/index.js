@@ -41,13 +41,13 @@ const Product = ({ content }) => {
     (specification) => specification.name === "Marca"
   )[0]?.value;
   const { state } = useContext(store);
-  const { myStore } = state;
+  const [ savedStore, setSavedStore ] = useState(null);
   const [ children, setChildren ] = useState([]);
   const [ selectedSku, setSelectedSku ] = useState(null);
 
   const fetchPrices = async() => {
-    let url = myStore && myStore.id ?
-      `${API_URL}/catalogs/products/prices?storeId=${myStore.id}&sku=${sku}` :
+    let url = savedStore && savedStore.id ?
+      `${API_URL}/catalogs/products/prices?storeId=${savedStore.id}&sku=${sku}` :
       `${API_URL}/catalogs/products/prices?sku=${sku}`;
     let response = await axios.get(url);
     if(response.data.data && response.data.status === 200 && response.data.data.length > 0){
@@ -71,12 +71,19 @@ const Product = ({ content }) => {
   }
 
   useEffect(() => {
-    fetchPrices();
+    const lsStore = localStorage.getItem("myStore");
+    if(lsStore){
+      setSavedStore(JSON.parse(lsStore));
+    }
   }, []);
 
   useEffect(() => {
     fetchPrices();
-  }, [myStore]);
+  }, [savedStore]);
+
+  useEffect(() => {
+    if(state.myStore) setSavedStore(state.myStore);
+  }, [state.myStore]);
   
   useEffect(() => {
     //productPageView(window.dataLayer.push, window.ga, {data: content.data, selectedProduct: product});
