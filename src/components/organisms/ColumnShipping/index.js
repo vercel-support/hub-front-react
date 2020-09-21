@@ -81,7 +81,7 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
       </Button>
 
       <Link href="/" passHref>
-        <a>adicionar mais produtos</a>
+        <a>continuar comprando</a>
       </Link>
     </ColumnShippingStyles>
   );
