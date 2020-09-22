@@ -105,9 +105,9 @@ const requestStockAvailability = async (postalCode, storeId, sku) => {
 };
 
 const ActionDialog = ({ data }) => {
-  const [open, setOpen] = useState(true);
+  const [openShippingAlert, setOpenShippingAlert] = useState(true);
   return (
-      <Dialog open={open}>
+      <Dialog open={openShippingAlert} disableScrollLock={true}>
         <DialogTitle id="alert-dialog-title">
           OPS! 
         </DialogTitle>

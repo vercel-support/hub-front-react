@@ -56,7 +56,7 @@ const MenuMobile = ({ categories = [] }) => {
       <IconButton onClick={() => setOpen(true)}>
         <MenuIcon htmlColor="white" />
       </IconButton>
-      <Drawer open={open} onClose={() => setOpen(false)}>
+      <Drawer open={open} onClose={() => setOpen(false)} disableScrollLock={true}>
         <div style={{ width: "300px" }} role="presentation">
           <List>
             <ListItem button>
