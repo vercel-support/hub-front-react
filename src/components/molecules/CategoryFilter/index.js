@@ -168,7 +168,7 @@ const CategoryFilter = ({
       </Hidden>
 
       <Hidden lgUp>
-        <Drawer anchor="right" open={filterOpen}>
+        <Drawer anchor="right" open={filterOpen} onClick={() => setFilterOpen(false)}>
           <DrawerContentStyled>
             <div>
               <Button onClick={() => setFilterOpen(false)}>voltar</Button>

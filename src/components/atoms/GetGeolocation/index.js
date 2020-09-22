@@ -35,12 +35,12 @@ const validatePostalCode = (postalcode) => {
 
 const GetGeolocation = () => {
   const { dispatch } = React.useContext(store);
-  const [open, setOpen] = React.useState(true);
+  const [openGeo, setOpenGeo] = React.useState(true);
   const classes = useStyles();
 
   useEffect(() => {
     const savedStore = localStorage.getItem("myStore");
-    if(savedStore && savedStore !== "undefined") setOpen(false);
+    if(savedStore && savedStore !== "undefined") setOpenGeo(false);
   }, []);
 
   const geoLocate = () => {
@@ -55,7 +55,7 @@ const GetGeolocation = () => {
             longitude: coords.longitude,
           };
           dispatch({ type: "GEO_SUCCESS", payload });
-          setOpen(false);
+          setOpenGeo(false);
         },
         ({ code }) => {
           const payload = {
@@ -77,13 +77,13 @@ const GetGeolocation = () => {
     if(validated){
       dispatch({ type: "POSTALCODE_SUCCESS", payload: validated });
       localStorage.setItem("postalcode-delivery", validated);
-      setOpen(false);
+      setOpenGeo(false);
     }
   }
 
   return (    
     <>
-        <Dialog fullWidth="true" maxWidth="sm" className={classes.root} aria-labelledby="customized-dialog-title" open={open}>
+        <Dialog fullWidth="true" maxWidth="sm" className={classes.root} aria-labelledby="customized-dialog-title" open={openGeo}>
           <ModalStyled>
             <img
               src="/assets/images/modal-delivery.jpg"
