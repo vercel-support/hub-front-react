@@ -19,6 +19,7 @@ export default createGlobalStyle`
   html, body {
     background-color: #FFF !important;
     font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    overflow: scroll !important;
   }
   a {
     text-decoration: none;
