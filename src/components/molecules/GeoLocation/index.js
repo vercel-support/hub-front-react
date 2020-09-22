@@ -124,7 +124,7 @@ const GeoLocation = () => {
           <GeoLocationListStyled>
             <GeoLocationStoreStyled selected>
               <h4>{myStore.name}</h4>
-              { myStore.id !== "cd" ? <p>A {formatStoreDistance(myStore.distance)} de você</p>: null }
+              { myStore.id !== "cd" && myStore.distance ? <p>A {formatStoreDistance(myStore.distance)} de você</p>: null }
               { myStore.id !== "cd" ? <p>{formatAddress(myStore.address)}</p> : null }
               <span>(minha loja)</span>
             </GeoLocationStoreStyled>
@@ -134,11 +134,11 @@ const GeoLocation = () => {
                 onClick={() =>{
                   setOpen(false);
                   dispatch({ type: "SET_GEOLOCATION_OPEN", payload: false });
-                  dispatch({ type: "CHANGE_STORE", payload: { store } })
+                  dispatch({ type: "CHANGE_STORE", payload: { store } });
                 }}
               >
                 <h4>{store.name}</h4>
-                { store.id !== "cd" ? <p>A {formatStoreDistance(store.distance)} de você</p> : null }
+                { store.id !== "cd" && myStore.distance ? <p>A {formatStoreDistance(store.distance)} de você</p> : null }
                 <p>{formatAddress(store.address)}</p>
 {/*                 <span
                 >

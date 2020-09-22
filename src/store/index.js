@@ -152,6 +152,13 @@ function* changeStore({ payload }) {
   yield put({ type: "SET_STORE_STATE", payload: { myStore: payload.store, stores: newStores } });
 }
 
+function* setNewStore({ payload }) {
+  localStorage.setItem("myStore", JSON.stringify(payload.store));
+  const savedStores = JSON.parse(localStorage.getItem("nearby-stores") || "[]");
+  let newStores = savedStores.filter(store => store.id !== payload.store.id);
+  yield put({ type: "SET_STORE_STATE", payload: { myStore: payload.store, stores: newStores } });
+}
+
 function* watchGetPostcode() {
   yield takeEvery("GEO_SUCCESS", getStoresByGeolocation);
 }
@@ -168,12 +175,17 @@ function* watchChangeStore() {
   yield takeEvery("CHANGE_STORE", changeStore);
 }
 
+function* watchSetNewStore() {
+  yield takeEvery("SET_NEW_STORE", setNewStore);
+}
+
 function* rootSaga() {
   yield all([
     watchGetPostcode(),
     watchChangeStore(),
     watchPostalCode(),
     watchGetPostcodeError(),
+    watchSetNewStore(),
   ]);
 }
 // Saga
@@ -210,6 +222,10 @@ const StateProvider = ({ children, value }) => {
             ...state,
             myStore: action.payload.store
           };
+        case "SET_NEW_STORE":
+          return {
+            ...state,
+          }
         case "CATEGORY_ACTION":
           return {
             ...state,
