@@ -146,7 +146,7 @@ const Cart = ({ content }) => {
 
       {products && (
         <React.Fragment>
-          <Hidden only="lg">
+          <Hidden only={['md', 'lg', 'xl']}>
             <Grid item xs={12}>
                 { shippingType === "delivery" ? 
                   <Paper>

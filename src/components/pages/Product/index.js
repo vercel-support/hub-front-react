@@ -129,7 +129,9 @@ const Product = ({ content }) => {
           </Container>
         </ProductContainerStyled>
       </ProductStyled>
-      <ProductDescription description={description} />
+      <Container>
+        <ProductDescription description={description} />
+      </Container>
       <ProductSchema content={content.data}/>
     </OneColumn>
   );

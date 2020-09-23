@@ -5,9 +5,6 @@ export const ShippingStyles = styled.div`
 
     fieldset{
         width: 100%;
-        align-items: center;
-        justify-content: center;
-        text-align: -webkit-center;
 
         label {
             background: #f6f6f6;
