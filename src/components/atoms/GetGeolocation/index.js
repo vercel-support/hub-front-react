@@ -7,6 +7,11 @@ import { makeStyles } from '@material-ui/styles';
 import { store } from "../../../store";
 import ModalStyled from "./styles";
 
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { API_URL } = publicRuntimeConfig;
+import axios from "axios";
+
 const useStyles = makeStyles({
   root: {
     margin: 0,
@@ -38,9 +43,30 @@ const GetGeolocation = () => {
   const [openGeo, setOpenGeo] = React.useState(true);
   const classes = useStyles();
 
+  const fetchStoreAndSave = async(storeId) => {
+    try{
+        let serviceResponse = await axios.get(`${API_URL}/logistic/store?storeId=${storeId}`);
+        if(serviceResponse && serviceResponse.data && (serviceResponse.data.data.id)){
+          setOpenGeo(false);
+          dispatch({ type: "SET_NEW_STORE", payload: { store: serviceResponse.data.data } });
+        }
+    }
+    catch(error){
+        console.log(error.message);
+    }
+  }
+
   useEffect(() => {
-    const savedStore = localStorage.getItem("myStore");
-    if(savedStore && savedStore !== "undefined") setOpenGeo(false);
+
+    let params = (new URL(document.location)).searchParams;
+    let store_query = params.get("loja");
+
+    if(store_query) fetchStoreAndSave(store_query);
+    else{
+      const savedStore = localStorage.getItem("myStore");
+      if(savedStore && savedStore !== "undefined") setOpenGeo(false);
+    }
+
   }, []);
 
   const geoLocate = () => {
