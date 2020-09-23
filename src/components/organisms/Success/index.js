@@ -3,7 +3,6 @@ import { Typography } from "@material-ui/core";
 import { SuccessStyles } from "./styles";
 
 const Success = ({ paymentResponse }) => {
-  console.log(paymentResponse);
   if(paymentResponse)
     return (
       <SuccessStyles>

@@ -84,7 +84,7 @@ const PaymentForm = () => {
             setTimeout(() => { 
               router.push("/success", undefined, { shallow: true });
               dispatch({ type: "LOADING_DATA", payload: false });
-            }, 1000);
+            }, 2000);
           }
         });
       }
