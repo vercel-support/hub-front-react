@@ -9,6 +9,7 @@ import {
 } from "../../molecules";
 import { ListProducts } from "../../organisms";
 import { TwoColumns } from "../../templates";
+import { categoryPageView } from "../../../../lib/ga";
 
 import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
@@ -48,6 +49,12 @@ const Search = ({ content }) => {
         const newProducts = response.data.data.products;
         if(reset) setProducts(newProducts);
         else setProducts([...products, ...newProducts]);
+
+        categoryPageView(window.dataLayer.push, {
+          products: newProducts,
+          url: `/busca?query=${query}`,
+          pageName: `Resultados para ${query}`,
+        });
       }
     }
     catch(error){
