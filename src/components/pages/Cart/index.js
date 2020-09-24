@@ -7,8 +7,6 @@ import { OneColumn } from "../../templates";
 import { LocationOn } from "@material-ui/icons";
 import { Grid, Hidden, Paper } from "@material-ui/core";
 
-import { cartPageView } from '../../../../lib/ga';
-
 import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 const { API_URL } = publicRuntimeConfig;
@@ -105,7 +103,6 @@ const Cart = ({ content }) => {
     const userPostalCode = localStorage.getItem("postalcode-delivery");
     if(userPostalCode) setCep(userPostalCode);
     setShippingType(getShippingMethod());
-    cartPageView(window.ga);
   }, []);
 
   const handleProductChange = async(product) => {

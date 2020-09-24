@@ -9,7 +9,7 @@ const CategoryDescription = ({ description = "", maxCarac = 300 }) => {
 
   return (
     <CategoryDescriptionStyled>
-      {parse(description.substr(0, open ? description.length : maxCarac))}
+      <div dangerouslySetInnerHTML={{__html: description.substr(0, open ? description.length : maxCarac)}} />
       {isBigger && (
         <span onClick={() => setOpen(!open)}>
           {open ? "Leia Menos" : "Leia Mais"}
