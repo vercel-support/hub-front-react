@@ -34,12 +34,13 @@ const Category = ({ content }) => {
       const query = content.data.url;
       const filtersSelected = filters.join(",");
       const page = reset ? 0 : pagination.page;
+      const searchOutOfStock = reset ? 'false' : outOfStock.toString();
   
       let url = `${API_URL}/catalogs/redirect?url=${query}`;
       if(savedStore) url += `&storeId=${savedStore.id}`;
       if(filtersSelected.length > 0) url+= `&filters=${filtersSelected}`;
-      url+= `&page=${page}&perPage=${pagination.perPage}&outOfStock=${outOfStock.toString()}`;
-  
+      url+= `&page=${page}&perPage=${pagination.perPage}&outOfStock=${searchOutOfStock}`;
+
       let response = await axios.get(url);
       if(response.data.data && response.data.status === 200){
         const newProducts = response.data.data.products;
@@ -78,7 +79,7 @@ const Category = ({ content }) => {
   }, [outOfStock]);
 
   useEffect(() => {
-    setOutOfStock(false);
+    fetchProducts(true);
   }, [filters]);
 
   useEffect(() => {
