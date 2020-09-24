@@ -46,7 +46,7 @@ const Category = ({ content }) => {
         else setProducts([...products, ...newProducts]);
 
         categoryPageView(window.dataLayer.push, {
-          newProducts,
+          products: newProducts,
           url: content.data.categoryUrl,
           pageName: content.data.pageName,
         });
