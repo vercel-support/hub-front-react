@@ -27,6 +27,7 @@ const Category = ({ content }) => {
     page: 0, perPage: 32
   });
   const [savedStore, setSavedStore] = useState(null);
+  const [outOfStock, setOutOfStock] = useState(false);
 
   const fetchProducts = async(reset) => {
     try{  
@@ -37,11 +38,18 @@ const Category = ({ content }) => {
       let url = `${API_URL}/catalogs/redirect?url=${query}`;
       if(savedStore) url += `&storeId=${savedStore.id}`;
       if(filtersSelected.length > 0) url+= `&filters=${filtersSelected}`;
-      url+= `&page=${page}&perPage=${pagination.perPage}`
+      url+= `&page=${page}&perPage=${pagination.perPage}&outOfStock=${outOfStock.toString()}`;
   
       let response = await axios.get(url);
       if(response.data.data && response.data.status === 200){
         const newProducts = response.data.data.products;
+
+        if(response.data.data.endOfInStock){
+            setOutOfStock(true);
+            setPagination({ ...pagination, page: 0 });
+            return
+        }
+
         if(reset) setProducts(newProducts);
         else setProducts([...products, ...newProducts]);
 
@@ -65,6 +73,10 @@ const Category = ({ content }) => {
   const handlePageChange = (page) => {
     setPagination({ ...pagination, page });
   }
+
+  useEffect(() => {
+    fetchProducts(false);
+  }, [outOfStock]);
 
   useEffect(() => {
     fetchProducts(true);
