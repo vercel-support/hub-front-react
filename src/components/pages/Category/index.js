@@ -44,6 +44,12 @@ const Category = ({ content }) => {
         const newProducts = response.data.data.products;
         if(reset) setProducts(newProducts);
         else setProducts([...products, ...newProducts]);
+
+        categoryPageView(window.dataLayer.push, {
+          newProducts,
+          url: content.data.categoryUrl,
+          pageName: content.data.pageName,
+        });
       }
     }
     catch(error){
@@ -71,12 +77,6 @@ const Category = ({ content }) => {
   useEffect(() => {
     let lsStore = localStorage.getItem("myStore");
     if(lsStore && lsStore !== "undefined") setSavedStore(JSON.parse(lsStore));
-
-    categoryPageView(window.dataLayer.push, window.ga, {
-      products,
-      url: content.data.categoryUrl,
-      pageName: content.data.pageName,
-    });
   }, []);
 
   useEffect(() => {

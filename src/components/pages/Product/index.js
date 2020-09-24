@@ -86,7 +86,7 @@ const Product = ({ content }) => {
   }, [state.myStore]);
   
   useEffect(() => {
-    //productPageView(window.dataLayer.push, window.ga, {data: content.data, selectedProduct: product});
+    productPageView(window.dataLayer.push, {data: content.data, selectedProduct: product});
   }, [product]);
 
   const updatePrices = () => {

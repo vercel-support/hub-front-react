@@ -52,7 +52,7 @@ const Checkout = ({ content }) => {
   }, []);
 
   useEffect(() => {
-    checkoutPageView(activeStep + 1, window.dataLayer.push, window.ga, JSON.parse(localStorage.getItem("productList") || "[]"));
+    checkoutPageView(activeStep + 1, window.dataLayer.push, JSON.parse(localStorage.getItem("productList") || "[]"));
   }, [activeStep]);
 
   const handleNext = () => {
