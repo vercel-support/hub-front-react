@@ -44,10 +44,9 @@ const Category = ({ content }) => {
       if(response.data.data && response.data.status === 200){
         const newProducts = response.data.data.products;
 
-        if(response.data.data.endOfInStock){
-            setOutOfStock(true);
-            setPagination({ ...pagination, page: 0 });
-            return
+        if(response.data.data.endOfInStock && !outOfStock){
+          setOutOfStock(true);
+          return;
         }
 
         if(reset) setProducts(newProducts);
@@ -75,11 +74,11 @@ const Category = ({ content }) => {
   }
 
   useEffect(() => {
-    fetchProducts(false);
+    setPagination({ ...pagination, page: 0 });
   }, [outOfStock]);
 
   useEffect(() => {
-    fetchProducts(true);
+    setOutOfStock(false);
   }, [filters]);
 
   useEffect(() => {
