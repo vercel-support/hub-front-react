@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { store } from "../../../store";
 import { useForm } from "react-hook-form";
-import { CardAddress, InputAlternative } from "../../atoms";
+import { CardAddress, InputAlternative, Pickup } from "../../atoms";
 import ValidationAddress from "../ValidationAddress";
 import Shipping from "../Shipping";
-import { Grid, Hidden } from "@material-ui/core";
+import { Grid, Hidden, Paper } from "@material-ui/core";
 import { ReviewStyles, TitleStyles } from "./styles";
 
 import getConfig from "next/config";
@@ -26,6 +26,8 @@ const Review = ({ handleNext }) => {
   const [shippingType, setShippingType] = useState();
   const [userAddresses, setUserAddresses] = useState([]);
   const [cartAddress, setCartAddress] = useState(null);
+  const [pickupStore, setPickupStore] = useState(null);
+  const [savedPostalCode, setSavedPostalCode] = useState("");
 
   const cep = watch("zip", 0);
   const hasZipLength = cep.toString().length === 9;
@@ -115,6 +117,9 @@ const Review = ({ handleNext }) => {
   useEffect(() => {
     setShippingType(localStorage.getItem("shipping-type"));
     getUserAddresses();
+    const savedStore = localStorage.getItem("myStore");
+    if(savedStore) setPickupStore(JSON.parse(savedStore));
+    setSavedPostalCode(localStorage.getItem("postalcode-delivery"));
   }, []);
 
   return (
@@ -122,7 +127,11 @@ const Review = ({ handleNext }) => {
       <Grid container spacing={3}>
         <Grid xs={12} sm={12}>
           <TitleStyles>
-            {shippingType == "delivery" ? "receber em casa" : "retirar na loja"}
+            {shippingType == "delivery" ? `receber em casa` : 
+            <Paper>
+                <Pickup pickupStore={pickupStore}/>
+            </Paper>
+            }
           </TitleStyles>
           <TitleStyles>
             {shippingType == "pickup" ? "selecione um endereço para cadastro" : null}
@@ -141,7 +150,7 @@ const Review = ({ handleNext }) => {
 
         {!cartAddress && (
           <Grid xs={12} sm={12}>
-            <TitleStyles>novo endereço</TitleStyles>
+            <TitleStyles>{`novo endereço para o cep ${savedPostalCode}`}</TitleStyles>
           </Grid>
         )}
       </Grid>
