@@ -139,7 +139,7 @@ const Category = ({ content }) => {
         />
       }
     >
-      <CategoryDescription description={content.data.description} />
+      {/* <CategoryDescription description={content.data.description} /> */}
       <ListProducts
         products={products}
         perPage={pagination.perPage}
