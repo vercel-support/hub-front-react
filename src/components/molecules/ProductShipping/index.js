@@ -284,7 +284,10 @@ const ShippingCard = ({ product, updatePrices }) => {
   }, []);
 
   useEffect(() => {
-    if(state.myStore) setSavedStore(state.myStore);
+    if(state.myStore) {
+        setSavedStore(state.myStore);
+        getSavedData();
+    }
   }, [state.myStore]);
 
   useEffect(() => {

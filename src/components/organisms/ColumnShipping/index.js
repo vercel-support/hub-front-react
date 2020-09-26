@@ -31,7 +31,6 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
     if(shippingType == "pickup"){
       localStorage.setItem("selected-shipping-method", "");
       localStorage.setItem("shipping-type", shippingType);
-      localStorage.setItem("postalcode-delivery", end);
       goToCheckout = true;
     }
     if(shippingType == "delivery" && selectedShippingMethod && shipping){
