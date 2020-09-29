@@ -32,6 +32,10 @@ const CategoryFilterStyled = styled.div`
 
 export const FilteringByStyled = styled.div`
   margin-bottom: 30px;
+  & > div {
+    margin-left: 0px;
+    margin-bottom: 10px;
+  }
   ul {
     margin-bottom: 10px;
   }

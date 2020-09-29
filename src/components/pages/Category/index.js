@@ -22,84 +22,98 @@ const Category = ({ content }) => {
 
   const [products, setProducts] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
-  const [filters, setFilters] = useState([]);
-  const [pagination, setPagination] = useState({
-    page: 0, perPage: 32
+
+  const [ searchOptions, setSearchOptions ] = useState({
+    inStockPage: 0,
+    outOfStockPage: 0,
+    perPage: 32,
+    store: null,
+    outOfStock: false,
+    filters: [],
+    resetPage: 0
   });
-  const [savedStore, setSavedStore] = useState(null);
-  const [outOfStock, setOutOfStock] = useState(false);
-
-  const fetchProducts = async(reset) => {
-    try{  
-      const query = content.data.url;
-      const filtersSelected = filters.join(",");
-      const page = reset ? 0 : pagination.page;
-      const searchOutOfStock = reset ? 'false' : outOfStock.toString();
-  
-      let url = `${API_URL}/catalogs/redirect?url=${query}`;
-      if(savedStore) url += `&storeId=${savedStore.id}`;
-      if(filtersSelected.length > 0) url+= `&filters=${filtersSelected}`;
-      url+= `&page=${page}&perPage=${pagination.perPage}&outOfStock=${searchOutOfStock}`;
-
-      let response = await axios.get(url);
-      if(response.data.data && response.data.status === 200){
-        const newProducts = response.data.data.products;
-
-        if(response.data.data.endOfInStock && !outOfStock){
-          setOutOfStock(true);
-          return;
-        }
-
-        if(reset) setProducts(newProducts);
-        else setProducts([...products, ...newProducts]);
-
-        categoryPageView(window.dataLayer.push, {
-          products: newProducts,
-          url: content.data.categoryUrl,
-          pageName: content.data.pageName,
-        });
-      }
-    }
-    catch(error){
-
-    }
-  }
-
-  const handleFiltersChange = (filters) => {
-    setFilters(filters);
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }
-
-  const handlePageChange = (page) => {
-    setPagination({ ...pagination, page });
-  }
 
   useEffect(() => {
-    setPagination({ ...pagination, page: 0 });
-  }, [outOfStock]);
-
-  useEffect(() => {
-    fetchProducts(true);
-  }, [filters]);
-
-  useEffect(() => {
-    fetchProducts(false);
-  }, [pagination]);
-
-  useEffect(() => {
-    let lsStore = localStorage.getItem("myStore");
-    if(lsStore && lsStore !== "undefined") setSavedStore(JSON.parse(lsStore));
+    let savedStore = localStorage.getItem("myStore");
+    if(savedStore && savedStore !== "undefined") setSearchOptions({ ...searchOptions, store: JSON.parse(savedStore) });
   }, []);
 
   useEffect(() => {
-    fetchProducts(true);
-  }, [savedStore]);
+    setProducts([]);
+    if(state.myStore){
+      setSearchOptions({
+        ...searchOptions,
+        store: state.myStore,
+        inStockPage: 0,
+        outOfStockPage: 0,
+        outOfStock: false,
+        resetPage: searchOptions.resetPage + 1
+      });
+    }
+
+  }, [state.myStore]);
 
   useEffect(() => {
-    if(state.myStore){
-      setSavedStore(state.myStore);
+    if(!searchOptions.outOfStock) fetchInStockProducts();
+    else fetchOutOfStockProducts();
+  }, [ searchOptions.store, searchOptions.outOfStock, searchOptions.inStockPage, searchOptions.outOfStockPage, searchOptions.filters ]);
+
+  const getSearchQuery = (outOfStockFlag) => {
+    let url = `${API_URL}/catalogs/redirect?url=${content.data.url}`;
+    if(searchOptions.store) url += `&storeId=${searchOptions.store.id}`;
+
+    const filtersSelected = searchOptions.filters.join(",");
+    const page = outOfStockFlag ? searchOptions.outOfStockPage : searchOptions.inStockPage;
+    if(filtersSelected.length > 0) url+= `&filters=${filtersSelected}`;
+    url+= `&page=${page}&perPage=${searchOptions.perPage}&outOfStock=${outOfStockFlag.toString()}`;
+    return url;
+  }
+
+  const fetchOutOfStockProducts = async() => {
+    const url = getSearchQuery(true);
+    let response = await axios.get(url);
+    if(response.data.data && response.data.status === 200){
+      const newProducts = response.data.data.products;
+      setProducts([...products, ...newProducts]);
     }
-  }, [state.myStore]);
+  }
+
+  const fetchInStockProducts = async() => {
+    const url = getSearchQuery(false);
+    let response = await axios.get(url);
+    if(response.data.data && response.data.status === 200){
+      if(response.data.data.endOfInStock && !searchOptions.outOfStock){
+        setSearchOptions({ ...searchOptions, outOfStock: true });
+      }
+      else{
+        const newProducts = response.data.data.products;
+        setProducts([...products, ...newProducts]);
+      }
+    }
+  }
+
+  const handlePageChange = (page) => {
+    if(searchOptions.outOfStock)
+      setSearchOptions({
+        ...searchOptions, outOfStockPage: page
+      });
+    else
+      setSearchOptions({
+        ...searchOptions, inStockPage: page
+      });
+  }
+
+  const handleFiltersChange = (filters) => {
+    setSearchOptions({
+      ...searchOptions,
+      inStockPage: 0,
+      outOfStockPage: 0,
+      outOfStock: false,
+      filters: [...filters],
+      resetPage: searchOptions.resetPage + 1
+    });
+    setProducts([]);
+  }
 
   return (
     <TwoColumns
@@ -142,8 +156,9 @@ const Category = ({ content }) => {
       {/* <CategoryDescription description={content.data.description} /> */}
       <ListProducts
         products={products}
-        perPage={pagination.perPage}
+        perPage={searchOptions.perPage}
         handlePageChange={handlePageChange}
+        resetPage={searchOptions.resetPage}
       />
     </TwoColumns>
   );

@@ -11,23 +11,31 @@ import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
+import Chip from '@material-ui/core/Chip';
 
-const FilteringBy = ({ selecteds, setSelecteds }) =>
-  Object.keys(selecteds).length ? (
+const FilteringBy = ({ selecteds, setSelecteds, filters }) => {
+  const [ filtersSelected, setFiltersSelected ] = useState([]);
+
+  const getLabel = (code) => {
+    for(let filter of filters){
+      let found_id = filter.values.find(v => parseInt(v.id) === parseInt(code));
+      if(found_id) return found_id.label;
+    }
+  }
+
+  useEffect(() => {
+    let filterList = [];
+    Object.keys(selecteds).map((selected) => {
+      selecteds[selected].map(code => { filterList.push(getLabel(code)) });
+    });
+    setFiltersSelected(filterList);
+  }, [selecteds]);
+
+  return Object.keys(selecteds).length ? (
     <FilteringByStyled>
-      <p>Filtrando por:</p>
-      <ul>
-        {Object.keys(selecteds).map((selected) => {
-          return (
-            <li>
-              <strong>{`${selected}: `}</strong>
-              {typeof selecteds[selected] === "object"
-                ? selecteds[selected].join(", ")
-                : selecteds[selected]}
-            </li>
-          );
-        })}
-      </ul>
+        
+      { filtersSelected.map(filter => ( <div><Chip color="primary" label={filter} /></div> )) }
+
       <Button
         variant="contained"
         color="primary"
@@ -37,6 +45,8 @@ const FilteringBy = ({ selecteds, setSelecteds }) =>
       </Button>
     </FilteringByStyled>
   ) : null;
+
+};
 
 const CategoryFilter = ({
   content = {},
@@ -106,7 +116,6 @@ const CategoryFilter = ({
       Object.keys(selecteds).forEach((filter) => {
         params = [...params, ...selecteds[filter]];
       });
-      console.log(params);
       const { products } = await requestProducts(
         categoryUrl,
         0,
@@ -135,7 +144,7 @@ const CategoryFilter = ({
   return (
     <CategoryFilterStyled>
       <Hidden mdDown>
-        <FilteringBy selecteds={selecteds} setSelecteds={setSelecteds} />
+        <FilteringBy selecteds={selecteds} setSelecteds={setSelecteds} filters={filters} />
         <ul>
           {filters.map((filter) => (
             <li key={filter.id}>

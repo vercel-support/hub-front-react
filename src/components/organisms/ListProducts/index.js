@@ -9,13 +9,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
-const ListProducts = ({ products, handlePageChange }) => {
+const ListProducts = ({ products, handlePageChange, resetPage }) => {
   const [page, setPage] = useState(0);
-
-  const handlePagination = (action) => {
-    if (action === "more") setPage(page + 1);
-    else setPage(page > 0 ? page - 1 : page);
-  };
 
   const nextPage = () => {
     setPage(page + 1);
@@ -24,6 +19,10 @@ const ListProducts = ({ products, handlePageChange }) => {
   useEffect(() => {
     handlePageChange(page);
   }, [page]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [resetPage]);
 
   return (
     <ListProductsStyled>
