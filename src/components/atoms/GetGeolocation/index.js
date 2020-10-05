@@ -60,8 +60,16 @@ const GetGeolocation = () => {
 
     let params = (new URL(document.location)).searchParams;
     let store_query = params.get("loja");
+    let store_source_query = params.get("storesource");
 
-    if(store_query) fetchStoreAndSave(store_query);
+    if(store_source_query && store_source_query.length > 0){
+        localStorage.setItem("storesource", JSON.stringify({
+            store: store_source_query,
+            date: new Date().getTime()
+        }));
+    }
+
+    if(store_query || store_source_query) fetchStoreAndSave(store_query || store_source_query);
     else{
       const savedStore = localStorage.getItem("myStore");
       if(savedStore && savedStore !== "undefined") setOpenGeo(false);
