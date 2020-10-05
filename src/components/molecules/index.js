@@ -1,14 +1,17 @@
 export { default as AddressForm } from "./AddressForm";
 export { default as BannerSlider } from "./BannerSlider";
+export { default as Brands } from "./Brands";
 export { default as Breadcrumbs } from "./Breadcrumbs";
 export { default as CategoryBanner } from "./CategoryBanner";
 export { default as CategoryFilter } from "./CategoryFilter";
 export { default as CategorySort } from "./CategorySort";
 export { default as CategoryTools } from "./CategoryTools";
+export { default as Features } from "./Features";
 export { default as FooterLinks } from "./FooterLinks";
 export { default as Gallery } from "./Gallery";
 export { default as GeoLocation } from "./GeoLocation";
 export { default as HeaderLinks } from "./HeaderLinks";
+export { default as HighlightCategories } from "./HighlightCategories";
 export { default as IdentificationForm } from "./IdentificationForm";
 export { default as InformationForm } from "./InformationForm";
 export { default as Menu } from "./Menu";
