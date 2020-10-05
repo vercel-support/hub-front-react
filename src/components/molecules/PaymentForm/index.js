@@ -34,7 +34,7 @@ const PaymentForm = () => {
   useEffect(() => {
     getCartInfo();
     setCustomerEmail(localStorage.getItem("customer-email"));
-    setStoreSource(JSON.parse(localStorage.getItem("storesource") || "{}"))
+    //setStoreSource(JSON.parse(localStorage.getItem("storesource") || "{}"))
     window.Mercadopago.setPublishableKey(MERCADOPAGO_KEY);
     window.Mercadopago.getIdentificationTypes();
     document.querySelector("#pay").addEventListener("submit", doPay);
@@ -72,7 +72,7 @@ const PaymentForm = () => {
           },
           order: {
               salesChannel: "geracaopet.com.br",
-              storeSource: storeSource,
+              //storeSource: storeSource,
               customer,
               cartId
           }
