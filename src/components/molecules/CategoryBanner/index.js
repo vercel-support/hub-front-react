@@ -5,7 +5,7 @@ import CategoryBannerStyled from "./styles";
 const CategoryBanner = ({ categoryName, items = false }) => (
   <CategoryBannerStyled>
     {items && <Breadcrumbs items={items} />}
-    <h2>{categoryName}</h2>
+    <h1>{categoryName}</h1>
   </CategoryBannerStyled>
 );
 

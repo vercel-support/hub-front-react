@@ -16,6 +16,7 @@ const PaymentForm = () => {
   const [ doSubmit, setDoSubmit ] = useState(false);
   const [ cartTotalAmount, setCartTotalAmount ] = useState();
   const [ customerEmail, setCustomerEmail ] = useState();
+  const [ storeSource, setStoreSource ] = useState();
   const [ cartId, setCartId ] = useState();
   
   const getCartInfo = async() => {
@@ -28,11 +29,12 @@ const PaymentForm = () => {
   }
 
   useEffect(() => {
-  }, [customerEmail, cartId, cartTotalAmount])
+  }, [customerEmail, cartId, cartTotalAmount, storeSource]);
 
   useEffect(() => {
     getCartInfo();
     setCustomerEmail(localStorage.getItem("customer-email"));
+    //setStoreSource(JSON.parse(localStorage.getItem("storesource") || "{}"))
     window.Mercadopago.setPublishableKey(MERCADOPAGO_KEY);
     window.Mercadopago.getIdentificationTypes();
     document.querySelector("#pay").addEventListener("submit", doPay);
@@ -52,7 +54,6 @@ const PaymentForm = () => {
   };
 
   const sdkResponseHandler = (status, response) => {
-    axios.post(`${API_URL}/payments/card/notify-error`, response);
     if (status == 200 || status == 201){
       const token = response.id;
       let payment_method_element = document.getElementById("payment_method_id");
@@ -71,6 +72,7 @@ const PaymentForm = () => {
           },
           order: {
               salesChannel: "geracaopet.com.br",
+              //storeSource: storeSource,
               customer,
               cartId
           }
