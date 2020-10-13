@@ -89,9 +89,9 @@ const GeoLocation = () => {
       onMouseOver={() => setOpen(true)}
     >
       <Room htmlColor="white" />
-      <GeoLocationCurrentStyled {...open} onClick={() => setOpen(!open)}>
-        <span>minha loja</span>
-        <p>
+      <GeoLocationCurrentStyled {...open} onClick={() => setOpen(!open)} >
+        <span className={open && "openDrop"}>minha loja</span>
+        <p className={open && "openDrop"}>
           {myStore.name} {open ? <ExpandLess /> : <ExpandMore />}
         </p>
       </GeoLocationCurrentStyled>
