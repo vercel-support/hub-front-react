@@ -28,6 +28,15 @@ const CategoryFilterStyled = styled.div`
       }
     }
   }
+
+  .item.view-more {
+    span {
+      color: #2983b9;
+      cursor: pointer;
+      padding: 15px 0 5px;
+      display: block;
+    }
+  }
 `;
 
 export const FilteringByStyled = styled.div`

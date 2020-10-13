@@ -27,6 +27,11 @@ const GeoLocationStyled = styled.div`
 `;
 
 export const GeoLocationCurrentStyled = styled.div`
+
+  .openDrop {
+    color: #2983B9;
+  }
+
   color: ${(props) => (props.open ? "#2983B9" : "#ffffff")};
   display: flex;
   flex-direction: column;
