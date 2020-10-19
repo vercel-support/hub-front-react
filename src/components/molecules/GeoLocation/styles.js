@@ -9,6 +9,9 @@ const GeoLocationStyled = styled.div`
   position: relative;
   max-width: 100%;
   margin-top: 7px;
+  background-color: ${(props) => (props && props.open && "#ffffff")};
+  color: ${(props) => (props.open && "#2983B9" )};
+  
   &:hover {
     background-color: #ffffff;
     color: #2983B9;
@@ -32,7 +35,7 @@ export const GeoLocationCurrentStyled = styled.div`
     color: #2983B9;
   }
 
-  color: ${(props) => (props.open ? "#2983B9" : "#ffffff")};
+  color: ${(props) => (props.open ? "" : "#ffffff")};
   display: flex;
   flex-direction: column;
   & > p {

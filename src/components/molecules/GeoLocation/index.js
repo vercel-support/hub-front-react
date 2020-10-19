@@ -82,11 +82,21 @@ const GeoLocation = () => {
     return distance >= 1000 ? `${(distance/1000).toFixed(1)} km` : `${distance} m`;
   }
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <GeoLocationStyled
+      open={open}
       id="geolocation_container"
-      onMouseOut={() => { if(!geoLocationOpen) setOpen(false)}}
-      onMouseOver={() => setOpen(true)}
+      onClick={handleClick}
     >
       <Room htmlColor="white" />
       <GeoLocationCurrentStyled {...open} onClick={() => setOpen(!open)} >

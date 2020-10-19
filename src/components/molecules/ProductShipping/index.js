@@ -5,8 +5,8 @@ import { Input } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 import Button from "@material-ui/core/Button";
 import ProductShippingStyled, {
   ShippingCardStyled,
@@ -48,16 +48,18 @@ const addToCart = async (
     return shippingType === "delivery"
       ? {
           isValid: false,
-          message: "Você já escolheu produtos para retirar na loja, portanto não pode escolher outro produto neste mesmo carrinho para receber em casa. Deseja continuar com seu carrinho atual e retirar na loja?",
+          message:
+            "Você já escolheu produtos para retirar na loja, portanto não pode escolher outro produto neste mesmo carrinho para receber em casa. Deseja continuar com seu carrinho atual e retirar na loja?",
           cancelMessage: `Sim`,
           confirmMessage: `Não`,
         }
       : {
           isValid: false,
-          message: "Você já escolheu produtos para receber em casa, portanto não pode escolher outro produto neste mesmo carrinho para ir retirar na loja. Deseja continuar com seu carrinho atual e receber em casa?",
+          message:
+            "Você já escolheu produtos para receber em casa, portanto não pode escolher outro produto neste mesmo carrinho para ir retirar na loja. Deseja continuar com seu carrinho atual e receber em casa?",
           cancelMessage: `Sim`,
           confirmMessage: `Não`,
-      };
+        };
 
   const cartId = localStorage.getItem("cartId");
   product.storeId = myStore.id;
@@ -107,32 +109,33 @@ const requestStockAvailability = async (postalCode, storeId, sku) => {
 const ActionDialog = ({ data }) => {
   const [openShippingAlert, setOpenShippingAlert] = useState(true);
   return (
-      <Dialog open={openShippingAlert} disableScrollLock={true}>
-        <DialogTitle id="alert-dialog-title">
-          OPS! 
-        </DialogTitle>
-        <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {data.message}
-            </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={data.cancel} color="primary">
-            {data.cancelMessage}
-          </Button>
-          <br />
-          <Button onClick={data.confirm} color="primary" autoFocus>
-            {data.confirmMessage}
-          </Button>
-        </DialogActions>
-      </Dialog>
+    <Dialog open={openShippingAlert} disableScrollLock={true}>
+      <DialogTitle id="alert-dialog-title">OPS!</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          {data.message}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={data.cancel} color="primary">
+          {data.cancelMessage}
+        </Button>
+        <br />
+        <Button onClick={data.confirm} color="primary" autoFocus>
+          {data.confirmMessage}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
 const Withdraw = ({ product }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(store);
-  const [savedStore, setSavedStore] = useState({ name: "Centro de Distribuição", id: "cd" });
+  const [savedStore, setSavedStore] = useState({
+    name: "Centro de Distribuição",
+    id: "cd",
+  });
   const [available, setAvailable] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validAction, setValidAction] = useState({
@@ -144,10 +147,10 @@ const Withdraw = ({ product }) => {
 
   const getSavedStore = () => {
     const lsStore = localStorage.getItem("myStore");
-    if(lsStore){
+    if (lsStore) {
       setSavedStore(JSON.parse(lsStore));
     }
-  }
+  };
 
   useEffect(() => {
     getSavedStore();
@@ -168,7 +171,7 @@ const Withdraw = ({ product }) => {
   }, [savedStore, product]);
 
   useEffect(() => {
-    if(state.myStore) setSavedStore(state.myStore);
+    if (state.myStore) setSavedStore(state.myStore);
   }, [state.myStore]);
 
   const clearCartAndRetryAddToCart = async () => {
@@ -213,30 +216,29 @@ const Withdraw = ({ product }) => {
 
   const handleChangeStoreClick = () => {
     dispatch({ type: "SET_GEOLOCATION_OPEN", payload: true });
-  }
+  };
 
   return (
     <WithdrawStyled available={available}>
-      { !validAction.isValid ? <ActionDialog data={validAction}/> : null }
-      { savedStore.id === "cd" ? 
-        <p>Encontre a loja mais próxima para retirada</p> :
+      {!validAction.isValid ? <ActionDialog data={validAction} /> : null}
+      {savedStore.id === "cd" ? (
+        <p>Encontre a loja mais próxima para retirada</p>
+      ) : (
         <p>
           <span className="stock">
             {available ? "Retire hoje " : "Sem estoque "}
           </span>
           na loja
           <span className="store"> {savedStore.name}</span>
-          <p>
-          {getStoreDistance() ? `A ${getStoreDistance()} de você` : null}
-          </p>
+          <p>{getStoreDistance() ? `A ${getStoreDistance()} de você` : null}</p>
         </p>
-      }
+      )}
 
-      <span className="change" onClick={handleChangeStoreClick} >(alterar loja)</span>
+      <span className="change" onClick={handleChangeStoreClick}>
+        (alterar loja)
+      </span>
       {available && (
-        <span className="available">
-         pedido disponível em até 1 hora
-        </span>
+        <span className="available">pedido disponível em até 1 hora</span>
       )}
       {loading ? (
         <CircularProgress />
@@ -252,7 +254,10 @@ const Withdraw = ({ product }) => {
 const ShippingCard = ({ product, updatePrices }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(store);
-  const [savedStore, setSavedStore] = useState({ name: "Centro de Distribuição", id: "cd" });
+  const [savedStore, setSavedStore] = useState({
+    name: "Centro de Distribuição",
+    id: "cd",
+  });
   const [shippingPostalCode, setShippingPostalCode] = useState(null);
   const [deliveryOptionsAvailable, setDeliveryOptionsAvailable] = useState({
     deliveryAvailable: false,
@@ -274,7 +279,7 @@ const ShippingCard = ({ product, updatePrices }) => {
       setShippingPostalCode(lsPostalCode);
     }
     const lsStore = localStorage.getItem("myStore");
-    if(lsStore){
+    if (lsStore) {
       setSavedStore(JSON.parse(lsStore));
     }
   };
@@ -284,9 +289,9 @@ const ShippingCard = ({ product, updatePrices }) => {
   }, []);
 
   useEffect(() => {
-    if(state.myStore) {
-        setSavedStore(state.myStore);
-        getSavedData();
+    if (state.myStore) {
+      setSavedStore(state.myStore);
+      getSavedData();
     }
   }, [state.myStore]);
 
@@ -358,49 +363,53 @@ const ShippingCard = ({ product, updatePrices }) => {
   };
 
   return (
-    <ShippingCardStyled available={ deliveryOptionsAvailable.deliveryAvailable || deliveryOptionsAvailable.expressDeliveryAvailable }>
-      { !validAction.isValid ? <ActionDialog data={validAction}/> : null }
-      <p>Digite seu CEP para ver a disponibilidade na sua região </p> 
+    <ShippingCardStyled
+      available={
+        deliveryOptionsAvailable.deliveryAvailable ||
+        deliveryOptionsAvailable.expressDeliveryAvailable
+      }
+    >
+      {!validAction.isValid ? <ActionDialog data={validAction} /> : null}
+      <p>Digite seu CEP para ver a disponibilidade na sua região </p>
       <p>
-      {
-        <Input
-        style={{
-          marginBottom: "20px",
-        }}
-        name="cep"
-        onChange={validatePostalCode}
-        placeholder="00000-000"
-        value={inputPostalCode}
-      />
-      }</p>
+        {
+          <Input
+            style={{
+              marginBottom: "20px",
+            }}
+            name="cep"
+            onChange={validatePostalCode}
+            placeholder="00000-000"
+            value={inputPostalCode}
+          />
+        }
+      </p>
 
       {deliveryOptionsAvailable.expressDeliveryAvailable ? (
-        <span className={"available"}>
-          {"receba em até 4 horas"} 
-        </span>
+        <span className={"available"}>{"receba em até 4 horas"}</span>
       ) : null}
 
-      {shippingPostalCode &&
-      !deliveryOptionsAvailable.deliveryAvailable &&
-      !deliveryOptionsAvailable.expressDeliveryAvailable ? (
-        <span className={"unavailable"}>
-          {"Sem Estoque"}
-        </span>
-      ) : null}
       {loading ? (
         <CircularProgress />
       ) : (
-        <button
-          disabled={
-            !(
-              deliveryOptionsAvailable.deliveryAvailable ||
-              deliveryOptionsAvailable.expressDeliveryAvailable
-            )
-          }
-          onClick={deliveryClick}
-        >
-          <span>comprar e receber em casa</span>
-        </button>
+        <React.Fragment>
+          {shippingPostalCode &&
+          !deliveryOptionsAvailable.deliveryAvailable &&
+          !deliveryOptionsAvailable.expressDeliveryAvailable ? (
+            <span className={"unavailable"}>{"Sem Estoque"}</span>
+          ) : null}
+          <button
+            disabled={
+              !(
+                deliveryOptionsAvailable.deliveryAvailable ||
+                deliveryOptionsAvailable.expressDeliveryAvailable
+              )
+            }
+            onClick={deliveryClick}
+          >
+            <span>comprar e receber em casa</span>
+          </button>
+        </React.Fragment>
       )}
     </ShippingCardStyled>
   );
