@@ -71,7 +71,7 @@ const PaymentForm = () => {
               installments
           },
           order: {
-              salesChannel: "geracaopet.com.br",
+              salesChannel: "geracaopet.com.br", 
               //storeSource: storeSource,
               customer,
               cartId
