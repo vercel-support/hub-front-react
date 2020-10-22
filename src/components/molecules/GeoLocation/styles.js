@@ -104,6 +104,10 @@ export const GeoLocationStoreStyled = styled.li`
   border-top: 1px solid #cccccc;
   padding: 15px 0;
 
+  :first-child {
+    background-color: #f6f6f6;
+  }
+
   & > h4 {
     font-size: 14px;
     font-weight: bold;
