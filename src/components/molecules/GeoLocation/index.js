@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ExpandLess, ExpandMore, MyLocation, Room } from "@material-ui/icons";
-import Button from "@material-ui/core/Button";
+import {Button, Drawer} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { store } from "../../../store";
 import { DropDown, GetGeolocation } from "../../atoms";
@@ -94,9 +94,7 @@ const GeoLocation = () => {
 
   return (
     <GeoLocationStyled
-      open={open}
       id="geolocation_container"
-      onClick={handleClick}
     >
       <Room htmlColor="white" />
       <GeoLocationCurrentStyled {...open} onClick={() => setOpen(!open)} >
@@ -105,7 +103,8 @@ const GeoLocation = () => {
           {myStore.name} {open ? <ExpandLess /> : <ExpandMore />}
         </p>
       </GeoLocationCurrentStyled>
-      <DropDown open={open}>
+
+      <Drawer anchor={"left"} open={open}>
         <div>
           <GeoLocationTriggerStyled>
             <span>encontre sua loja</span>
@@ -116,7 +115,7 @@ const GeoLocation = () => {
             </p>
           </GeoLocationTriggerStyled>
 
-          <GeoLocationFormStyled onSubmit={handleSubmit(onSubmit)}>
+          <GeoLocationFormStyled onSubmit={handleSubmit(onSubmit)} onClick={() => setOpen(true)}>
             <input
               name="cep"
               label="CEP"
@@ -158,7 +157,7 @@ const GeoLocation = () => {
             ))}
           </GeoLocationListStyled>
         </div>
-      </DropDown>
+        </Drawer>
     </GeoLocationStyled>
   );
 };
