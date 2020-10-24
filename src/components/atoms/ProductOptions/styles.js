@@ -20,6 +20,14 @@ const ProductOptionsStyled = styled.ul`
     margin: 0 10px;
     min-width: 150px;
   }
+
+  .qty {
+    padding-right: 20px;
+  }
+
+  .MuiIconButton-colorSecondary {
+    padding-left: 0;
+  }
 `;
 
 export default ProductOptionsStyled;
