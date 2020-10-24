@@ -22,12 +22,18 @@ const ProductOptionsStyled = styled.ul`
   }
 
   .qty {
-    padding-right: 20px;
+    display: inline-grid;
+    width: 80px;
+    margin-right: 5px;
   }
 
   .MuiIconButton-colorSecondary {
     padding-left: 0;
   }
+
+  .MuiRadio-colorSecondary.Mui-checked {
+    color: #cfd601;
+}
 `;
 
 export default ProductOptionsStyled;
