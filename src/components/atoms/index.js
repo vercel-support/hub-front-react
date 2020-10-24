@@ -1,10 +1,12 @@
 export { default as Availability } from "./Availability";
 export { default as CardAddress } from "./CardAddress";
 export { default as CardBrand } from "./CardBrand";
+export { default as CardCoupon } from "./CardCoupon";
 export { default as CardImage } from "./CardImage";
 export { default as CardName } from "./CardName";
 export { default as CardPrice } from "./CardPrice";
 export { default as CartPrice } from "./CartPrice";
+export { default as CartResumePrices } from "./CartResumePrices";
 export { default as CartTotal } from "./CartTotal";
 export { default as CategoryDescription } from "./CategoryDescription";
 export { default as Copyright } from "./Copyright";
@@ -25,3 +27,4 @@ export { default as ProductOptions } from "./ProductOptions";
 export { default as ProductPrice } from "./ProductPrice";
 export { default as ProductRating } from "./ProductRating";
 export { default as Title } from "./Title";
+export { default as SubTitle } from "./SubTitle";

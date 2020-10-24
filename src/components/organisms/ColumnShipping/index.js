@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { store } from "../../../store";
 import Link from "next/link";
 import { ColumnShippingStyles } from "./styles";
-import { Delivery, CartTotal, Pickup } from "../../atoms";
+import { Delivery, CartTotal, Pickup, SubTitle } from "../../atoms";
 import { Shipping } from "../../molecules";
 import { Paper, Button, Hidden } from "@material-ui/core";
 import { ShoppingBasket, LocationOn } from "@material-ui/icons";
@@ -74,6 +74,8 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
       </Hidden>
       {cartSubTotal && <CartTotal subPrice={cartSubTotal || 0} />}
       { errorMessage }
+
+      <SubTitle>Tem cupom de disconto? Aplique-o na página de pagamento.</SubTitle>
 
       <Button color="red" onClick={confirm} variant="contained" size="large" fullWidth>
         Finalizar minha Compra
