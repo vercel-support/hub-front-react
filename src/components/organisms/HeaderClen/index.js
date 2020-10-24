@@ -37,7 +37,7 @@ const HeaderClen = ({ cart }) => {
                     <span className={classes.span}>{cart.products.length} {cart.products.length == 1 ? " item" : "itens"}</span>R$ {cart.total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </Button>
                   <Drawer anchor={"top"} open={top} onClose={() => setTop(false)}>
-                    <ResumeForm />
+                    <ResumeForm cart={cart} />
                     {/* <InformationForm /> */}
                   </Drawer>
                 </Grid>
