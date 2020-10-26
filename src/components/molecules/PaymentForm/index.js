@@ -147,7 +147,7 @@ const PaymentForm = ({updateCart}) => {
       element.value = paymentMethodId;
       getInstallments();
     } else {
-      alert(`payment method info error: ${response}`);
+      console.log(`payment method info error: ${response}`);
     }
   };
   const onCardChange = (event) => {

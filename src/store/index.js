@@ -93,11 +93,11 @@ function* getStoresByPostalCode({ payload }) {
 
     if(data[0].distance < maxStoreDistance){
       userStore = data[0];
-      nearbyStores = data.slice(1, 4);
+      nearbyStores = data.slice(1, 10);
     }
     else{
       userStore = initialState.defaultStore;
-      nearbyStores = data.slice(0, 3);
+      nearbyStores = data.slice(0, 9);
     }
 
     localStorage.setItem("myStore", JSON.stringify(userStore))
@@ -125,11 +125,11 @@ function* getStoresByGeolocation() {
 
     if(data[0].distance < maxStoreDistance){
       userStore = data[0];
-      nearbyStores = data.slice(1, 4);
+      nearbyStores = data.slice(1, 10);
     }
     else{
       userStore = initialState.defaultStore;
-      nearbyStores = data.slice(0, 3);
+      nearbyStores = data.slice(0, 9);
     }
 
     localStorage.setItem("myStore", JSON.stringify(userStore))
