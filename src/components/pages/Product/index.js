@@ -114,7 +114,7 @@ const Product = ({ content }) => {
             { product ? 
               <ProductContentStyled>
                 <div>
-                  <ProductDiscount discount={product.discount} />
+                  <ProductDiscount discount={product.discount ? product.discount : product.percentagePromotionDiscount} />
                   <ProductPrice
                     price={product.price}
                     specialPrice={product.specialPrice}

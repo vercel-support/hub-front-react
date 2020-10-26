@@ -30,7 +30,8 @@ export const ResumeFormStyles = styled.div`
 export const ResumeFormAmountStyles = styled.div `
     display : flex;
     justify-content: flex-end;
-
+    font-size: ${(props) => (props.fontSize)};
+    color: ${(props) => (props.fontColor)};
     .resume-label{
         margin-right : 1rem;
     }

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Radio, RadioGroup, FormLabel } from "@material-ui/core";
 import ProductOptionsStyled from "./styles";
 
 const ProductOptions = ({ options = [], change }) => {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(null);
+  console.log(selected, "selected")
   const opts = options.map((opt) => ({
     sku: opt.sku,
     name: opt.name,
@@ -15,33 +17,62 @@ const ProductOptions = ({ options = [], change }) => {
     quantityAvailableForPickup: opt.quantityAvailableForPickup,
   }));
 
+  const handleChange = (event) => {
+    setSelected(event.target.value);
+    change(event.target.value);
+  };
+
   return (
     <ProductOptionsStyled>
-      {opts.map((option, i) => (
-        <li>
-          <input
-            type="radio"
-            name="product"
-            value={option.value}
-            checked={i === selected}
-            onClick={() => {
-              change(option.sku);
-              setSelected(i);
-            }}
-          />
-          <div>
-            <span>{option.text}</span>
-            <span>
-              {Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(
-                option.specialPrice ? option.specialPrice : option.price
-              )}
-            </span>
-          </div>
-        </li>
-      ))}
+      <RadioGroup
+        aria-label="product"
+        name="product"
+        value={selected}
+        onChange={handleChange}
+      >
+        {opts.map((option, i) => {
+          return (
+            <React.Fragment>
+              <FormLabel>
+                <Radio value={option.sku} />
+                <span className="qty">{option.text}</span>
+                <span>
+                  {Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(
+                    option.specialPrice ? option.specialPrice : option.price
+                  )}
+                </span>
+              </FormLabel>
+            </React.Fragment>
+          );
+        })}
+      </RadioGroup>
+
+      {/* // <li>
+        //   <input
+        //     type="radio"
+        //     name="product"
+        //     value={option.value}
+        //     checked={i === selected}
+        //     onClick={() => {
+        //       change(option.sku);
+        //       setSelected(i);
+        //     }}
+        //   />
+        //   <div>
+        //     <span>{option.text}</span>
+        //     <span>
+        //       {Intl.NumberFormat("pt-BR", {
+        //         style: "currency",
+        //         currency: "BRL",
+        //       }).format(
+        //         option.specialPrice ? option.specialPrice : option.price
+        //       )}
+        //     </span>
+        //   </div>
+        // </li> */}
     </ProductOptionsStyled>
   );
 };

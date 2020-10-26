@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ExpandLess, ExpandMore, MyLocation, Room } from "@material-ui/icons";
-import Button from "@material-ui/core/Button";
+import {Button, Drawer} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { store } from "../../../store";
 import { DropDown, GetGeolocation } from "../../atoms";
@@ -82,20 +82,29 @@ const GeoLocation = () => {
     return distance >= 1000 ? `${(distance/1000).toFixed(1)} km` : `${distance} m`;
   }
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <GeoLocationStyled
       id="geolocation_container"
-      onMouseOut={() => { if(!geoLocationOpen) setOpen(false)}}
-      onMouseOver={() => setOpen(true)}
     >
       <Room htmlColor="white" />
-      <GeoLocationCurrentStyled {...open} onClick={() => setOpen(!open)}>
-        <span>minha loja</span>
-        <p>
+      <GeoLocationCurrentStyled {...open} onClick={() => setOpen(!open)} >
+        <span className={open && "openDrop"}>minha loja</span>
+        <p className={open && "openDrop"}>
           {myStore.name} {open ? <ExpandLess /> : <ExpandMore />}
         </p>
       </GeoLocationCurrentStyled>
-      <DropDown open={open}>
+
+      <Drawer anchor={"left"} open={open} disableScrollLock={true}>
         <div>
           <GeoLocationTriggerStyled>
             <span>encontre sua loja</span>
@@ -106,7 +115,7 @@ const GeoLocation = () => {
             </p>
           </GeoLocationTriggerStyled>
 
-          <GeoLocationFormStyled onSubmit={handleSubmit(onSubmit)}>
+          <GeoLocationFormStyled onSubmit={handleSubmit(onSubmit)} onClick={() => setOpen(true)}>
             <input
               name="cep"
               label="CEP"
@@ -148,7 +157,7 @@ const GeoLocation = () => {
             ))}
           </GeoLocationListStyled>
         </div>
-      </DropDown>
+        </Drawer>
     </GeoLocationStyled>
   );
 };

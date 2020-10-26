@@ -1,16 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
 import { store } from "../../../store";
 import { useRouter } from "next/router";
-import { Grid } from "@material-ui/core";
+import { Grid, Divider } from "@material-ui/core";
 import { regex } from '../../../utils/regex';
-import { PaymentFormStyles } from "./styles";
+import { PaymentFormStyles, TitleStyles } from "./styles";
+import { CardCoupon } from "../../atoms";
 
 import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 const { API_URL, MERCADOPAGO_KEY } = publicRuntimeConfig;
 import axios from "axios";
 
-const PaymentForm = () => {
+const PaymentForm = ({updateCart}) => {
   const router = useRouter();
   const { dispatch } = useContext(store);
   const [ doSubmit, setDoSubmit ] = useState(false);
@@ -29,15 +30,23 @@ const PaymentForm = () => {
   }
 
   useEffect(() => {
-  }, [customerEmail, cartId, cartTotalAmount, storeSource]);
+    getCartInfo();
+  }, [updateCart]);
 
   useEffect(() => {
     getCartInfo();
     setCustomerEmail(localStorage.getItem("customer-email"));
-    //setStoreSource(JSON.parse(localStorage.getItem("storesource") || "{}"))
-    window.Mercadopago.setPublishableKey(MERCADOPAGO_KEY);
-    window.Mercadopago.getIdentificationTypes();
-    document.querySelector("#pay").addEventListener("submit", doPay);
+  
+    const mercadoPagoScript = document.createElement("script");
+    mercadoPagoScript.src = "https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js";
+    mercadoPagoScript.async = true;
+    document.body.appendChild(mercadoPagoScript);
+
+    mercadoPagoScript.onload = () => {
+      window.Mercadopago.setPublishableKey(MERCADOPAGO_KEY);
+      window.Mercadopago.getIdentificationTypes();
+      document.querySelector("#pay").addEventListener("submit", doPay);
+    };
   }, []);
   
   const mask = "maskCpfCnpj";
@@ -71,7 +80,7 @@ const PaymentForm = () => {
               installments
           },
           order: {
-              salesChannel: "geracaopet.com.br",
+              salesChannel: "geracaopet.com.br", 
               //storeSource: storeSource,
               customer,
               cartId
@@ -138,7 +147,7 @@ const PaymentForm = () => {
       element.value = paymentMethodId;
       getInstallments();
     } else {
-      alert(`payment method info error: ${response}`);
+      console.log(`payment method info error: ${response}`);
     }
   };
   const onCardChange = (event) => {
@@ -157,6 +166,16 @@ const PaymentForm = () => {
   };
   return (
     <PaymentFormStyles>
+
+      <CardCoupon
+        updateCart={updateCart}
+      />
+
+      <TitleStyles>
+        <h2>Dados do cartão</h2>
+        <Divider/>
+      </TitleStyles>
+      
       <form action={submitForm} method="post" id="pay" name="pay">
         <fieldset>
           <Grid container spacing={3}>

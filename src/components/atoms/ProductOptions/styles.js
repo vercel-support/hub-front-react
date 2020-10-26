@@ -20,6 +20,20 @@ const ProductOptionsStyled = styled.ul`
     margin: 0 10px;
     min-width: 150px;
   }
+
+  .qty {
+    display: inline-grid;
+    width: 80px;
+    margin-right: 5px;
+  }
+
+  .MuiIconButton-colorSecondary {
+    padding-left: 0;
+  }
+
+  .MuiRadio-colorSecondary.Mui-checked {
+    color: #cfd601;
+}
 `;
 
 export default ProductOptionsStyled;

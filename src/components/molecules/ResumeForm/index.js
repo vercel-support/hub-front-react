@@ -6,49 +6,26 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Divider
 } from "@material-ui/core";
-import { CardImage, CartPrice } from "../../atoms";
+import { CardImage, CartPrice, CartResumePrices } from "../../atoms";
 import { numberToPrice } from "../../../utils/helpers";
 import { ResumeFormStyles, ResumeFormAmountStyles } from "./styles";
 
-const ResumeForm = () => {
-  const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = (data) => console.log(data);
+const ResumeForm = ({ cart }) => {
   const [resumeInfo, setResumeInfo] = useState({
     subtotal: 0, discount: 0, shipping: 0, total: 0
   });
   const [products, setProducts] = useState([]);
 
-  const calculateResumeInfo = () => {
-    let subtotal = 0;
-    products.map(product =>{
-      subtotal+= (product.specialPrice || product.price) * product.quantity;
-    });
-
-    const selectedShippingMethod = localStorage.getItem("selected-shipping-method");
-    const shippingOptions = JSON.parse(localStorage.getItem("shipping-options"), "{}");
-    
-    if(selectedShippingMethod != ""){
-      const selectedShippingOption = shippingOptions[selectedShippingMethod];
+  useEffect(() => {
+    if(cart && cart.products){
+      setProducts(cart.products);
       setResumeInfo({
-        ...resumeInfo,
-        subtotal, shipping: selectedShippingMethod.price, total: subtotal + selectedShippingOption.price
+        ...cart
       });
     }
-    else
-      setResumeInfo({
-        ...resumeInfo,
-        subtotal, shipping: 0, total: subtotal
-      });  
-  }
-
-  useEffect(() => {
-    calculateResumeInfo();
-  }, [products]);
-
-  useEffect(() => {
-    setProducts(JSON.parse(localStorage.getItem("productList") || "[]"));
-  }, []);
+  }, [cart]);
 
   return (
     <ResumeFormStyles>
@@ -63,23 +40,13 @@ const ResumeForm = () => {
             </CardMedia>
             <CardContent>
               <p>{item.name}</p>
-              <span>{numberToPrice(item.specialPrice || item.price)}</span>
+              <span>{numberToPrice(item.specialPrice || item.price)} {item.quantity > 1 ? `(${item.quantity} itens)` : null}</span>
             </CardContent>
           </Card>
         ))}
 
-        <ResumeFormAmountStyles>
-          <div className="resume-label">
-            <Typography variant="h5" component="h6">
-              Total:
-            </Typography>
-          </div>
-          <div className="resume-total">
-            <Typography variant="h5" component="h6">
-              {numberToPrice(resumeInfo.total)}
-            </Typography>
-          </div>
-        </ResumeFormAmountStyles>
+        <CartResumePrices cart={cart} />
+
       </React.Fragment>
     </ResumeFormStyles>
   );

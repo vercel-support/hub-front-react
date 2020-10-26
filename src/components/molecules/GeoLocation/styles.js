@@ -9,6 +9,9 @@ const GeoLocationStyled = styled.div`
   position: relative;
   max-width: 100%;
   margin-top: 7px;
+  background-color: ${(props) => (props && props.open && "#ffffff")};
+  color: ${(props) => (props.open && "#2983B9" )};
+  
   &:hover {
     background-color: #ffffff;
     color: #2983B9;
@@ -27,7 +30,12 @@ const GeoLocationStyled = styled.div`
 `;
 
 export const GeoLocationCurrentStyled = styled.div`
-  color: ${(props) => (props.open ? "#2983B9" : "#ffffff")};
+
+  .openDrop {
+    color: #2983B9;
+  }
+
+  color: ${(props) => (props.open ? "" : "#ffffff")};
   display: flex;
   flex-direction: column;
   & > p {
@@ -95,6 +103,10 @@ export const GeoLocationListStyled = styled.ul`
 export const GeoLocationStoreStyled = styled.li`
   border-top: 1px solid #cccccc;
   padding: 15px 0;
+
+  :first-child {
+    background-color: #f6f6f6;
+  }
 
   & > h4 {
     font-size: 14px;
