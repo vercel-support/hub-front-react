@@ -104,7 +104,7 @@ const GeoLocation = () => {
         </p>
       </GeoLocationCurrentStyled>
 
-      <Drawer anchor={"left"} open={open}>
+      <Drawer anchor={"left"} open={open} disableScrollLock={true}>
         <div>
           <GeoLocationTriggerStyled>
             <span>encontre sua loja</span>
