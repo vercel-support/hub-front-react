@@ -3,16 +3,22 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { store } from "../../../store";
 import ModalStyled from "./styles";
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 const { API_URL } = publicRuntimeConfig;
 import axios from "axios";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
   root: {
     margin: 0,
   },
@@ -27,8 +33,8 @@ const useStyles = makeStyles({
   button: {
     padding: "15px",
     color: "#666"
-  },  
-});
+  },
+}));
 
 const validatePostalCode = (postalcode) => {
   if (postalcode) {
@@ -39,41 +45,72 @@ const validatePostalCode = (postalcode) => {
 };
 
 const GetGeolocation = () => {
-  const { dispatch } = React.useContext(store);
-  const [openGeo, setOpenGeo] = React.useState(true);
   const classes = useStyles();
-
+  const { dispatch } = React.useContext(store);
+  const [ openGeo, setOpenGeo ] = React.useState(false);
+  const [ loading, setLoading ] = React.useState(false);
+  
   const fetchStoreAndSave = async(storeId) => {
+    setLoading(true);
     try{
         let serviceResponse = await axios.get(`${API_URL}/logistic/store?storeId=${storeId}`);
         if(serviceResponse && serviceResponse.data && (serviceResponse.data.data.id)){
           setOpenGeo(false);
           dispatch({ type: "SET_NEW_STORE", payload: { store: serviceResponse.data.data } });
         }
+        setLoading(false);
     }
     catch(error){
         console.log(error.message);
+        setLoading(false);
     }
   }
 
   useEffect(() => {
 
     let params = (new URL(document.location)).searchParams;
+
+    //1 - Forçando loja
     let store_query = params.get("loja");
-    let store_source_query = params.get("storesource");
-
-    if(store_source_query && store_source_query.length > 0){
-        localStorage.setItem("storesource", JSON.stringify({
-            store: store_source_query,
-            date: new Date().getTime()
-        }));
+    if(store_query){
+      fetchStoreAndSave(store_query);
+      return;
     }
 
-    if(store_query || store_source_query) fetchStoreAndSave(store_query || store_source_query);
-    else{
-      const savedStore = localStorage.getItem("myStore");
-      if(savedStore && savedStore !== "undefined") setOpenGeo(false);
+    //2 - Forçando CD
+    let from_cd_query = params.get("cd");
+    if(from_cd_query && from_cd_query === "true"){
+      setLoading(true);
+      localStorage.setItem("in-cd-since", new Date().getTime());
+      setTimeout(() => { 
+        dispatch({ type: "SET_CD_STORE" });
+        setLoading(false);
+      }, 500);
+      return;
     }
+
+    //3 - Verificando se o usuário deve ficar no CD
+    const savedInCdSince = localStorage.getItem("in-cd-since");
+    if(savedInCdSince){
+      let today = new Date();
+      const days_diff = (today.getTime() - savedInCdSince)/(1000*60*60*24);
+      if(days_diff > 7){
+        localStorage.removeItem("in-cd-since");
+        localStorage.removeItem("myStore");
+        setOpenGeo(true);
+      }
+      return;
+    }
+
+    //4 - Verificando loja salva no localStorage
+    const savedStore = localStorage.getItem("myStore");
+    if(savedStore && savedStore !== "undefined"){
+      setOpenGeo(false);
+      return;
+    }
+
+    //5 - Abro tela de geolocalização
+    setOpenGeo(true);
 
   }, []);
 
@@ -115,6 +152,12 @@ const GetGeolocation = () => {
     }
   }
 
+  if(loading)
+    return (
+      <Backdrop className={classes.backdrop} open={true}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
   return (    
     <>
         <Dialog fullWidth="true" maxWidth="sm" className={classes.root} aria-labelledby="customized-dialog-title" open={openGeo}>
