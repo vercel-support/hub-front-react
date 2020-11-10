@@ -75,6 +75,16 @@ export const regex = {
         customValue = customValue.replace(/\D/g, '');
         return customValue.replace(/^(\d{2})(\d{1,2})/g, '$1/$2').substr(0, 5);
     },
+    maskMes: value => {
+        const customValue = value;
+
+        return customValue.replace(/\D/g, '').substr(0, 2);
+    },
+    maskAno: value => {
+        const customValue = value;
+
+        return customValue.replace(/\D/g, '').substr(0, 4);
+    },
     maskOnlyNumber: value => {
         const customValue = value;
 

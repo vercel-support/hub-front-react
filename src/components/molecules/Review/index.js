@@ -201,6 +201,7 @@ const Review = ({ handleNext }) => {
                 ref={register({ required: true })}
                 invert={true}
                 width={100}
+                mask="maskOnlyOrderNum"
                 config={{
                   type: "text",
                   id: "number",
