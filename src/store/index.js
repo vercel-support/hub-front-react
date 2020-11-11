@@ -84,6 +84,7 @@ function* handleGeoError() {
 }
 
 function* getStoresByPostalCode({ payload }) {
+  yield put({ type: "LOADING_DATA", payload: true });
   try {
     const params = { postalCode: payload };
     const { data } = yield call(service.requestGetStore, { params });
@@ -104,9 +105,11 @@ function* getStoresByPostalCode({ payload }) {
     localStorage.setItem("nearby-stores", JSON.stringify(nearbyStores));
 
     yield put({ type: "SET_STORE_STATE", payload: { myStore: userStore, stores: nearbyStores } });
+    yield put({ type: "LOADING_DATA", payload: false });
 
   } catch (error) {
     yield put({ type: "STORES_ERROR" });
+    yield put({ type: "LOADING_DATA", payload: false });
   }
 }
 
