@@ -94,11 +94,11 @@ function* getStoresByPostalCode({ payload }) {
 
     if(data[0].distance < maxStoreDistance){
       userStore = data[0];
-      nearbyStores = data.slice(1, 4);
+      nearbyStores = data.slice(1, 10);
     }
     else{
       userStore = initialState.defaultStore;
-      nearbyStores = data.slice(0, 3);
+      nearbyStores = data.slice(0, 9);
     }
 
     localStorage.setItem("myStore", JSON.stringify(userStore))
@@ -128,11 +128,11 @@ function* getStoresByGeolocation() {
 
     if(data[0].distance < maxStoreDistance){
       userStore = data[0];
-      nearbyStores = data.slice(1, 4);
+      nearbyStores = data.slice(1, 10);
     }
     else{
       userStore = initialState.defaultStore;
-      nearbyStores = data.slice(0, 3);
+      nearbyStores = data.slice(0, 9);
     }
 
     localStorage.setItem("myStore", JSON.stringify(userStore))
@@ -162,6 +162,11 @@ function* setNewStore({ payload }) {
   yield put({ type: "SET_STORE_STATE", payload: { myStore: payload.store, stores: newStores } });
 }
 
+function* setCdStore() {
+  localStorage.setItem("myStore", JSON.stringify(initialState.defaultStore));
+  yield put({ type: "SET_STORE_STATE", payload: { myStore: initialState.defaultStore, stores: [] } });
+}
+
 function* watchGetPostcode() {
   yield takeEvery("GEO_SUCCESS", getStoresByGeolocation);
 }
@@ -182,6 +187,10 @@ function* watchSetNewStore() {
   yield takeEvery("SET_NEW_STORE", setNewStore);
 }
 
+function* watchSetCdStore() {
+  yield takeEvery("SET_CD_STORE", setCdStore);
+}
+
 function* rootSaga() {
   yield all([
     watchGetPostcode(),
@@ -189,6 +198,7 @@ function* rootSaga() {
     watchPostalCode(),
     watchGetPostcodeError(),
     watchSetNewStore(),
+    watchSetCdStore(),
   ]);
 }
 // Saga
@@ -226,6 +236,10 @@ const StateProvider = ({ children, value }) => {
             myStore: action.payload.store
           };
         case "SET_NEW_STORE":
+          return {
+            ...state,
+          }
+        case "SET_CD_STORE":
           return {
             ...state,
           }

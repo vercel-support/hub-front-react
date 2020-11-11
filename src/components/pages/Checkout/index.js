@@ -19,14 +19,14 @@ import axios from "axios";
 
 const steps = ["Identificação", "Endereço", "Pagamento"];
 
-function getStepContent(step, handleNext, shipping) {
+function getStepContent(step, handleNext, shipping, updateCart) {
   switch (step) {
     case 0:
       return <Login handleNext={handleNext} />;
     case 1:
       return <Review handleNext={handleNext} />;
     case 2:
-      return <PaymentForm/>;
+      return <PaymentForm updateCart={updateCart}/>;
     default:
       throw new Error("Passo desconhecido");
   }
@@ -34,8 +34,8 @@ function getStepContent(step, handleNext, shipping) {
 
 const Checkout = ({ content }) => {
   const { state, dispatch } = useContext(store);
-  const [activeStep, setActiveStep] = useState(0);
-  const [cart, setCart] = useState(null);   
+  const [ activeStep, setActiveStep ] = useState(0);
+  const [ cart, setCart ] = useState(null);   
 
   const fetchCart = async() => {
     const cartId = localStorage.getItem("cartId");
@@ -83,14 +83,14 @@ const Checkout = ({ content }) => {
                   {activeStep === steps.length ? (
                     <Success />
                   ) : (
-                    getStepContent(activeStep, handleNext, state.shippingCart)
+                    getStepContent(activeStep, handleNext, state.shippingCart, fetchCart)
                   )}
                 </Paper>
               </Grid>
               <Hidden mdDown>
                 <Grid item xs={12} lg={4}>
                   <Grid xs={12} lg={12}>
-                    <ResumeForm />
+                    <ResumeForm cart={cart}/>
                   </Grid>
                 </Grid>
               </Hidden>
