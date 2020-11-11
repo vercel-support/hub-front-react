@@ -55,11 +55,11 @@ const PaymentForm = ({updateCart}) => {
 
   const onInputChange = (e) => {
     const event = e;
-    const maskC = event.target.attributes.mask.nodeValue;
+/*     const maskC = event.target.attributes.mask.nodeValue;
 
     if (maskC) {
       event.target.value = regex[maskC](event.target.value);
-    }
+    } */
 
     if (onChange) onChange(event);
   };
