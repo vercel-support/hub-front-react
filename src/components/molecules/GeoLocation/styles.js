@@ -27,6 +27,21 @@ const GeoLocationStyled = styled.div`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     width: 280px;
   }
+
+  .MuiBackdrop-root {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    z-index: 5;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  }
 `;
 
 export const GeoLocationCurrentStyled = styled.div`

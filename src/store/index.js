@@ -84,6 +84,7 @@ function* handleGeoError() {
 }
 
 function* getStoresByPostalCode({ payload }) {
+  yield put({ type: "LOADING_DATA", payload: true });
   try {
     const params = { postalCode: payload };
     const { data } = yield call(service.requestGetStore, { params });
@@ -104,9 +105,11 @@ function* getStoresByPostalCode({ payload }) {
     localStorage.setItem("nearby-stores", JSON.stringify(nearbyStores));
 
     yield put({ type: "SET_STORE_STATE", payload: { myStore: userStore, stores: nearbyStores } });
+    yield put({ type: "LOADING_DATA", payload: false });
 
   } catch (error) {
     yield put({ type: "STORES_ERROR" });
+    yield put({ type: "LOADING_DATA", payload: false });
   }
 }
 
@@ -159,6 +162,11 @@ function* setNewStore({ payload }) {
   yield put({ type: "SET_STORE_STATE", payload: { myStore: payload.store, stores: newStores } });
 }
 
+function* setCdStore() {
+  localStorage.setItem("myStore", JSON.stringify(initialState.defaultStore));
+  yield put({ type: "SET_STORE_STATE", payload: { myStore: initialState.defaultStore, stores: [] } });
+}
+
 function* watchGetPostcode() {
   yield takeEvery("GEO_SUCCESS", getStoresByGeolocation);
 }
@@ -179,6 +187,10 @@ function* watchSetNewStore() {
   yield takeEvery("SET_NEW_STORE", setNewStore);
 }
 
+function* watchSetCdStore() {
+  yield takeEvery("SET_CD_STORE", setCdStore);
+}
+
 function* rootSaga() {
   yield all([
     watchGetPostcode(),
@@ -186,6 +198,7 @@ function* rootSaga() {
     watchPostalCode(),
     watchGetPostcodeError(),
     watchSetNewStore(),
+    watchSetCdStore(),
   ]);
 }
 // Saga
@@ -223,6 +236,10 @@ const StateProvider = ({ children, value }) => {
             myStore: action.payload.store
           };
         case "SET_NEW_STORE":
+          return {
+            ...state,
+          }
+        case "SET_CD_STORE":
           return {
             ...state,
           }

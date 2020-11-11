@@ -4,7 +4,7 @@ import ProductOptionsStyled from "./styles";
 
 const ProductOptions = ({ options = [], change }) => {
   const [selected, setSelected] = useState(null);
-  console.log(selected, "selected")
+
   const opts = options.map((opt) => ({
     sku: opt.sku,
     name: opt.name,
