@@ -157,11 +157,11 @@ const PaymentForm = ({updateCart}) => {
   };
   const onCardChange = (event) => {
     let cardnumber = event.target.value;
-    const maskC = event.target.attributes.mask.nodeValue;
+/*     const maskC = event.target.attributes.mask.nodeValue;
 
     if (maskC) {
       event.target.value = regex[maskC](event.target.value);
-    }
+    } */
 
     if (cardnumber.length >= 6) {
       let bin = cardnumber.substring(0, 6);
