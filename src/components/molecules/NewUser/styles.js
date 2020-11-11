@@ -63,7 +63,7 @@ export const AddressFormStyles = styled.div`
 
   form {
     div {
-      padding: 0 8px;
+      padding: 0 1px;
     }
   }
 `;

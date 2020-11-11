@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ExpandLess, ExpandMore, MyLocation, Room } from "@material-ui/icons";
-import {Button, Drawer} from "@material-ui/core";
+import { Button, Drawer } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { store } from "../../../store";
 import { DropDown, GetGeolocation } from "../../atoms";
@@ -14,7 +14,7 @@ import GeoLocationStyled, {
 } from "./styles";
 
 const GeoLocation = () => {
-  const { state, dispatch } = useContext(store);
+  const { state, dispatch, loadingItem } = useContext(store);
   const { geoLocationOpen } = state;
   const [stores, setStores] = useState([]);
   const [myStore, setMyStore] = useState({
@@ -32,44 +32,41 @@ const GeoLocation = () => {
 
   const setStore = () => {
     const savedStore = localStorage.getItem("myStore");
-    if(savedStore && savedStore !== "undefined"){
+    if (savedStore && savedStore !== "undefined") {
       setMyStore(JSON.parse(savedStore));
     }
-  }
+  };
 
   const setNearbyStores = () => {
     const savedStores = localStorage.getItem("nearby-stores");
-    if(savedStores && savedStores !== "undefined"){
+    if (savedStores && savedStores !== "undefined") {
       setStores(JSON.parse(savedStores));
     }
-  }
+  };
 
   useEffect(() => {
-    if(state.myStore)
-      setMyStore(state.myStore);
-    if(state.stores && state.stores.length > 0)
-      setStores(state.stores);
-  }, [state.geo, state.myStore, state.stores])
+    if (state.myStore) setMyStore(state.myStore);
+    if (state.stores && state.stores.length > 0) setStores(state.stores);
+  }, [state.geo, state.myStore, state.stores]);
 
   useEffect(() => {
     setStore();
     setNearbyStores();
 
     const geoElement = document.getElementById("geolocation_container");
-    if(geoElement){
-        document.addEventListener("mousedown", (e) => {
-          if (!geoElement.contains(e.target)) {
-            setOpen(false);
-            dispatch({ type: "SET_GEOLOCATION_OPEN", payload: false });
-          }
-        });
+    if (geoElement) {
+      document.addEventListener("mousedown", (e) => {
+        if (!geoElement.contains(e.target)) {
+          setOpen(false);
+          dispatch({ type: "SET_GEOLOCATION_OPEN", payload: false });
+        }
+      });
     }
-
   }, []);
 
   const onSubmit = () => {
-    dispatch({ type: "POSTALCODE_SUCCESS", payload: postalcode });
-  }
+      dispatch({ type: "POSTALCODE_SUCCESS", payload: postalcode });
+  };
 
   const formatAddress = (address) => {
     if (!address) return null;
@@ -79,8 +76,10 @@ const GeoLocation = () => {
   };
 
   const formatStoreDistance = (distance) => {
-    return distance >= 1000 ? `${(distance/1000).toFixed(1)} km` : `${distance} m`;
-  }
+    return distance >= 1000
+      ? `${(distance / 1000).toFixed(1)} km`
+      : `${distance} m`;
+  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -93,18 +92,29 @@ const GeoLocation = () => {
   };
 
   return (
-    <GeoLocationStyled
-      id="geolocation_container"
-    >
+    <GeoLocationStyled id="geolocation_container">
+      {open && (
+        <div
+          className="MuiBackdrop-root"
+          aria-hidden="true"
+          onClick={() => setOpen(!open)}
+        ></div>
+      )}
+
       <Room htmlColor="white" />
-      <GeoLocationCurrentStyled {...open} onClick={() => setOpen(!open)} >
+      <GeoLocationCurrentStyled {...open} onClick={() => setOpen(!open)}>
         <span className={open && "openDrop"}>minha loja</span>
         <p className={open && "openDrop"}>
           {myStore.name} {open ? <ExpandLess /> : <ExpandMore />}
         </p>
       </GeoLocationCurrentStyled>
 
-      <Drawer anchor={"left"} open={open} disableScrollLock={true}>
+      <Drawer
+        anchor={"left"}
+        open={open}
+        disableScrollLock={true}
+        variant="persistent"
+      >
         <div>
           <GeoLocationTriggerStyled>
             <span>encontre sua loja</span>
@@ -115,49 +125,63 @@ const GeoLocation = () => {
             </p>
           </GeoLocationTriggerStyled>
 
-          <GeoLocationFormStyled onSubmit={handleSubmit(onSubmit)} onClick={() => setOpen(true)}>
+          <GeoLocationFormStyled
+            onSubmit={handleSubmit(onSubmit)}
+            onClick={() => setOpen(true)}
+          >
             <input
               name="cep"
               label="CEP"
               variant="outlined"
-/*               value={postalcode} */
+              /*               value={postalcode} */
               placeholder="Digite seu cep"
               ref={register}
               onChange={({ target }) => setPostalcode(target.value)}
             />
-            <Button variant="outlined" color="primary" type="submit">
+            <Button
+              variant="outlined"
+              color="primary"
+              type="submit"
+              onClick={() => setOpen(true)}
+            >
               Buscar
             </Button>
           </GeoLocationFormStyled>
 
-          <GeoLocationListStyled>
+          {loadingItem ?<div>trocando a loja</div>: <GeoLocationListStyled>
             <GeoLocationStoreStyled selected>
               <h4>{myStore.name}</h4>
-              { myStore.id !== "cd" && myStore.distance ? <p>A {formatStoreDistance(myStore.distance)} de você</p>: null }
-              { myStore.id !== "cd" ? <p>{formatAddress(myStore.address)}</p> : null }
+              {myStore.id !== "cd" && myStore.distance ? (
+                <p>A {formatStoreDistance(myStore.distance)} de você</p>
+              ) : null}
+              {myStore.id !== "cd" ? (
+                <p>{formatAddress(myStore.address)}</p>
+              ) : null}
               <span>(minha loja)</span>
             </GeoLocationStoreStyled>
             {stores.slice(0, 10).map((store) => (
-              <GeoLocationStoreStyled 
+              <GeoLocationStoreStyled
                 key={store.id}
-                onClick={() =>{
+                onClick={() => {
                   setOpen(false);
                   dispatch({ type: "SET_GEOLOCATION_OPEN", payload: false });
                   dispatch({ type: "CHANGE_STORE", payload: { store } });
                 }}
               >
                 <h4>{store.name}</h4>
-                { store.id !== "cd" && myStore.distance ? <p>A {formatStoreDistance(store.distance)} de você</p> : null }
+                {store.id !== "cd" && myStore.distance ? (
+                  <p>A {formatStoreDistance(store.distance)} de você</p>
+                ) : null}
                 <p>{formatAddress(store.address)}</p>
-{/*                 <span
+                {/*                 <span
                 >
                   (alterar para essa loja)
                 </span> */}
               </GeoLocationStoreStyled>
             ))}
-          </GeoLocationListStyled>
+          </GeoLocationListStyled>}
         </div>
-        </Drawer>
+      </Drawer>
     </GeoLocationStyled>
   );
 };
