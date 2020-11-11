@@ -83,12 +83,12 @@ export const regex = {
     maskAno: value => {
         const customValue = value;
 
-        return customValue.replace(/\D/g, '').substr(0, 4);
+        return customValue.replace(/\D/g, '').substr(0, 2);
     },
     maskOnlyNumber: value => {
         const customValue = value;
 
-        return customValue.replace(/\D/g, '').substr(0, 5);
+        return customValue.replace(/\D/g, '');
     },
     maskOnlyOrderNum: value => {
         const customValue = value;

@@ -55,11 +55,11 @@ const PaymentForm = ({updateCart}) => {
 
   const onInputChange = (e) => {
     const event = e;
-/*     const maskC = event.target.attributes.mask.nodeValue;
+    const maskC = event.target.attributes.mask.nodeValue;
 
     if (maskC) {
       event.target.value = regex[maskC](event.target.value);
-    } */
+    }
 
     if (onChange) onChange(event);
   };
@@ -156,12 +156,12 @@ const PaymentForm = ({updateCart}) => {
     }
   };
   const onCardChange = (event) => {
-    let cardnumber = event.target.value;
-/*     const maskC = event.target.attributes.mask.nodeValue;
+    let cardnumber = event.target.value;  
+    const maskC = event.target.attributes.mask.nodeValue;
 
     if (maskC) {
       event.target.value = regex[maskC](event.target.value);
-    } */
+    }
 
     if (cardnumber.length >= 6) {
       let bin = cardnumber.substring(0, 6);
@@ -210,7 +210,7 @@ const PaymentForm = ({updateCart}) => {
                 id="cardNumber"
                 data-checkout="cardNumber"
                 onChange={onCardChange}
-                mask="maskCard"
+                mask="maskOnlyNumber"
                 onselectstart="return false"
                 onpaste="return false"
                 onCopy="return false"
@@ -243,6 +243,7 @@ const PaymentForm = ({updateCart}) => {
                 onDrag="return false"
                 onDrop="return false"
                 autocomplete={"off"}
+                placeholder="mm"
               />
             </Grid>
             <Grid xs={4} sm={4}>
@@ -260,6 +261,7 @@ const PaymentForm = ({updateCart}) => {
                 onDrag="return false"
                 onDrop="return false"
                 autocomplete={"off"}
+                placeholder="aa"
               />
             </Grid>
             <Grid xs={4} sm={4}>
@@ -294,12 +296,12 @@ const PaymentForm = ({updateCart}) => {
             <Grid xs={12} sm={6}>
               <label for="docNumber">Número do documento</label>
               <input
-                mask="maskCpfCnpj"
+                mask="maskOnlyNumber"
                 type="text"
                 id="docNumber"
                 onChange={onInputChange}
                 data-checkout="docNumber"
-                placeholder="000.000.000-00"
+                placeholder="Apenas números"
               />
             </Grid>
             <input
