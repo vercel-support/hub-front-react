@@ -131,6 +131,7 @@ const Product = ({ content }) => {
       </ProductStyled>
       <Container>
         {/* <ProductDescription description={description} /> */}
+        <div id="yv-reviews"></div>
       </Container>
       <ProductSchema content={content.data}/>
     </OneColumn>
