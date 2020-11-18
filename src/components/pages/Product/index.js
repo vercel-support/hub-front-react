@@ -100,6 +100,7 @@ const Product = ({ content }) => {
   }
 
   return (
+    <div id="promotional-bar" style={{ background: "#f6f6f6", textAlign: "center" }}></div>
     <OneColumn content={content}>
       {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
       <ProductStyled>
