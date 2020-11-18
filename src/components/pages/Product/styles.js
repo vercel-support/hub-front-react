@@ -4,6 +4,9 @@ export const ProductContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  @media screen and (min-width: 1280px) {
+    min-width: 700px;
+  }
 `;
 
 export const ProductContentStyled = styled.div`
