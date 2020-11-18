@@ -30,21 +30,24 @@ const ProductOptions = ({ options = [], change }) => {
         value={selected}
         onChange={handleChange}
       >
+        <div>Escolha uma opção:</div> 
         {opts.map((option, i) => {
           return (
             <React.Fragment>
-              <FormLabel>
-                <Radio value={option.sku} />
-                <span className="qty">{option.text}</span>
-                <span>
-                  {Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(
-                    option.specialPrice ? option.specialPrice : option.price
-                  )}
-                </span>
-              </FormLabel>
+              <div className="options">
+                <FormLabel>
+                  <Radio value={option.sku} />
+                  <span className="qty">{option.text}</span>
+                  <span>
+                    {Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(
+                      option.specialPrice ? option.specialPrice : option.price
+                    )}
+                  </span>
+                </FormLabel>
+              </div>
             </React.Fragment>
           );
         })}
