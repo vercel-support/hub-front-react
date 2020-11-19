@@ -3,15 +3,23 @@ import PromotionalBarStyled from "./styles";
 import Hidden from "@material-ui/core/Hidden";
 
 const PromotionalBar = () => (
-    <Hidden mdDown>
-        <PromotionalBarStyled>
+
+    <PromotionalBarStyled>
+        <Hidden mdDown>
             <img
                 src="/assets/images/cupom-primeira-compra.png"
                 alt="Cupom Primeira Compra"
                 title="Cupom Primeira Compra"
             />
-        </PromotionalBarStyled>
-    </Hidden>
+        </Hidden>
+        <Hidden mdUp>
+            <img
+                src="/assets/images/cupom-primeira-compra-mobile.png"
+                alt="Cupom Primeira Compra"
+                title="Cupom Primeira Compra"
+            />
+        </Hidden>
+    </PromotionalBarStyled> 
 );
 
 export default PromotionalBar;
