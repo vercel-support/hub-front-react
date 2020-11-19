@@ -6,6 +6,7 @@ import {
   ProductName,
   ProductOptions,
   ProductPrice,
+  PromotionalBar,
   // ProductRating,
 } from "../../atoms";
 import { Breadcrumbs, Gallery, ProductShipping } from "../../molecules";
@@ -100,7 +101,8 @@ const Product = ({ content }) => {
   }
 
   return (
-    <OneColumn content={content}>
+    <OneColumn content={content}> 
+      <PromotionalBar></PromotionalBar> 
       {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
       <ProductStyled>
         <Gallery images={imageGallery} />
