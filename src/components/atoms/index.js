@@ -27,6 +27,7 @@ export { default as ProductName } from "./ProductName";
 export { default as ProductOptions } from "./ProductOptions";
 export { default as ProductPrice } from "./ProductPrice";
 export { default as ProductRating } from "./ProductRating";
+export { default as PromotionalBar } from "./PromotionalBar";
 export { default as RewardsBar } from "./RewardsBar";
 export { default as RewardsInfoDialog } from "./RewardsInfoDialog";
 export { default as Title } from "./Title";

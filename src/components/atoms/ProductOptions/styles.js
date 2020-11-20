@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const ProductOptionsStyled = styled.ul`
   list-style: none;
-  margin: 0;
+  margin-bottom: 20px;
   padding: 0;
   & > li {
     color: #999999;
@@ -20,10 +20,24 @@ const ProductOptionsStyled = styled.ul`
     margin: 0 10px;
     min-width: 150px;
   }
+  label {
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .options {
+    cursor: pointer;
+    padding:0 5px;
+    border-bottom: 1px solid #f6f6f6
+  }
+
+  .options:hover {
+    background: #f6f6f6;
+  }
 
   .qty {
     display: inline-grid;
-    width: 80px;
+    width: 120px;
     margin-right: 5px;
   }
 
