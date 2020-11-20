@@ -6,6 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import { store } from "../../../store";
 import { DropDown, GetGeolocation } from "../../atoms";
 import GeoLocationStyled, {
+  GlobalContainerStyled,
   GeoLocationCurrentStyled,
   GeoLocationFormStyled,
   GeoLocationListStyled,
@@ -115,7 +116,7 @@ const GeoLocation = () => {
         disableScrollLock={true}
         variant="persistent"
       >
-        <div>
+        <GlobalContainerStyled>
           <GeoLocationTriggerStyled>
             <span>encontre sua loja</span>
             <p onClick={() => setGeo(true)}>
@@ -159,7 +160,7 @@ const GeoLocation = () => {
               ) : null}
               <span>(minha loja)</span>
             </GeoLocationStoreStyled>
-            {stores.slice(0, 10).map((store) => (
+            {stores.map((store) => (
               <GeoLocationStoreStyled
                 key={store.id}
                 onClick={() => {
@@ -180,7 +181,7 @@ const GeoLocation = () => {
               </GeoLocationStoreStyled>
             ))}
           </GeoLocationListStyled>}
-        </div>
+        </GlobalContainerStyled>
       </Drawer>
     </GeoLocationStyled>
   );

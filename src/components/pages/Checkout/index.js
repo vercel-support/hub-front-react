@@ -34,7 +34,7 @@ function getStepContent(step, handleNext, shipping, updateCart) {
 
 const Checkout = ({ content }) => {
   const { state, dispatch } = useContext(store);
-  const [ activeStep, setActiveStep ] = useState(2);
+  const [ activeStep, setActiveStep ] = useState(0);
   const [ cart, setCart ] = useState(null);   
 
   const fetchCart = async() => {
