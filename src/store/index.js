@@ -19,7 +19,6 @@ const initialState = {
     isEmailAvailable: false,
     onLogin: false,
   },
-  productCard: false,
   storesCart: false,
   shippingCart: false,
   geo: {
@@ -52,7 +51,9 @@ const initialState = {
   stores: [],
   changedStore: false,
   loadingData: false,
-  geoLocationOpen: false
+  geoLocationOpen: false,
+  cartPageProducts: [],
+  userResumeInfo: null,
 };
 const maxStoreDistance = 60000;
 const store = createContext(initialState);
@@ -258,12 +259,18 @@ const StateProvider = ({ children, value }) => {
           return {
             ...state, loadingData: action.payload
           }
-
         case "SET_GEOLOCATION_OPEN":
           return {
             ...state, geoLocationOpen: action.payload
           }
-
+        case "SET_CART_PAGE_PRODUCTS":
+          return {
+            ...state, cartPageProducts: action.payload
+          }
+        case "SET_USER_RESUME_INFO":
+          return {
+            ...state, userResumeInfo: action.payload
+          }
         default:
           return state;
       }

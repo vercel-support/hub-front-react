@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { StateProvider } from "../src/store";
 import GlobalStyle from "../src/utils/globalStyle";
-import { GetGeolocation } from "../src/components/atoms";
-import { LoadingOverlay } from "../src/components/atoms";
+import { 
+  GetGeolocation, 
+  LoadingOverlay
+} from "../src/components/atoms";
 import "react-image-gallery/styles/css/image-gallery.css";
 
 import getConfig from "next/config";

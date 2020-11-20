@@ -74,6 +74,42 @@ const Cart = ({ content }) => {
     catch(error){ console.log(error.message); dispatch({ type: "LOADING_DATA", payload: false }); }
   }
 
+  const updateCart = async(cartProducts) => {
+    const cartId = localStorage.getItem("cartId");
+    try{
+      let serviceResponse = await axios.post(`${API_URL}/cart`, { products: cartProducts, cartId, clearFirst: true });
+      if(serviceResponse && serviceResponse.data && (serviceResponse.status === 200 || serviceResponse.status === 201)){
+        localStorage.setItem("productList", JSON.stringify(serviceResponse.data.products));
+        localStorage.setItem("cartId", serviceResponse.data.cartId);
+      }
+    }
+    catch(error){
+
+    }
+  };
+
+  const fetchCart = async() => {
+    const cartId = localStorage.getItem("cartId");
+    try{
+      let serviceResponse = await axios.post(`${API_URL}/cart`, { products: [], cartId, clearFirst: false });
+      if(serviceResponse && serviceResponse.data && (serviceResponse.status === 200 || serviceResponse.status === 201)){
+        setProducts(serviceResponse.data.products);  
+        localStorage.setItem("productList", JSON.stringify(serviceResponse.data.products));
+        localStorage.setItem("cartId", serviceResponse.data.cartId);
+      }
+    }
+    catch(error){
+      setProducts([]);
+    }
+  }
+
+  const updateCartAndDispatch = async(products) => {
+    if(products){
+      await updateCart(products);
+      dispatch({ type: "SET_CART_PAGE_PRODUCTS", payload: products });
+    }
+  }
+
   useEffect(() => {
     if(shippingType == 'delivery' && products && products.length > 0 && cep){
       calcShipping();
@@ -85,21 +121,11 @@ const Cart = ({ content }) => {
       setCartSubTotalAmount(cart_subtotal);
     }
 
+    updateCartAndDispatch(products);
   }, [products, cep]);
 
-  const updateCart = async() => {
-    const cartId = localStorage.getItem("cartId");
-    let savedProducts = JSON.parse(localStorage.getItem("productList") || "[]");
-    let serviceResponse = await axios.post(`${API_URL}/cart`, { products: savedProducts, cartId, clearFirst: true });
-    if(serviceResponse && serviceResponse.data && (serviceResponse.status === 200 || serviceResponse.status === 201)){
-      localStorage.setItem("productList", JSON.stringify(serviceResponse.data.products));
-      localStorage.setItem("cartId", serviceResponse.data.cartId);
-      setProducts(serviceResponse.data.products);  
-    }
-  };
-
   useEffect(() => {
-    updateCart();
+    fetchCart();      
     const userPostalCode = localStorage.getItem("postalcode-delivery");
     if(userPostalCode) setCep(userPostalCode);
     setShippingType(getShippingMethod());

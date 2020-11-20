@@ -34,15 +34,19 @@ function getStepContent(step, handleNext, shipping, updateCart) {
 
 const Checkout = ({ content }) => {
   const { state, dispatch } = useContext(store);
-  const [ activeStep, setActiveStep ] = useState(0);
+  const [ activeStep, setActiveStep ] = useState(2);
   const [ cart, setCart ] = useState(null);   
 
   const fetchCart = async() => {
     const cartId = localStorage.getItem("cartId");
     if(cartId){
-      let serviceResponse = await axios.get(`${API_URL}/cart?cartId=${cartId}`);
-      if(serviceResponse && serviceResponse.status === 200){
-        setCart(serviceResponse.data.data);
+      try{
+        let serviceResponse = await axios.get(`${API_URL}/cart?cartId=${cartId}`);
+        if(serviceResponse && serviceResponse.status === 200){
+          setCart(serviceResponse.data.data);
+        }
+      }
+      catch(error){
       }
     }
   };

@@ -11,20 +11,44 @@ import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import { ExpandMore, ExpandLess } from "@material-ui/icons";
 import Wrapper from "./styles";
+import { ItemText } from "./styles";
+import { makeStyles } from '@material-ui/core/styles';
+import { AccountResume } from "../../atoms";
 
-const Item = ({ item }) => (
-  <ListItem button>
-    <ListItemText primary={item.name} />
-  </ListItem>
-);
+const useStyles = makeStyles((theme) => ({
+  list: {
+    paddingTop: 0
+  },
+  accountItem: {
+    backgroundColor: "#2983B9",
+    height: "5rem",
+    '&:hover': {
+      backgroundColor: "#2D7AA9"
+    }
+  },
+  listItem: {
+    borderStyle: 'none',
+  },
+}));
+
+
+const Item = ({ item }) => {
+  const classes = useStyles();
+  return (
+    <ListItem divider="false" button>
+    <ItemText>{item.name}</ItemText>
+    </ListItem>
+  );
+}; 
 
 const ItemCollapse = ({ listItem }) => {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   return (
     <React.Fragment>
-      <ListItem button onClick={() => setOpen(!open)}>
-        <ListItemText primary={listItem.name} />
+      <ListItem divider="false" className={classes.listItem} button onClick={() => setOpen(!open)}>
+        <ListItemText><ItemText>{listItem.name}</ItemText></ListItemText>
         <ListItemIcon>{open ? <ExpandLess /> : <ExpandMore />}</ListItemIcon>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
@@ -35,19 +59,20 @@ const ItemCollapse = ({ listItem }) => {
             ) : (
               <Link href={`/${item.url}`}>
                 <a>
-                  <Item item={item} key={i} />
+                  <Item className={classes.listItem} item={item} key={i} />
                 </a>
               </Link>
             )
           )}
         </List>
       </Collapse>
-      <Divider />
+{/*       <Divider /> */}
     </React.Fragment>
   );
 };
 
 const MenuMobile = ({ categories = [] }) => {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -58,15 +83,15 @@ const MenuMobile = ({ categories = [] }) => {
       </IconButton>
       <Drawer open={open} onClose={() => setOpen(false)} disableScrollLock={true}>
         <div style={{ width: "300px" }} role="presentation">
-          <List>
-            <ListItem button>
+          <List className={classes.list}>
+            <ListItem divider="false" className={classes.accountItem} button>
               <Link href={`/customer/account`}>
                 <a>
-                  <ListItemText primary="Minha Conta" />
+                  <AccountResume/>
                 </a>
               </Link>
             </ListItem>
-            <Divider />
+{/*             <Divider /> */}
           </List>
           <List>
             {categories.map((item, i) =>
