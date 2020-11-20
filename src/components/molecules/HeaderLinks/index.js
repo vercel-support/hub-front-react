@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ExpandLess, ExpandMore, Person, Sms } from "@material-ui/icons";
 import { DropDown } from "../../atoms";
 import HeaderLinksStyled from "./styles";
+import { AccountResume } from "../../atoms";
 
 const SubMenu = () => (
   <ul>
@@ -42,8 +43,7 @@ const HeaderLinks = () => (
     <li>
       <Link href={`/[...page]`} as="/customer/account/">
         <a>
-          <Person />
-          Minha conta
+        <AccountResume />
         </a>
       </Link>
       {/* {open ? <ExpandLess /> : <ExpandMore />}

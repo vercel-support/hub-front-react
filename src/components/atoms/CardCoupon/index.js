@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { store } from "../../../store";
 import { 
     ApplyButtonStyled, 
@@ -20,13 +20,24 @@ const { publicRuntimeConfig } = getConfig();
 const { API_URL } = publicRuntimeConfig;
 import axios from "axios";
 
-const CardCoupon = ({ updateCart }) => {
+const CardCoupon = ({ cashbackDiscount, updateCart }) => {
     const { dispatch } = useContext(store);
     const [ couponCode, setCouponCode ] = useState(null);
     const [ couponServiceResponse, setCouponServiceResponse ] = useState({
         status: 0,
         message: ""
     });
+
+    useEffect(() => {
+        if(cashbackDiscount && cashbackDiscount.status === 201){
+            setCouponServiceResponse({
+                status: 201,
+                discount: cashbackDiscount.discount,
+                message: "Utilização de saldo"
+            });
+            updateCart();
+        }
+    }, [cashbackDiscount]);
 
     const requestApplyCoupon = async() => {
         dispatch({ type: "LOADING_DATA", payload: true });

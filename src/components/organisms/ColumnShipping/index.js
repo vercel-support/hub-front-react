@@ -75,7 +75,7 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
       {cartSubTotal && <CartTotal subPrice={cartSubTotal || 0} />}
       { errorMessage }
 
-      <SubTitle>Tem cupom de desconto? Aplique-o na página de pagamento.</SubTitle>
+      <SubTitle>Tem cupom ou cashback? Aplique na página de pagamento.</SubTitle>
 
       <Button color="red" onClick={confirm} variant="contained" size="large" fullWidth>
         Finalizar minha Compra

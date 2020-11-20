@@ -12,4 +12,10 @@ const Wrapper = styled(React.Fragment)`
   }
 `;
 
+export const ItemText = styled.a`
+  font-family: "Open Sans",Helvetica,Arial,sans-serif;
+  text-transform: uppercase;
+  font-size: 1rem;
+`;
+
 export default Wrapper;
