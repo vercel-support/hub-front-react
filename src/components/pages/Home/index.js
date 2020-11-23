@@ -7,7 +7,8 @@ import { BannerSlider } from "../../molecules";
 import { Features } from "../../molecules";
 import { Brands } from "../../molecules";
 import { HighlightCategories } from "../../molecules";
-
+import { MainContent } from "./styles";
+import { RewardsBar } from "../../atoms";
 
 const Home = ({ content }) => (
   <Grid container direction="column" justify="space-between">
@@ -16,11 +17,15 @@ const Home = ({ content }) => (
     </Grid>
 
     <Grid item>
+      <RewardsBar />
+    </Grid>
+
+    <Grid item>
       <BannerSlider />
     </Grid>
 
     <Grid item>
-      <main>
+      <MainContent>
         <Container>
           <Grid container spacing={4} content={content}>
           
@@ -39,7 +44,7 @@ const Home = ({ content }) => (
 
           </Grid>
         </Container>
-      </main>
+      </MainContent>
     </Grid>
 
     <Grid item>

@@ -17,29 +17,56 @@ const PaymentForm = ({updateCart}) => {
   const [doSubmit, setDoSubmit] = useState(false);
   const [cartTotalAmount, setCartTotalAmount] = useState();
   const [customerEmail, setCustomerEmail] = useState();
+  const [cashbackDiscount, setCashbackDiscount] = useState({
+    discount: null, message: null
+  });
   const [storeSource, setStoreSource] = useState();
   const [cartId, setCartId] = useState();
 
-  const getCartInfo = async () => {
+  const updateCartTotalAmount = async () => {
     const cartId = localStorage.getItem("cartId");
-    setCartId(cartId);
-    let serviceResponse = await axios.get(`${API_URL}/cart?cartId=${cartId}`);
-    if (serviceResponse && serviceResponse.data) {
-      setCartTotalAmount(serviceResponse.data.data.total);
+    if(cartId){
+      setCartId(cartId);
+      try{
+        let serviceResponse = await axios.get(`${API_URL}/cart?cartId=${cartId}`);
+        if (serviceResponse && serviceResponse.data) {
+          setCartTotalAmount(serviceResponse.data.data.total);
+        }
+      }
+      catch(error){
+      }
     }
   };
 
+  const updatePageCart = async() => {
+    try{
+      const cartId = localStorage.getItem("cartId");
+      const customerToken = localStorage.getItem("customer-token");
+      if(cartId && customerToken){
+        let serviceResponse = await axios.post(`${API_URL}/cart/cashback/reward`, {
+          cartId, customerToken
+        });
+        if(serviceResponse.status === 201){
+          setCashbackDiscount(serviceResponse.data);
+        }
+      }
+    }
+    catch(error){
+
+    }
+  }
+
   useEffect(() => {
-    getCartInfo();
+    updateCartTotalAmount();
   }, [updateCart]);
 
   useEffect(() => {
-    getCartInfo();
+    updatePageCart();
     setCustomerEmail(localStorage.getItem("customer-email"));
   
     const mercadoPagoScript = document.createElement("script");
     mercadoPagoScript.src = "https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js";
-    mercadoPagoScript.async = true;
+    mercadoPagoScript.async = false;
     document.body.appendChild(mercadoPagoScript);
 
     mercadoPagoScript.onload = () => {
@@ -50,8 +77,6 @@ const PaymentForm = ({updateCart}) => {
   }, []);
 
   const onChange = null;
-
-  
 
   const onInputChange = (e) => {
     const event = e;
@@ -180,6 +205,7 @@ const PaymentForm = ({updateCart}) => {
     <PaymentFormStyles>
 
       <CardCoupon
+        cashbackDiscount={cashbackDiscount}
         updateCart={updateCart}
       />
 

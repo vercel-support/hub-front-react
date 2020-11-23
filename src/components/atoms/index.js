@@ -1,3 +1,4 @@
+export { default as AccountResume } from "./AccountResume";
 export { default as Availability } from "./Availability";
 export { default as CardAddress } from "./CardAddress";
 export { default as CardBrand } from "./CardBrand";
@@ -27,5 +28,7 @@ export { default as ProductOptions } from "./ProductOptions";
 export { default as ProductPrice } from "./ProductPrice";
 export { default as ProductRating } from "./ProductRating";
 export { default as PromotionalBar } from "./PromotionalBar";
+export { default as RewardsBar } from "./RewardsBar";
+export { default as RewardsInfoDialog } from "./RewardsInfoDialog";
 export { default as Title } from "./Title";
 export { default as SubTitle } from "./SubTitle";

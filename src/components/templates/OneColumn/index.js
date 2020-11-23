@@ -2,11 +2,13 @@ import React from "react";
 import { Container, Grid } from "@material-ui/core";
 import { Breadcrumbs } from "../../molecules";
 import { Footer, Header } from "../../organisms";
+import { RewardsBar } from "../../atoms";
 
 const OneColumn = ({ children, content }) => (
   <Grid container direction="column" justify="space-between">
     <Grid item>
       <Header content={content} />
+      <RewardsBar />
     </Grid>
     <Grid item>
       <main>

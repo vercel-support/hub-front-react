@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const GlobalContainerStyled = styled.div`
+  max-width: 92vw;
+`;
+
 const GeoLocationStyled = styled.div`
   align-items: center;
   color: #000000;
@@ -98,7 +102,7 @@ export const GeoLocationFormStyled = styled.form`
   align-items: center;
   display: flex;
   justify-content: space-around;
-  padding: 0 15px;
+  padding: 2px 15px;
   button {
     border: 1px solid #cfd601;
     color: #cfd601;
