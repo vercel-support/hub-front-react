@@ -80,7 +80,7 @@ const RewardsBar = () => {
           if(cashbackMessage.code && cashbackMessage.percentageMissingToApply < 100){
             let message =
               cashbackMessage.status === "applied" ?
-              `Você ganhou ${numberToPrice(cashbackMessage.rewardAmount)} de Cashback!` :
+              `Você ganhou ${numberToPrice(cashbackMessage.rewardAmount)} para sua próxima compra!` :
               `Falta ${numberToPrice(cashbackMessage.amountMissingToApply)} para você ganhar Cashback!`
 
             setData({

@@ -48,33 +48,36 @@ export const PaymentFormStyles = styled.div`
     display: block;
     box-sizing: border-box;
     width: 99%;
-    padding: 7px 9px;
+    padding: 9px 12px;
     margin-bottom: 10px;
-    font-size: 14px;
-    border: 3px solid #dedede;
+    font-size: 16px;
+    border: 1px solid #dedede;
     border-radius: 5px;
+    height: 42px;
   }
 
   select#installments {
     display: block;
     box-sizing: border-box;
     width: 98%;
-    padding: 7px 9px;
+    padding: 9px 12px;
     margin-bottom: 10px;
-    font-size: 12px;
-    border: 3px solid #dedede;
+    font-size: 14px;
+    border: 1px solid #dedede;
     border-radius: 5px;
+    height: 42px;
   }
 
   select#docType {
     display: block;
     box-sizing: border-box;
     width: 97%;
-    padding: 7px 9px;
+    padding: 9px 12px;
     margin-bottom: 10px;
-    font-size: 12px;
-    border: 3px solid #dedede;
+    font-size: 14px;
+    border: 1px solid #dedede;
     border-radius: 5px;
+    height: 42px;
   }
 
   input[type="text"]:focus {

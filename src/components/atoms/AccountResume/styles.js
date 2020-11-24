@@ -35,4 +35,5 @@ export const AccountTextStyled = styled.div`
 
 export const BalanceTextStyled = styled.div`
     color: #CAD101;
+    font-size: 12px;
 `;
