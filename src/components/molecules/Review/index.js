@@ -72,6 +72,7 @@ const Review = ({ handleNext }) => {
           street: data.street,
           number: data.number,
           neighborhood: data.neighborhood,
+          complement: data.complemento,
           phone: data.telephone,
           firstName: data.firstname,
           lastName: data.lastname,
