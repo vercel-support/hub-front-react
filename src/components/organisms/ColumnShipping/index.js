@@ -73,7 +73,7 @@ const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handle
         }
       </Hidden>
       {cartSubTotal && <CartTotal subPrice={cartSubTotal || 0} />}
-      { errorMessage }
+      <div className="error">{ errorMessage }</div>
 
       <SubTitle>Tem cupom ou cashback? Aplique na página de pagamento.</SubTitle>
 

@@ -7,14 +7,14 @@ const PromotionalBar = () => (
     <PromotionalBarStyled>
         <Hidden mdDown>
             <img
-                src="/assets/images/cupom-primeira-compra.png"
+                src="/assets/images/cashback-blackfriday-top-bar.png"
                 alt="Cupom Primeira Compra"
                 title="Cupom Primeira Compra"
             />
         </Hidden>
         <Hidden mdUp>
             <img
-                src="/assets/images/cupom-primeira-compra-mobile.png"
+                src="/assets/images/cashback-blackfriday-top-bar-mobile.png"
                 alt="Cupom Primeira Compra"
                 title="Cupom Primeira Compra"
             />
