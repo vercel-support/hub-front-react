@@ -38,6 +38,7 @@ const ProductOptions = ({ options = [], change }) => {
                 <FormLabel>
                   <Radio value={option.sku} />
                   <span className="qty">{option.text}</span>
+                  {option.percentagePromotionDiscount ? <span className="blackfriday">PetFriday</span> : <span style={{marginLeft: "68px"}}></span> }
                   <span>
                     {Intl.NumberFormat("pt-BR", {
                       style: "currency",
