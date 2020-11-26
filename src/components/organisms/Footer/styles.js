@@ -15,7 +15,7 @@ export const FirstLine = styled.div`
 
 export const SecondLine = styled.div`
   align-items: center;
-  background-color: #2983b9;
+  background-color: #000000;
   color: #ffffff;
   display: flex;
   padding: 10px 0;
