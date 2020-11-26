@@ -7,7 +7,8 @@ import {
   ProductOptions,
   ProductPrice,
   PromotionalBar,
-  // ProductRating,
+  ProductRating,
+  ProductReview
 } from "../../atoms";
 import { Breadcrumbs, Gallery, ProductShipping } from "../../molecules";
 import { OneColumn } from "../../templates";
@@ -110,8 +111,8 @@ const Product = ({ content }) => {
           <Container>
             <ProductName name={name} />
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              {/*<ProductRating />*/}
               <ProductBrand brand={brand} />
+              <ProductRating />
             </div>
             { product ? 
               <ProductContentStyled>
@@ -133,7 +134,7 @@ const Product = ({ content }) => {
       </ProductStyled>
       <Container>
         {/* <ProductDescription description={description} /> */}
-        <div id="yv-reviews"></div>
+        <ProductReview />
       </Container>
       <ProductSchema content={content.data}/>
     </OneColumn>
