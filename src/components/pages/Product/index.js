@@ -10,7 +10,7 @@ import {
   ProductRating,
   ProductReview
 } from "../../atoms";
-import { Breadcrumbs, Gallery, ProductShipping } from "../../molecules";
+import { Breadcrumbs, Gallery, ProductShipping, ProductsCarousel } from "../../molecules";
 import { OneColumn } from "../../templates";
 import ProductStyled, {
   ProductContainerStyled,
@@ -132,6 +132,10 @@ const Product = ({ content }) => {
           </Container>
         </ProductContainerStyled>
       </ProductStyled>
+      
+      <ProductsCarousel type="similars" sku={sku} store={savedStore}/>
+
+      
       <Container>
         {/* <ProductDescription description={description} /> */}
         <ProductReview />
