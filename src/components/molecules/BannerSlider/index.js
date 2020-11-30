@@ -5,11 +5,11 @@ const images = [
   {
     imageSet: [
       {
-        srcSet: `/assets/images/images/ressaca-pet-friday-mobile.jpg`,
+        srcSet: `/assets/images/ressaca-pet-friday-mobile.jpg`,
         media: "(max-width: 480px)",
       },
       {
-        srcSet: `/assets/images/images/ressaca-pet-friday-desktop.jpg`,
+        srcSet: `/assets/images/ressaca-pet-friday-desktop.jpg`,
         media: "(min-width: 481px)",
       }
     ],
@@ -17,7 +17,7 @@ const images = [
   {
     imageSet: [
       {
-        srcSet: `/assets/images/principal/retirada-na-loja-pet-friday-mobile.jpg`,
+        srcSet: `/assets/images/retirada-na-loja-pet-friday-mobile.jpg`,
         media: "(max-width: 480px)",
       },
       {
