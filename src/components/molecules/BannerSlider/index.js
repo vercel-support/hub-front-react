@@ -5,11 +5,11 @@ const images = [
   {
     imageSet: [
       {
-        srcSet: `/assets/images/principal/cupom-pet-friday-mobile.jpg`,
+        srcSet: `/assets/images/principal/ressaca-pet-friday-mobile.jpg`,
         media: "(max-width: 480px)",
       },
       {
-        srcSet: `/assets/images/principal/cupom-pet-friday-desktop.jpg`,
+        srcSet: `/assets/images/principal/ressaca-pet-friday-desktop.jpg`,
         media: "(min-width: 481px)",
       }
     ],
@@ -37,7 +37,7 @@ const images = [
         media: "(min-width: 481px)",
       }
     ],
-  }  
+  }
 ];
 
 // const BannerSlider = ({ images }) => (
