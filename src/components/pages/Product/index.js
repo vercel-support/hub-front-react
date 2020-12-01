@@ -38,6 +38,7 @@ const Product = ({ content }) => {
     type,
     description,
     specifications = [],
+    magentoId,
   } = content.data;
   const [product, setProduct] = useState(null);
   const brand = specifications.filter(
@@ -78,6 +79,7 @@ const Product = ({ content }) => {
     if(lsStore){
       setSavedStore(JSON.parse(lsStore));
     }
+    console.log(magentoId);
   }, []);
 
   useEffect(() => {
@@ -138,7 +140,8 @@ const Product = ({ content }) => {
 
       <Container>
         {/* <ProductDescription description={description} /> */}
-        <ProductReview />
+        { magentoId ? <ProductReview id={magentoId}/> : null}
+        
       </Container>
       <ProductSchema content={content.data}/>
     </OneColumn>
