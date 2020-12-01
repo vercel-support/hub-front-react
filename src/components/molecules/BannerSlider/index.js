@@ -21,7 +21,7 @@ const images = [
         media: "(max-width: 480px)",
       },
       {
-        srcSet: `/assets/images/entrega-expressa-natal-mobile.jpg`,
+        srcSet: `/assets/images/entrega-expressa-natal-desktop.jpg`,
         media: "(min-width: 481px)",
       }
     ],
