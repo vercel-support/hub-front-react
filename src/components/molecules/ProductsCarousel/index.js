@@ -77,6 +77,10 @@ const ProductsCarousel = ({type, sku}) => {
         }
     }
 
+    const handleProductClick = (url) => {
+        window.location = `https://www.geracaopet.com.br/${url}`
+    }
+
     useEffect(() => {
         if(type === "similars" && sku){
             fetchSimilarProducts();
@@ -99,9 +103,10 @@ const ProductsCarousel = ({type, sku}) => {
                         <div className="embla__slide__inner">
                             <ProductWrapper>
                                 <ProductCardStyled>
-                                    <ProductContainerStyled>
-                                        <Link href={`/[...page]`} as={product.url}>
-                                            <a>
+                                    <ProductContainerStyled
+                                        onClick={() => handleProductClick(product.url)}
+                                    >
+                                        <a>
                                             <CardImage image={product.image} name={product.name} />
                                             <CardName name={product.name} />
                                             {product?.brand?.label && <CardBrand brand={product.brand.label} />}
@@ -113,8 +118,8 @@ const ProductsCarousel = ({type, sku}) => {
                                                     <Availability available={true} />
                                                 </AvailabilityTagStyled>
                                             
-                                            </a>
-                                        </Link>
+                                        </a>
+
                                     </ProductContainerStyled>
                                 </ProductCardStyled>
                             </ProductWrapper>
