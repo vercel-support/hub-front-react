@@ -134,7 +134,7 @@ const Product = ({ content }) => {
         </ProductContainerStyled>
       </ProductStyled>
       
-      <ProductsCarousel type="similars" sku={sku}/>
+      {/* <ProductsCarousel type="similars" sku={sku}/> */}
 
       <Container>
         {/* <ProductDescription description={description} /> */}
