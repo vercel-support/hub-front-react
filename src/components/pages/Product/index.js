@@ -14,6 +14,7 @@ import { OneColumn } from "../../templates";
 import ProductStyled, {
   ProductContainerStyled,
   ProductContentStyled,
+  SimilarProductsContainer,
 } from "./styles";
 
 import { productPageView } from '../../../../lib/ga';
@@ -132,9 +133,8 @@ const Product = ({ content }) => {
         </ProductContainerStyled>
       </ProductStyled>
       
-      <ProductsCarousel type="similars" sku={sku} store={savedStore}/>
+      <ProductsCarousel type="similars" sku={sku}/>
 
-      
       <Container>
         {/* <ProductDescription description={description} /> */}
         <div id="yv-reviews"></div>

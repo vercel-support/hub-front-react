@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import { Grid } from "@material-ui/core";
 
 export const Wrapper = styled.div`
     width: 100%;
+    min-height: 400px;
 `;
 
 export const TitleStyled = styled.div`
@@ -16,12 +18,14 @@ export const ProductWrapper = styled.div`
     width: 100%;
     height: 100%;
     background-color: #ffffff;
+    padding: 5px;
 `;
 
 export const ProductInfoWrapper = styled.div`
-    padding-left: 15px;
-    max-width: 90%;
+    width: 100%;
     cursor: pointer;
+    text-align: center;
+    padding-top: 5px;
 `;
 
 export const ProductNameStyled = styled.div`
@@ -29,6 +33,7 @@ export const ProductNameStyled = styled.div`
         height: 40px;
     };
     height: 60px;
+    text-align: center;
     & > h1 {
         color: #666666;
         font-size: 16px;
@@ -46,7 +51,7 @@ export const ProductImageStyled = styled.div`
         display: block;
         margin: 0 auto;
         max-width: 100%;
-        max-height: 130px;
+        max-height: 160px;
         height: auto;
         object-fit: cover;
     }
@@ -95,5 +100,18 @@ export const ProductPriceStyled = styled.div`
     font-style: normal;
     font-weight: normal;
     line-height: 19px;
+  }
+`;
+
+export const ProductCardStyled = styled(Grid)`
+  & > a {
+    text-decoration: none;
+  }
+  margin: 0px !important;
+  border-bottom: 1px solid #e2e2e2;
+
+  :hover {
+
+
   }
 `;
