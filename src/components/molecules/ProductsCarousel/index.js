@@ -1,27 +1,34 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useEmblaCarousel } from "embla-carousel/react";
+//Tutorial em:
 //https://codesandbox.io/s/embla-carousel-arrows-dots-react-z5fbs?file=/src/js/EmblaCarousel.js:207-219
-import { DotButton, PrevButton, NextButton } from "./buttons";
+import { 
+    PrevButton, 
+    NextButton 
+} from "./buttons";
 import {
-    ProductImageStyled,
-    ProductNameStyled,
-    ProductInfoWrapper,
-    ProductPriceStyled,
-    ProductTagStyled,
+    Availability,
+    CardBrand,
+    CardImage,
+    CardName,
+    CardPrice,
+  } from "../../atoms";
+import {
+    AvailabilityTagStyled,
+    ProductCardStyled,
+    ProductContainerStyled,
     ProductWrapper,
     TitleStyled,
     Wrapper,
-  } from "./styles";
-import { 
-    Card, Grid 
-} from "@material-ui/core";
+} from "./styles";
 
 import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 const { API_URL } = publicRuntimeConfig;
 import axios from "axios";
+import Link from "next/link";
 
-const ProductsCarousel = ({type, sku, store}) => {
+const ProductsCarousel = ({type, sku}) => {
     const [viewportRef, embla] = useEmblaCarousel();
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
@@ -53,40 +60,33 @@ const ProductsCarousel = ({type, sku, store}) => {
 
     const fetchSimilarProducts = async() => {
         try{
-            const savedStore = localStorage.getItem("myStore")
-            let url = savedStore && savedStore.id ?
-                `${API_URL}/catalogs/products/similars?storeId=${savedStore.id}&sku=${sku}` :
-                `${API_URL}/catalogs/products/similars?sku=${sku}`;
+            const savedStore = JSON.parse(localStorage.getItem("myStore") || {});
+            let url = `${API_URL}/catalogs/products/similars?sku=${sku}`;
+            if(savedStore && savedStore.id)
+                url += `&storeId=${savedStore.id}`;
             let response = await axios.get(url);
             if(response.status === 200 && response.data.data.length > 0){
                 setProducts(response.data.data);
             }
+            else{
+                setProducts([]);
+            }
         }
         catch(error){
+            setProducts([]);
         }
     }
 
     useEffect(() => {
-        if(type && sku){
-            switch(type){
-                case "similars":
-                    fetchSimilarProducts();
-                    break;
-            }
+        if(type === "similars" && sku){
+            fetchSimilarProducts();
         }
-    }, []);
+    }, [sku]);
 
-    const openProduct = (url) => {
-        const newWindow = window.open(`https://www.geracaopet.com.br/${url}`, '_blank', 'noopener,noreferrer')
-        if (newWindow) newWindow.opener = null;
-
-        if(embla) embla.reInit();
-    }
-
-    if(!products || products.length < 4) return null;
+    if(!products || products.length < 3) return null;
 
     return (
-
+        <Wrapper>
             <div className="embla">
                 <TitleStyled>
                     <h2>SEU PET TAMBÉM PODE GOSTAR</h2>
@@ -95,75 +95,39 @@ const ProductsCarousel = ({type, sku, store}) => {
                 <div className="embla__container">
                     {products.map((product) => (
                     <div className="embla__slide" key={product.sku}>
-                        <Card>
+
                         <div className="embla__slide__inner">
                             <ProductWrapper>
-                                <Grid container>
-                                    <Grid item xs={12}>
-                                        <ProductNameStyled onClick={() => openProduct(product.url)}>
-                                            <h1>{product.name}</h1>
-                                        </ProductNameStyled>
-                                    </Grid>
-                                    <Grid item xs={5}>
-                                        <ProductImageStyled onClick={() => openProduct(product.url)}>
-                                            <img src=
-                                                {`https://e220k6tgf8.execute-api.sa-east-1.amazonaws.com/v1/resize-image?img=${product.image}&size=256`} 
-                                            />
-                                        </ProductImageStyled>
-
-                                    </Grid>
-                                    <Grid item xs={7}>
-                                        <ProductInfoWrapper onClick={() => openProduct(product.url)}>
-                                            <ProductPriceStyled>
-                                                {product.bestPrice.specialPrice && (
-                                                <span className="old">
-                                                    {`de ${Intl.NumberFormat("pt-BR", {
-                                                    style: "currency",
-                                                    currency: "BRL",
-                                                    }).format(product.bestPrice.price)} por`}
-                                                </span>
-                                                )}
-                                                <span className="new">
-                                                {Intl.NumberFormat("pt-BR", {
-                                                    style: "currency",
-                                                    currency: "BRL",
-                                                }).format(product.bestPrice.specialPrice ? product.bestPrice.specialPrice : product.bestPrice.price)}
-                                                </span>
-                                                <span className="installments">
-                                                {`ou até 3x ${Intl.NumberFormat("pt-BR", {
-                                                    style: "currency",
-                                                    currency: "BRL",
-                                                }).format(product.bestPrice.specialPrice ? product.bestPrice.specialPrice / 3 : product.bestPrice.price / 3)} sem juros`}
-                                                </span>
-                                            </ProductPriceStyled>
-
-                                            {
-                                                product.bestPrice.promotion_discount ?
-                                                <ProductTagStyled>
-                                                    {product.bestPrice.promotion_discount}% OFF
-                                                </ProductTagStyled> : null
-                                            }
-
-                                            {
-                                                product.expressDeliveryAvailable ?
-                                                <ProductTagStyled>SUPER EXPRESSA</ProductTagStyled> : null
-                                            }
-                                                                                        
-                                        </ProductInfoWrapper>
-                                    </Grid>
-                                </Grid>
-
+                                <ProductCardStyled>
+                                    <ProductContainerStyled>
+                                        <Link href={`/[...page]`} as={product.url}>
+                                            <a>
+                                            <CardImage image={product.image} name={product.name} />
+                                            <CardName name={product.name} />
+                                            {product?.brand?.label && <CardBrand brand={product.brand.label} />}
+                                                <CardPrice
+                                                price={product.bestPrice.price}
+                                                specialPrice={product.bestPrice.specialPrice}
+                                                />
+                                                <AvailabilityTagStyled>
+                                                    <Availability available={true} />
+                                                </AvailabilityTagStyled>
+                                            
+                                            </a>
+                                        </Link>
+                                    </ProductContainerStyled>
+                                </ProductCardStyled>
                             </ProductWrapper>
                         </div>
-                        </Card>
+
                     </div>
                     ))}
                 </div>
                 </div>
                 <PrevButton onClick={scrollPrev} enabled={prevBtnEnabled} />
                 <NextButton onClick={scrollNext} enabled={nextBtnEnabled} />
-            </div>
-
+            </div>            
+        </Wrapper>
         
     );
 }

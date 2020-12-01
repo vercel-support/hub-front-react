@@ -1,7 +1,12 @@
 import styled from "styled-components";
+import { Grid } from "@material-ui/core";
 
 export const Wrapper = styled.div`
     width: 100%;
+    min-height: 450px;
+    @media screen and (max-width: 1280px) {
+      min-height: 480px;
+    }
 `;
 
 export const TitleStyled = styled.div`
@@ -16,84 +21,28 @@ export const ProductWrapper = styled.div`
     width: 100%;
     height: 100%;
     background-color: #ffffff;
+    padding: 5px;
 `;
 
-export const ProductInfoWrapper = styled.div`
-    padding-left: 15px;
-    max-width: 90%;
-    cursor: pointer;
-`;
-
-export const ProductNameStyled = styled.div`
-    @media screen and (min-width: 1280px) {
-        height: 40px;
-    };
-    height: 60px;
-    & > h1 {
-        color: #666666;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: bold;
-        line-height: 30px;
-        margin-bottom: 5px;
-        margin-left: 10px;
-    }
-    cursor: pointer;
-`;
-
-export const ProductImageStyled = styled.div`
-    & > img {
-        display: block;
-        margin: 0 auto;
-        max-width: 100%;
-        max-height: 130px;
-        height: auto;
-        object-fit: cover;
-    }
-    cursor: pointer;
-`;
-
-export const ProductTagStyled = styled.span`
-    align-items: center;
-    background: #cfd601;
+export const ProductCardStyled = styled.div`
+    height: 100%;
     border-radius: 5px;
-    color: #ffffff;
-    display: inline-flex;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: normal;
-    justify-content: center;
-    line-height: 19px;
-    padding: 0 2px;
-    margin-right: 5px;
+    transition: box-shadow .3s;
+    box-shadow: 0 0 5px rgba(33,33,33,.2); 
+    :hover {
+      box-shadow: 0 0 10px rgba(33,33,33,.2);
+    }
 `;
 
-export const ProductPriceStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  min-height: 100px;
+export const ProductContainerStyled = styled(Grid)`
+  & > a {
+    text-decoration: none;
+  }
+  margin: 0px !important;
+`;
 
-  .old {
-    color: #cccccc;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 19px;
-  }
-  .new {
-    color: #2983b9;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: bold;
-    line-height: 19px;
-    margin: 2px 0;
-  }
-  .installments {
-    color: #666666;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 19px;
-  }
+export const AvailabilityTagStyled = styled.div`
+  position: absolute;
+  top: 335px;
+  left: 25%;
 `;

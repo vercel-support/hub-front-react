@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const PromotionalBarStyled = styled.div`
-    background: #303030;
+    background: #f6f6f6;
     text-align: center;
     width: 100%;
 `;
