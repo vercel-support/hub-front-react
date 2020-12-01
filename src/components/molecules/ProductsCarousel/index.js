@@ -14,14 +14,13 @@ import {
     CardPrice,
   } from "../../atoms";
 import {
+    AvailabilityTagStyled,
     ProductCardStyled,
+    ProductContainerStyled,
     ProductWrapper,
     TitleStyled,
     Wrapper,
 } from "./styles";
-import { 
-    Card 
-} from "@material-ui/core";
 
 import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
@@ -69,17 +68,20 @@ const ProductsCarousel = ({type, sku}) => {
             if(response.status === 200 && response.data.data.length > 0){
                 setProducts(response.data.data);
             }
+            else{
+                setProducts([]);
+            }
         }
         catch(error){
+            setProducts([]);
         }
     }
 
     useEffect(() => {
-        console.log(type, sku);
         if(type === "similars" && sku){
             fetchSimilarProducts();
         }
-    }, []);
+    }, [sku]);
 
     if(!products || products.length < 3) return null;
 
@@ -96,8 +98,8 @@ const ProductsCarousel = ({type, sku}) => {
 
                         <div className="embla__slide__inner">
                             <ProductWrapper>
-                                <Card style={{height: "100%"}}>
-                                    <ProductCardStyled>
+                                <ProductCardStyled>
+                                    <ProductContainerStyled>
                                         <Link href={`/[...page]`} as={product.url}>
                                             <a>
                                             <CardImage image={product.image} name={product.name} />
@@ -107,11 +109,14 @@ const ProductsCarousel = ({type, sku}) => {
                                                 price={product.bestPrice.price}
                                                 specialPrice={product.bestPrice.specialPrice}
                                                 />
-                                            <Availability available={true} />
+                                                <AvailabilityTagStyled>
+                                                    <Availability available={true} />
+                                                </AvailabilityTagStyled>
+                                            
                                             </a>
                                         </Link>
-                                    </ProductCardStyled>
-                                </Card>
+                                    </ProductContainerStyled>
+                                </ProductCardStyled>
                             </ProductWrapper>
                         </div>
 
