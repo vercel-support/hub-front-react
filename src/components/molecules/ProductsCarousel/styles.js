@@ -35,6 +35,7 @@ export const ProductCardStyled = styled.div`
 `;
 
 export const ProductContainerStyled = styled(Grid)`
+  cursor: pointer;
   & > a {
     text-decoration: none;
   }
