@@ -5,11 +5,11 @@ const images = [
   {
     imageSet: [
       {
-        srcSet: `/assets/images/ressaca-pet-friday-mobile.jpg`,
+        srcSet: `/assets/images/retirada-na-loja-natal-mobile.jpg`,
         media: "(max-width: 480px)",
       },
       {
-        srcSet: `/assets/images/ressaca-pet-friday-desktop.jpg`,
+        srcSet: `/assets/images/retirada-na-loja-natal-desktop.jpg`,
         media: "(min-width: 481px)",
       }
     ],
@@ -17,23 +17,11 @@ const images = [
   {
     imageSet: [
       {
-        srcSet: `/assets/images/retirada-na-loja-pet-friday-mobile.jpg`,
+        srcSet: `/assets/images/entrega-expressa-natal-mobile.jpg`,
         media: "(max-width: 480px)",
       },
       {
-        srcSet: `/assets/images/principal/retirada-na-loja-pet-friday-desktop.jpg`,
-        media: "(min-width: 481px)",
-      }
-    ],
-  },
-  {
-    imageSet: [
-      {
-        srcSet: `/assets/images/principal/entrega-super-expressa-black-friday-mobile.jpg`,
-        media: "(max-width: 480px)",
-      },
-      {
-        srcSet: `/assets/images/principal/entrega-super-expressa-black-friday-desktop.jpg`,
+        srcSet: `/assets/images/entrega-expressa-natal-mobile.jpg`,
         media: "(min-width: 481px)",
       }
     ],

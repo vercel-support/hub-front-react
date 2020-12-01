@@ -10,7 +10,7 @@ export default makeStyles((theme) =>
     },
     topheader: {
       alignItems: "center",
-      backgroundColor: "#333333",
+      backgroundColor: "#2983B9",
       display: "flex",
       height: "55px",
       [theme.breakpoints.up("lg")]: {
@@ -19,7 +19,7 @@ export default makeStyles((theme) =>
     },
     subheader: {
       alignItems: "center",
-      backgroundColor: "#000000",
+      backgroundColor: "#2D7AA9",
       display: "flex",
       height: "40px",
     },
