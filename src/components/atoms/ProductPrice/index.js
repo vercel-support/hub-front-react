@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import ProductPriceStyled from "./styles";
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 const ProductPrice = ({ price, specialPrice }) => {
@@ -30,11 +30,17 @@ const ProductPrice = ({ price, specialPrice }) => {
             currency: "BRL",
           }).format(specialPrice ? specialPrice / 3 : price / 3)} sem juros`}
         </span>
-        <span className="cashback"><MonetizationOnIcon style={{ color: green[500], verticalAlign: "middle" }} fontSize="small" />Ganhe <b>
-        {`${Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(specialPrice ? specialPrice * 0.05 : price * 0.05)}`}</b> de crédito p/ próxima compra</span>
+        <span className="cashback">
+          <Tooltip title="Crédito disponível em 30 dias" arrow>
+            <MonetizationOnIcon style={{ color: green[500], verticalAlign: "middle", marginRight: "5px" }} fontSize="small" />
+          </Tooltip>
+           Ganhe <b>
+            {`${Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(specialPrice ? specialPrice * 0.05 : price * 0.05)}`}
+          </b> de crédito p/ próxima compra
+        </span>
       </ProductPriceStyled>
   );
 }
