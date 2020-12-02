@@ -28,6 +28,18 @@ const ProductPriceStyled = styled.div`
     font-weight: normal;
     line-height: 19px;
   }
+
+  .cashback {
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .cashback b {
+    color: rgb(76, 175, 80);
+    font-size: 14px;
+    margin-top: 5px;
+  }
 `;
 
 export default ProductPriceStyled;

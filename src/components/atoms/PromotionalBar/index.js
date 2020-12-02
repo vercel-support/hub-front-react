@@ -7,16 +7,16 @@ const PromotionalBar = () => (
     <PromotionalBarStyled>
         <Hidden mdDown>
             <img
-                src="/assets/images/cupom-primeira-compra.png"
-                alt="Cupom Primeira Compra"
-                title="Cupom Primeira Compra"
+                src="https://products-info-public.s3.sa-east-1.amazonaws.com/banner-site/top-bar-desktop.png"
+                alt="Geração Pet - Pet Shop Promoções"
+                title="Geração Pet - Pet Shop Promoções"
             />
         </Hidden>
         <Hidden mdUp>
             <img
-                src="/assets/images/cupom-primeira-compra-mobile.png"
-                alt="Cupom Primeira Compra"
-                title="Cupom Primeira Compra"
+                src="https://products-info-public.s3.sa-east-1.amazonaws.com/banner-site/top-bar-mobile.png"
+                alt="Geração Pet - Pet Shop Promoçõespom Primeira Compra"
+                title="Geração Pet - Pet Shop Promoções"
             />
         </Hidden>
     </PromotionalBarStyled> 

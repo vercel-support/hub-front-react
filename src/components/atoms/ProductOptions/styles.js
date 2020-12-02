@@ -41,8 +41,8 @@ const ProductOptionsStyled = styled.ul`
     margin-right: 5px;
   }
 
-  .blackfriday {
-    background: #303030;
+  .tag {
+    background: #49c515;
     font-size: 10px;
     color: #fff;
     padding: 3px 5px;
