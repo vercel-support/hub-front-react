@@ -7,12 +7,16 @@ export const Wrapper = styled.div`
     @media screen and (max-width: 1280px) {
       min-height: 480px;
     }
+
+    .embla__slide {
+      padding: 0px !important;
+    }
 `;
 
 export const TitleStyled = styled.div`
     text-align: center;
     & h2 {
-        color: #cfd601;
+        color: #666666;
     }
 `;
 
@@ -27,8 +31,7 @@ export const ProductWrapper = styled.div`
 export const ProductCardStyled = styled.div`
     height: 100%;
     border-radius: 5px;
-    transition: box-shadow .3s;
-    box-shadow: 0 0 5px rgba(33,33,33,.2); 
+    border: 1px solid #e0e0e0; 
     :hover {
       box-shadow: 0 0 10px rgba(33,33,33,.2);
     }
@@ -40,10 +43,9 @@ export const ProductContainerStyled = styled(Grid)`
     text-decoration: none;
   }
   margin: 0px !important;
+  padding: 15px 0px;
 `;
 
 export const AvailabilityTagStyled = styled.div`
-  position: absolute;
-  top: 335px;
-  left: 25%;
+    margin-top: 10px;
 `;

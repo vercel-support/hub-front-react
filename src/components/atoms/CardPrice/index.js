@@ -7,7 +7,7 @@ const CardPrice = ({ price, specialPrice }) => (
     <span>
       {!specialPrice ? "a partir" : `de ${numberToPrice(price)} por`}
     </span>
-    <p>{!specialPrice ? `${numberToPrice(price)}` : `de ${numberToPrice(specialPrice)} por`} </p>
+    <p>{!specialPrice ? `${numberToPrice(price)}` : `${numberToPrice(specialPrice)}`} </p>
   </CardPriceStyled>
 );
 
