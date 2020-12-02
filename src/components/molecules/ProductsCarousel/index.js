@@ -93,7 +93,7 @@ const ProductsCarousel = ({type, sku}) => {
         <Wrapper>
             <div className="embla">
                 <TitleStyled>
-                    <h2>SEU PET TAMBÉM PODE GOSTAR</h2>
+                    <h2>Seu Pet também pode gostar</h2>
                 </TitleStyled>
                 <div className="embla__viewport" ref={viewportRef}>
                 <div className="embla__container">
