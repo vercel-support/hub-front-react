@@ -31,4 +31,11 @@ export const ColumnShippingStyles = styled.div`
   .MuiRadio-colorSecondary.Mui-checked {
     color: #cfd601;
   }
+
+  .error {
+    background: #fc6151;
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+  }
 `;

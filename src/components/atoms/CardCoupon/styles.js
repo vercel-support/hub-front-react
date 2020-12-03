@@ -48,11 +48,11 @@ export const CouponIcon = styled.div`
 `;
 
 export const InputStyled = styled.input`
-    font-size: 14px;
-    border: 3px solid #dedede;
+    font-size: 16px;
+    border: 1px solid #dedede;
     border-radius: 5px;
     width: 100%;
-    height: 40px;
+    height: 42px;
 `;
 
 export const ApplyButtonStyled = styled.button`

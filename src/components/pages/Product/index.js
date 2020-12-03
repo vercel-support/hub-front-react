@@ -7,13 +7,15 @@ import {
   ProductOptions,
   ProductPrice,
   PromotionalBar,
-  // ProductRating,
+  ProductRating,
+  ProductReview
 } from "../../atoms";
-import { Breadcrumbs, Gallery, ProductShipping } from "../../molecules";
+import { Breadcrumbs, Gallery, ProductShipping, ProductsCarousel } from "../../molecules";
 import { OneColumn } from "../../templates";
 import ProductStyled, {
   ProductContainerStyled,
   ProductContentStyled,
+  SimilarProductsContainer,
 } from "./styles";
 
 import { productPageView } from '../../../../lib/ga';
@@ -36,6 +38,7 @@ const Product = ({ content }) => {
     type,
     description,
     specifications = [],
+    magentoId,
   } = content.data;
   const [product, setProduct] = useState(null);
   const brand = specifications.filter(
@@ -76,6 +79,7 @@ const Product = ({ content }) => {
     if(lsStore){
       setSavedStore(JSON.parse(lsStore));
     }
+    console.log(magentoId);
   }, []);
 
   useEffect(() => {
@@ -110,8 +114,8 @@ const Product = ({ content }) => {
           <Container>
             <ProductName name={name} />
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              {/*<ProductRating />*/}
               <ProductBrand brand={brand} />
+              <ProductRating />
             </div>
             { product ? 
               <ProductContentStyled>
@@ -131,9 +135,13 @@ const Product = ({ content }) => {
           </Container>
         </ProductContainerStyled>
       </ProductStyled>
+      
+      <ProductsCarousel type="similars" sku={sku}/>
+
       <Container>
         {/* <ProductDescription description={description} /> */}
-        <div id="yv-reviews"></div>
+        { magentoId ? <ProductReview id={magentoId}/> : null}
+        
       </Container>
       <ProductSchema content={content.data}/>
     </OneColumn>

@@ -229,7 +229,7 @@ const PaymentForm = ({updateCart}) => {
               id="transaction_amount"
               value={cartTotalAmount || 0}
             />
-            <Grid xs={6} sm={6}>
+            <Grid xs={12} sm={6}>
               <label for="cardNumber">Número do cartão</label>
               <input
                 type="text"
@@ -246,15 +246,15 @@ const PaymentForm = ({updateCart}) => {
                 autocomplete={"off"}
               />
             </Grid>
-            <Grid xs={6} sm={6}>
-              <label for="cardholderName">Nome e sobrenome</label>
+            <Grid xs={12} sm={6}>
+              <label for="cardholderName">Nome Impresso no Cartão</label>
               <input
                 type="text"
                 id="cardholderName"
                 data-checkout="cardholderName"
               />
             </Grid>
-            <Grid xs={4} sm={4}>
+            <Grid xs={6} sm={4}>
               <label for="cardExpirationMonth">Mês de vencimento</label>
               <input
                 type="text"
@@ -272,7 +272,7 @@ const PaymentForm = ({updateCart}) => {
                 placeholder="mm"
               />
             </Grid>
-            <Grid xs={4} sm={4}>
+            <Grid xs={6} sm={4}>
               <label for="cardExpirationYear">Ano de vencimento</label>
               <input
                 type="text"
@@ -290,7 +290,7 @@ const PaymentForm = ({updateCart}) => {
                 placeholder="aa"
               />
             </Grid>
-            <Grid xs={4} sm={4}>
+            <Grid xs={12} sm={4}>
               <label for="securityCode">Código de segurança</label>
               <input
                 type="text"

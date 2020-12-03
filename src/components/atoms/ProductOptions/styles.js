@@ -41,6 +41,15 @@ const ProductOptionsStyled = styled.ul`
     margin-right: 5px;
   }
 
+  .tag {
+    background: #49c515;
+    font-size: 10px;
+    color: #fff;
+    padding: 3px 5px;
+    border-radius: 5px;
+    margin-right: 15px;
+  }
+
   .MuiIconButton-colorSecondary {
     padding-left: 0;
   }

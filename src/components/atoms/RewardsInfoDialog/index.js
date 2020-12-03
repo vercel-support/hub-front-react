@@ -1,42 +1,29 @@
   
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Grid,
-  CircularProgress,
   List,
   ListItem,
   ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  MenuList,
-  MenuItem,
-  Menu,
   Tab,
   Tabs,
   Typography,
   useMediaQuery
 } from '@material-ui/core';
 
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
 import HelpIcon from '@material-ui/icons/Help';
 import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-import ThumbDown from '@material-ui/icons/ThumbDown';
-import ThumbUp from '@material-ui/icons/ThumbUp';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import TripOriginIcon from '@material-ui/icons/TripOrigin';
 
 import { useTheme } from '@material-ui/core/styles';
@@ -109,6 +96,9 @@ const useStyles = makeStyles((theme) => ({
   titleContainer: {
     backgroundColor: '#2983B9',
     color: '#ffffff'
+  },
+  agreeButton: {
+    textAlign: 'left'
   }
 }));
 
@@ -118,10 +108,6 @@ const RewardsInfoDialog = ({data, handleCloseAbout}) => {
   const [ open, setOpen ] = useState(true);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
-  useEffect(() => {
-    console.log(data);
-  }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -246,9 +232,14 @@ const RewardsInfoDialog = ({data, handleCloseAbout}) => {
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Entendi
-          </Button>
+          <Grid container>
+            <Grid xs={12}>
+            <Button onClick={handleClose} color="primary">
+              Entendi
+            </Button>
+            </Grid>
+          </Grid>
+
         </DialogActions>
     </Dialog>
   );

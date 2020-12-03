@@ -27,4 +27,9 @@ const ProductStyled = styled.div`
   }
 `;
 
+export const SimilarProductsContainer = styled.div`
+  width: 100%;
+  min-height: 500px;
+`;
+
 export default ProductStyled;

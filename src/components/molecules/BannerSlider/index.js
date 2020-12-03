@@ -5,39 +5,51 @@ const images = [
   {
     imageSet: [
       {
-        srcSet: `/assets/images/principal/doacao-refeicao-pet-shop-online-mobile.jpg`,
-        media: "(max-width: 1280px)",
+        srcSet: `https://products-info-public.s3.sa-east-1.amazonaws.com/banner-site/1-banner-mobile.jpg`,
+        media: "(max-width: 480px)",
+        originalAlt: "Geração Pet - Pet Shop Onlin",
+        originalTitle: "Geração Pet - Pet Shop Online"
       },
       {
-        srcSet: `/assets/images/principal/doacao-refeicao-pet-shop-online.jpg`,
-        media: "(min-width: 1280px)",
+        srcSet: `https://products-info-public.s3.sa-east-1.amazonaws.com/banner-site/1-banner-desktop.jpg`,
+        media: "(min-width: 481px)",
+        originalAlt: "Geração Pet - Pet Shop Online",
+        originalTitle: "Geração Pet - Pet Shop Online"
       }
     ],
   },
   {
     imageSet: [
       {
-        srcSet: `/assets/images/principal/promocao-royal-canin-filhotes-rede-mobile.jpg`,
-        media: "(max-width: 1280px)",
+        srcSet: `https://products-info-public.s3.sa-east-1.amazonaws.com/banner-site/2-banner-mobile.jpg`,
+        media: "(max-width: 480px)",
+        originalAlt: "Geração Pet - Promoções",
+        originalTitle: "Geração Pet - Promoções"
       },
       {
-        srcSet: `/assets/images/principal/promocao-royal-canin-filhotes-rede-desktop.jpg`,
-        media: "(min-width: 1280px)",
+        srcSet: `https://products-info-public.s3.sa-east-1.amazonaws.com/banner-site/2-banner-desktop.jpg`,
+        media: "(min-width: 481px)",
+        originalAlt: "Geração Pet - Promoções",
+        originalTitle: "Geração Pet - Promoções"
       }
     ],
   },
   {
     imageSet: [
       {
-        srcSet: `/assets/images/principal/entrega-super-expressa-mobile.jpg`,
-        media: "(max-width: 1280px)",
+        srcSet: `https://products-info-public.s3.sa-east-1.amazonaws.com/banner-site/3-banner-mobile.jpg`,
+        media: "(max-width: 480px)",
+        originalAlt: "Geração Pet - Entrega Rápida",
+        originalTitle: "Geração Pet - Entrega Rápida"
       },
       {
-        srcSet: `/assets/images/principal/entrega-super-expressa-desktop.jpg`,
-        media: "(min-width: 1280px)",
+        srcSet: `https://products-info-public.s3.sa-east-1.amazonaws.com/banner-site/3-banner-desktop.jpg`,
+        media: "(min-width: 481px)",
+        originalAlt: "Geração Pet - Entrega Rápida",
+        originalTitle: "Geração Pet - Entrega Rápida"
       }
     ],
-  },
+  }
 ];
 
 // const BannerSlider = ({ images }) => (

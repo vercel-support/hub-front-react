@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const ProductDiscountStyled = styled.span`
   align-items: center;
-  background: #f8390f;
+  background: #49c515;
   border-radius: 5px;
   color: #ffffff;
   display: inline-flex;

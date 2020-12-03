@@ -23,6 +23,7 @@ export { default as PaymentMethods } from "./PaymentMethods";
 export { default as ProductCard } from "./ProductCard";
 export { default as ProductShipping } from "./ProductShipping";
 export { default as ProductCart } from "./ProductCart";
+export { default as ProductsCarousel } from "./ProductsCarousel";
 export { default as RegisterForm } from "./RegisterForm";
 export { default as ResumeForm } from "./ResumeForm";
 export { default as Review } from "./Review";
