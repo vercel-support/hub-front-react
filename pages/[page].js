@@ -2,6 +2,9 @@ import React from "react";
 import Head from "next/head";
 import { requestCategories, requestCategoriesPagePath, requestProductsPagePath, requestRedirect } from "../src/services";
 import routes from "../src/utils/switchComponentes";
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+const { CACHE_PAGES } = publicRuntimeConfig;
 
 const Pages = ({ content }) => {
   if(!content || !content.data)
@@ -30,15 +33,20 @@ const Pages = ({ content }) => {
 };
 
 export const getStaticPaths = async() => {
-    let productsPath = await requestProductsPagePath();
-    let categoriesPath = await requestCategoriesPagePath();
-    let paths = productsPath.map((path) => ({
-        params: { page: path },
-    }));
-    paths = paths.concat(categoriesPath.map((path) => ({
-        params: { page: path },
-    })));
-
+    console.log(CACHE_PAGES);
+    let paths = [];
+    if(CACHE_PAGES == 'true'){
+      console.log("fetching pages");
+/*       let productsPath = await requestProductsPagePath();
+      let categoriesPath = await requestCategoriesPagePath();
+      let paths = productsPath.map((path) => ({
+          params: { page: path },
+      }));
+      paths = paths.concat(categoriesPath.map((path) => ({
+          params: { page: path },
+      }))); */
+      paths = [{ params: { page: "racao-biofresh-para-caes-adultos-racas-pequenas-e-mini-sabor-frango" } }];
+    }
     return { paths, fallback: false }
 };
 
