@@ -8,7 +8,17 @@ const Pages = ({ content }) => {
 
   return (
     <>
-        teste
+      <Head>
+        <title>{content.data.metaTitle}</title>
+        <meta property="og:title" content={content.data.metaTitle} />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content={content.data.metaDescription} />
+        <meta
+          property="og:description"
+          content={content.data.metaDescription}
+        />
+      </Head>
+      <Page content={content} />
     </>
   );
 };
@@ -24,7 +34,6 @@ export const getStaticPaths = async() => {
 
 export const getStaticProps = async ({ params }) => {
   const url = params.page;
-  console.log(url);
   const { data: route } = await requestRedirect(url);
   const response = await requestCategories();
 
