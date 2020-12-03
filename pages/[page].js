@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import { requestCategories, requestProductsPagePath, requestRedirect } from "../src/services";
+import { requestCategories, requestCategoriesPagePath, requestProductsPagePath, requestRedirect } from "../src/services";
 import routes from "../src/utils/switchComponentes";
 
 const Pages = ({ content }) => {
@@ -18,17 +18,22 @@ const Pages = ({ content }) => {
           content={content.data.metaDescription}
         />
       </Head>
+      Página gerada estaticamente
       <Page content={content} />
     </>
   );
 };
 
 export const getStaticPaths = async() => {
-    const productsPath = await requestProductsPagePath();
-    const paths = productsPath.map((path) => ({
+    let productsPath = await requestProductsPagePath();
+    let categoriesPath = await requestCategoriesPagePath();
+    let paths = productsPath.map((path) => ({
         params: { page: path },
     }));
-    console.log(paths);
+    paths = paths.concat(categoriesPath.map((path) => ({
+        params: { page: path },
+    })));
+
     return { paths, fallback: false }
 };
 

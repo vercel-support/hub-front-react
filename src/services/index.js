@@ -4,15 +4,14 @@ import axios from "axios";
 const { publicRuntimeConfig } = getConfig();
 const { API_URL } = publicRuntimeConfig;
 
-export const requestProductsPagePath = async() => {
+export const requestCategoriesPagePath = async() => {
   let page = 0;
-  let per_page = 1;
+  let per_page = 10;
   let paths = [];
   let curr_paths = [];
   do {
     try{
-      const url = `${API_URL}/catalogs/products/paths?page=${page}&perpage=${per_page}`;
-      console.log(url);
+      const url = `${API_URL}/catalogs/categories/paths?page=${page}&perpage=${per_page}`;
       const response = await axios.get(url);
       curr_paths = response.data.data;
       curr_paths.map(p => {
@@ -23,7 +22,29 @@ export const requestProductsPagePath = async() => {
     catch(error){
       console.log(error.response || error.message);
     }
-  } while(curr_paths && curr_paths.length > 0 && page < 1);
+  } while(curr_paths && curr_paths.length > 0 && page < 10);
+  return paths;
+}
+
+export const requestProductsPagePath = async() => {
+  let page = 0;
+  let per_page = 100;
+  let paths = [];
+  let curr_paths = [];
+  do {
+    try{
+      const url = `${API_URL}/catalogs/products/paths?page=${page}&perpage=${per_page}`;
+      const response = await axios.get(url);
+      curr_paths = response.data.data;
+      curr_paths.map(p => {
+        paths.push(p);
+      })
+      page += per_page;
+    }
+    catch(error){
+      console.log(error.response || error.message);
+    }
+  } while(curr_paths && curr_paths.length > 0 && page < 100);
   return paths;
 }
 
