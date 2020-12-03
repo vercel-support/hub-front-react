@@ -9,6 +9,7 @@ module.exports = {
     ALGOLIA_APP_KEY: process.env.ALGOLIA_APP_KEY,
     ALGOLIA_ACCESS_KEY: process.env.ALGOLIA_ACCESS_KEY,
     MERCADOPAGO_KEY: process.env.MERCADOPAGO_KEY,
-    GTM_ID: process.env.GTM_ID
+    GTM_ID: process.env.GTM_ID,
+    CACHE_PAGES: process.env.CACHE_PAGES || null
   },
 };
