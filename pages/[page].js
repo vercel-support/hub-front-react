@@ -4,6 +4,12 @@ import { requestCategories, requestCategoriesPagePath, requestProductsPagePath, 
 import routes from "../src/utils/switchComponentes";
 
 const Pages = ({ content }) => {
+  if(!content && !content.data)
+    return (
+      <>
+        Página não encontrada
+      </>
+    );
   const Page = routes[content.data.pageType];
 
   return (
@@ -37,13 +43,21 @@ export const getStaticPaths = async() => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const url = params.page;
-  const { data: route } = await requestRedirect(url);
-  const response = await requestCategories();
+  try{
+    const url = params.page;
+    const { data: route } = await requestRedirect(url);
+    const response = await requestCategories();
+  
+    return {
+      props: { content: { data: { ...route.data, categories: response.data, url} } },
+    };
+  }
+  catch(error){
+    return {
+      props: {}
+    };
+  }
 
-  return {
-    props: { content: { data: { ...route.data, categories: response.data, url} } },
-  };
 };
 
 export default Pages;
