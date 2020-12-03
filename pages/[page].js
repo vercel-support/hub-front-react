@@ -4,7 +4,7 @@ import { requestCategories, requestCategoriesPagePath, requestProductsPagePath, 
 import routes from "../src/utils/switchComponentes";
 
 const Pages = ({ content }) => {
-  if(!content && !content.data)
+  if(!content || !content.data)
     return (
       <>
         Página não encontrada
