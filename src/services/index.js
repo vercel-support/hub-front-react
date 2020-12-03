@@ -4,6 +4,50 @@ import axios from "axios";
 const { publicRuntimeConfig } = getConfig();
 const { API_URL } = publicRuntimeConfig;
 
+export const requestCategoriesPagePath = async() => {
+  let page = 0;
+  let per_page = 500;
+  let paths = [];
+  let curr_paths = [];
+  do {
+    try{
+      const url = `${API_URL}/catalogs/categories/paths?page=${page}&perpage=${per_page}`;
+      const response = await axios.get(url);
+      curr_paths = response.data.data;
+      curr_paths.map(p => {
+        paths.push(p);
+      })
+      page += per_page;
+    }
+    catch(error){
+      console.log(error.response || error.message);
+    }
+  } while(curr_paths && curr_paths.length > 0);
+  return paths;
+}
+
+export const requestProductsPagePath = async() => {
+  let page = 0;
+  let per_page = 500;
+  let paths = [];
+  let curr_paths = [];
+  do {
+    try{
+      const url = `${API_URL}/catalogs/products/paths?page=${page}&perpage=${per_page}`;
+      const response = await axios.get(url);
+      curr_paths = response.data.data;
+      curr_paths.map(p => {
+        paths.push(p);
+      })
+      page += per_page;
+    }
+    catch(error){
+      console.log(error.response || error.message);
+    }
+  } while(curr_paths && curr_paths.length > 0);
+  return paths;
+}
+
 export const requestCart = async (params = {}) => {
   const response = await axios.post(`${API_URL}/cart`, {
     ...params,
@@ -26,6 +70,13 @@ export const requestShipping = async (params = {}) => {
   return response;
 };
 
+export const requestProduct = async(url) => {
+  const response = await axios.get(
+    `${API_URL}/catalogs/products?url=${url}`
+  );
+  return response;
+};
+
 export const requestCategories = async () => {
   const response = await axios.get(
     `${API_URL}/catalogs/categories`
@@ -39,13 +90,20 @@ export const requestGetStore = async (params = {}) => {
 };
 
 export const requestRedirect = async (url) => {
-  const response = await axios.get(
-    `${API_URL}/catalogs/redirect`,
-    {
-      params: { url },
-    }
-  );
-  return response;
+  try{
+    const response = await axios.get(
+      `${API_URL}/catalogs/redirect`,
+      {
+        params: { url },
+      }
+    );
+    return response;
+  }
+  catch(error){
+    console.log(error.response);
+    return null;
+  }
+
 };
 
 export const requestSearch = async (param = {}) => {

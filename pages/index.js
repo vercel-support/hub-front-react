@@ -22,7 +22,7 @@ const Pages = ({ content }) => (
   </React.Fragment>
 );
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const response = await requestCategories();
 
   return {
