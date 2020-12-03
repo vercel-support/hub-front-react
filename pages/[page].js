@@ -18,7 +18,6 @@ const Pages = ({ content }) => {
           content={content.data.metaDescription}
         />
       </Head>
-      Página gerada estaticamente
       <Page content={content} />
     </>
   );

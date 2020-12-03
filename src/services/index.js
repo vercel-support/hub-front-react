@@ -6,7 +6,7 @@ const { API_URL } = publicRuntimeConfig;
 
 export const requestCategoriesPagePath = async() => {
   let page = 0;
-  let per_page = 10;
+  let per_page = 500;
   let paths = [];
   let curr_paths = [];
   do {
@@ -22,13 +22,13 @@ export const requestCategoriesPagePath = async() => {
     catch(error){
       console.log(error.response || error.message);
     }
-  } while(curr_paths && curr_paths.length > 0 && page < 10);
+  } while(curr_paths && curr_paths.length > 0);
   return paths;
 }
 
 export const requestProductsPagePath = async() => {
   let page = 0;
-  let per_page = 100;
+  let per_page = 500;
   let paths = [];
   let curr_paths = [];
   do {
@@ -44,7 +44,7 @@ export const requestProductsPagePath = async() => {
     catch(error){
       console.log(error.response || error.message);
     }
-  } while(curr_paths && curr_paths.length > 0 && page < 100);
+  } while(curr_paths && curr_paths.length > 0);
   return paths;
 }
 
