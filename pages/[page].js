@@ -4,7 +4,7 @@ import { requestCategories, requestProductsPagePath, requestRedirect } from "../
 import routes from "../src/utils/switchComponentes";
 
 const Pages = ({ content }) => {
-  //const Page = routes[content.data.pageType];
+  const Page = routes[content.data.pageType];
 
   return (
     <>
@@ -19,7 +19,7 @@ export const getStaticPaths = async() => {
         params: { page: path },
     }));
     console.log(paths);
-    return { paths, fallback: true }
+    return { paths, fallback: false }
 };
 
 export const getStaticProps = async ({ params }) => {
