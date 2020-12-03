@@ -35,7 +35,6 @@ const Pages = ({ content }) => {
 export const getStaticPaths = async() => {
     let paths = [];
     if(CACHE_PAGES == 'true'){
-      console.log("fetching pages");
       let productsPath = await requestProductsPagePath();
       let categoriesPath = await requestCategoriesPagePath();
       let paths = productsPath.map((path) => ({
