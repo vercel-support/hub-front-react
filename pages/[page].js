@@ -33,19 +33,17 @@ const Pages = ({ content }) => {
 };
 
 export const getStaticPaths = async() => {
-    console.log(CACHE_PAGES);
     let paths = [];
     if(CACHE_PAGES == 'true'){
-      console.log("fetching pages");
-/*       let productsPath = await requestProductsPagePath();
+      let productsPath = await requestProductsPagePath();
       let categoriesPath = await requestCategoriesPagePath();
-      let paths = productsPath.map((path) => ({
+      paths = productsPath.map((path) => ({
           params: { page: path },
       }));
       paths = paths.concat(categoriesPath.map((path) => ({
           params: { page: path },
-      }))); */
-      paths = [{ params: { page: "racao-biofresh-para-caes-adultos-racas-pequenas-e-mini-sabor-frango" } }];
+      })));
+      //paths = [{ params: { page: "racao-biofresh-para-caes-adultos-racas-pequenas-e-mini-sabor-frango" } }];
     }
     return { paths, fallback: false }
 };
