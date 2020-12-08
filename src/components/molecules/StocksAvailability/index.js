@@ -15,6 +15,7 @@ import { Drawer } from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
 import { store } from "../../../store";
 const API_URL = process.env.API_URL;
+const FRONTEND_URL = process.env.FRONTEND_URL;
 import axios from "axios";
 
 const formatAddress = (address) => {
@@ -38,7 +39,6 @@ const StocksAvailability = ({product, savedStore}) => {
             if(postalCode){
                 url = `${url}&postalCode=${postalCode}`;
             }
-            console.log(url);
             let serviceResponse = await axios.get(url);
             if(serviceResponse.status === 200){
                 setStores(serviceResponse.data.data || []);
@@ -47,7 +47,6 @@ const StocksAvailability = ({product, savedStore}) => {
             dispatch({ type: "LOADING_DATA", payload: false });  
         }
         catch(error){
-            console.log(error.message);
             setStores([]);
             dispatch({ type: "LOADING_DATA", payload: false });
         }
@@ -67,6 +66,10 @@ const StocksAvailability = ({product, savedStore}) => {
             fetchStores(savedPostalCode);
         }
     }, [open]);
+
+    const handleStoreClick = (url) => {
+        window.location = `${FRONTEND_URL}/${url}`
+    }
 
     if(open)
         return (
@@ -93,7 +96,7 @@ const StocksAvailability = ({product, savedStore}) => {
                     {stores && stores.length > 0 ? 
                         <ListStoreStyled>
                             {stores.map((store) => (
-                                <ItemStoreStyled>
+                                <ItemStoreStyled onClick={() => {handleStoreClick(store.redirectURL)}}>
                                     <h4>{store.storeName}</h4>
                                     {
                                         store.storeDistance && 
