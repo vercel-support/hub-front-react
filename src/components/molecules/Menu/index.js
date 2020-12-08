@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import MenuStyled from "./styles";
-import getConfig from "next/config";
-const { publicRuntimeConfig } = getConfig();
-const { FRONTEND_URL } = publicRuntimeConfig;
+/* import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig(); */
+const FRONTEND_URL = process.env.FRONTEND_URL; 
 
 const MenuSecond = ({ items }) => (
     <ul>

@@ -4,9 +4,10 @@ import { useForm } from "react-hook-form";
 import { Grid, Typography } from "@material-ui/core";
 import { AddressFormStyles, TitleStyles, EmailStyles } from "./styles";
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 import axios from "axios";
 
 const IdentificationForm = ({ setEmailIdentification }) => {

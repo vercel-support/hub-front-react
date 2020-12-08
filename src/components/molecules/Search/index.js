@@ -15,13 +15,17 @@ import {
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 
-import getConfig from "next/config";
+/* import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 const {
   FRONTEND_URL,
   ALGOLIA_APP_KEY,
   ALGOLIA_ACCESS_KEY,
-} = publicRuntimeConfig;
+} = publicRuntimeConfig; */
+
+const FRONTEND_URL = process.env.FRONTEND_URL;
+const ALGOLIA_APP_KEY = process.env.ALGOLIA_APP_KEY;
+const ALGOLIA_ACCESS_KEY = process.env.ALGOLIA_ACCESS_KEY;
 
 const algoliaSearch = require("algoliasearch");
 const algoliaClient = algoliaSearch(ALGOLIA_APP_KEY, ALGOLIA_ACCESS_KEY);

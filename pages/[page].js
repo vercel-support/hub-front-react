@@ -2,9 +2,10 @@ import React from "react";
 import Head from "next/head";
 import { requestCategories, requestCategoriesPagePath, requestProductsPagePath, requestRedirect } from "../src/services";
 import routes from "../src/utils/switchComponentes";
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { CACHE_PAGES } = publicRuntimeConfig;
+const { CACHE_PAGES } = publicRuntimeConfig; */
+const CACHE_PAGES = process.env.CACHE_PAGES;
 
 const Pages = ({ content }) => {
   if(!content || !content.data)
