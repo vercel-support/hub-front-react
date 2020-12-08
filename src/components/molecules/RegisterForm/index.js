@@ -13,9 +13,10 @@ import {
 import { Alert } from "@material-ui/lab";
 import { AddressFormStyles, TitleStyles } from "./styles";
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 import axios from "axios";
 
 const RegisterForm = ({handleNext, emailIdentification}) => {

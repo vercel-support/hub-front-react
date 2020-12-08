@@ -12,9 +12,10 @@ import { Login, Steppers, Success } from "../../organisms";
 import { Footer, HeaderClen } from "../../organisms";
 import { checkoutPageView } from '../../../../lib/ga';
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 import axios from "axios";
 
 const steps = ["Identificação", "Endereço", "Pagamento"];

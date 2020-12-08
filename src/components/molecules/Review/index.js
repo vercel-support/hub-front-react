@@ -7,9 +7,10 @@ import Shipping from "../Shipping";
 import { Grid, Hidden, Paper } from "@material-ui/core";
 import { ReviewStyles, TitleStyles } from "./styles";
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 import axios from "axios";
 
 const Review = ({ handleNext }) => {

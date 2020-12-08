@@ -29,4 +29,5 @@ export { default as ResumeForm } from "./ResumeForm";
 export { default as Review } from "./Review";
 export { default as Search } from "./Search";
 export { default as Shipping } from "./Shipping";
+export { default as StocksAvailability } from "./StocksAvailability";
 export { default as ValidationAddress } from "./ValidationAddress";

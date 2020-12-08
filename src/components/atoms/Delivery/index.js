@@ -40,10 +40,10 @@ const Delivery = ({ icon, end, setCep }) => {
             onClick={() => setOpenForm(!openForm)}
             secondary="(alterar cep)"
           >
-            Entregar no <span>{end}</span>
+            Entregar no cep <span>{end}</span>
           </ListItemText>
         </ListItem>
-        {openForm && (
+        {openForm || !end ? (
           <ListItem>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Input
@@ -57,7 +57,7 @@ const Delivery = ({ icon, end, setCep }) => {
               <button type="submit">Alterar</button>
             </form>
           </ListItem>
-        )}
+        ) : null}
       </List>
     </DeliveryStyles>
   );

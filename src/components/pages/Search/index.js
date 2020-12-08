@@ -11,9 +11,10 @@ import { ListProducts } from "../../organisms";
 import { TwoColumns } from "../../templates";
 import { categoryPageView } from "../../../../lib/ga";
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 import axios from "axios";
 
 const Search = ({ content }) => {

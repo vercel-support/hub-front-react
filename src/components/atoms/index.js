@@ -31,5 +31,6 @@ export { default as ProductReview } from "./ProductReview";
 export { default as PromotionalBar } from "./PromotionalBar";
 export { default as RewardsBar } from "./RewardsBar";
 export { default as RewardsInfoDialog } from "./RewardsInfoDialog";
+export { default as StoreMap } from "./StoreMap";
 export { default as Title } from "./Title";
 export { default as SubTitle } from "./SubTitle";

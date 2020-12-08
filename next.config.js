@@ -3,7 +3,7 @@ const hasPort =
 const PORT = !hasPort ? process.env.API_PORT : process.argv[hasPort + 1];
 
 module.exports = {
-  publicRuntimeConfig: {
+  env: {
     API_URL: process.env.API_PORT ? `${process.env.API_HOST}:${PORT}/${process.env.API_BASE}` : `${process.env.API_HOST}/${process.env.API_BASE}`,
     FRONTEND_URL: process.env.FRONTEND_URL,
     ALGOLIA_APP_KEY: process.env.ALGOLIA_APP_KEY,

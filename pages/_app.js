@@ -9,9 +9,10 @@ import {
 import "react-image-gallery/styles/css/image-gallery.css";
 import "../src/utils/embla.css";
 
-import getConfig from "next/config";
+/* import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { GTM_ID } = publicRuntimeConfig;
+const { GTM_ID } = publicRuntimeConfig; */
+const GTM_ID = process.env.GTM_ID;
 import TagManager from 'react-gtm-module';
 const tagManagerArgs = { gtmId: GTM_ID };
 
