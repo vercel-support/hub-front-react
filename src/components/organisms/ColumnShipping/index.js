@@ -8,9 +8,10 @@ import { Shipping } from "../../molecules";
 import { Paper, Button, Hidden } from "@material-ui/core";
 import { ShoppingBasket, LocationOn } from "@material-ui/icons";
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 import axios from "axios";
 
 const ColumnShipping = ({ shipping, cartSubTotal, selectedShippingMethod, handleSelectedShipping, shippingType, end, setCep, pickupStore }) => {

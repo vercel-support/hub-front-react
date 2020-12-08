@@ -6,9 +6,12 @@ import { regex } from '../../../utils/regex';
 import { PaymentFormStyles, TitleStyles } from "./styles";
 import { CardCoupon } from "../../atoms";
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL, MERCADOPAGO_KEY } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
+const MERCADOPAGO_KEY = process.env.MERCADOPAGO_KEY;
+//const { API_URL, MERCADOPAGO_KEY } = publicRuntimeConfig;
 import axios from "axios";
 
 const PaymentForm = ({updateCart}) => {

@@ -10,9 +10,10 @@ import { AddressFormStyles, TitleStyles } from "./styles";
 
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 
 const AddressForm = () => {
   const { register, handleSubmit, watch, errors } = useForm();

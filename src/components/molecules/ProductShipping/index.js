@@ -12,11 +12,13 @@ import ProductShippingStyled, {
   ShippingCardStyled,
   WithdrawStyled,
 } from "./styles";
+import { StocksAvailability } from "../../molecules";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 import axios from "axios";
 import { addToCart as gaAddToCart } from "../../../../lib/ga";
 
@@ -415,10 +417,11 @@ const ShippingCard = ({ product, updatePrices }) => {
   );
 };
 
-const ProductShipping = ({ product, updatePrices }) => (
+const ProductShipping = ({ product, updatePrices, savedStore }) => (
   <ProductShippingStyled>
     <Withdraw product={product} />
     <ShippingCard product={product} updatePrices={updatePrices} />
+    <StocksAvailability product={product} savedStore={savedStore}/>
   </ProductShippingStyled>
 );
 

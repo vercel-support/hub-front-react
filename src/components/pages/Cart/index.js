@@ -7,9 +7,10 @@ import { OneColumn } from "../../templates";
 import { LocationOn } from "@material-ui/icons";
 import { Grid, Hidden, Paper } from "@material-ui/core";
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 import axios from "axios";
 
 const getShippingMethod = () => {

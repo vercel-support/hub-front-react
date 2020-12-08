@@ -1,8 +1,10 @@
 import getConfig from "next/config";
 import axios from "axios";
 
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 
 export const requestCategoriesPagePath = async() => {
   let page = 0;

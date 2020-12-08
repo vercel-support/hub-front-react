@@ -10,20 +10,25 @@ import {
   ProductRating,
   ProductReview
 } from "../../atoms";
-import { Breadcrumbs, Gallery, ProductShipping, ProductsCarousel } from "../../molecules";
+import { 
+  Breadcrumbs, 
+  Gallery, 
+  ProductShipping, 
+  ProductsCarousel,
+} from "../../molecules";
 import { OneColumn } from "../../templates";
 import ProductStyled, {
   ProductContainerStyled,
   ProductContentStyled,
-  SimilarProductsContainer,
 } from "./styles";
 
 import { productPageView } from '../../../../lib/ga';
 import { ProductSchema } from '../../../../lib/schemas';
 
-import getConfig from "next/config";
+/*import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
-const { API_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig; */
+const API_URL = process.env.API_URL;
 import axios from "axios";
 
 import { store } from "../../../store";
@@ -129,7 +134,8 @@ const Product = ({ content }) => {
                     <ProductOptions change={handleVariationChange} options={children} />
                   )}
                 </div>
-                <ProductShipping product={product} updatePrices={updatePrices} />
+                <ProductShipping product={product} updatePrices={updatePrices} savedStore={savedStore}/>
+
               </ProductContentStyled> : null
             }
           </Container>
