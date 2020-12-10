@@ -1,12 +1,18 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import { FirstLine, SecondLine } from "./styles";
+import { FirstLine, SecondLine, ContentSeo } from "./styles";
 import { Copyright, LogoFooter } from "../../atoms";
-import { FooterLinks, PaymentMethods } from "../../molecules";
+import { FooterLinks, PaymentMethods, ContentFooter } from "../../molecules";
 
 const Footer = () => (
   <footer>
+    <ContentSeo>
+      <Container>
+        <ContentFooter />
+      </Container>
+    </ContentSeo>
+
     <FirstLine>
       <Container>
         <Grid container>

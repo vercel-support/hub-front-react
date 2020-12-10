@@ -11,11 +11,11 @@ const Pages = ({ content }) => (
       <link rel="icon" href="/favicon.ico" />
       <meta
         name="description"
-        content="Geração Pet - Pet Shop Online - Descrição"
+        content="Pet Shop Online mais recomendado pelos amigos. Tudo em 3x sem juros e entrega garantida em TODO Brasil. Os Melhores Preços - Acesse e Confira!"
       />
       <meta
         property="og:description"
-        content="Geração Pet - Pet Shop Online - Descrição"
+        content="Pet Shop Online mais recomendado pelos amigos. Tudo em 3x sem juros e entrega garantida em TODO Brasil. Os Melhores Preços - Acesse e Confira!"
       />
     </Head>
     <Home content={content} />
