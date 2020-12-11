@@ -33,6 +33,10 @@ const Pages = ({ content }) => {
   );
 };
 
+const sleep = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export const getStaticPaths = async() => {
     let paths = [];
     if(CACHE_PAGES == 'true'){
@@ -44,7 +48,10 @@ export const getStaticPaths = async() => {
       paths = paths.concat(categoriesPath.map((path) => ({
           params: { page: path },
       })));
-      //paths = [{ params: { page: "racao-biofresh-para-caes-adultos-racas-pequenas-e-mini-sabor-frango" } }];
+/*       paths = [
+        { params: { page: "racao-biofresh-para-caes-adultos-racas-pequenas-e-mini-sabor-frango" } },
+        { params: { page: "apoquel" } },
+      ]; */
     }
     return { paths, fallback: false }
 };
@@ -53,6 +60,7 @@ export const getStaticProps = async ({ params }) => {
   try{
     const url = params.page;
     const { data: route } = await requestRedirect(url);
+    await sleep(200);
     const response = await requestCategories();
   
     return {
