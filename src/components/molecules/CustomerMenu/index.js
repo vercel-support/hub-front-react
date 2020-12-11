@@ -14,9 +14,11 @@ const CustomerMenu = ({ content }) => {
 
     return (
         <MenuWrapper>
-            <MenuTitle>
-                <h1>Olá, Leonardo!</h1>
-            </MenuTitle>
+            { content && content.name && (
+                <MenuTitle>
+                    <h1>Olá, {content.firstname}!</h1>
+                </MenuTitle>
+            )}
             <Link href={`/minha-conta/dados`}>
                 <MenuItem>
                     <AccountIcon />

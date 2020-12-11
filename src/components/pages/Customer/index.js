@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { OneColumn } from "../../templates";
 import { Grid, Hidden } from "@material-ui/core";
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   CustomerMenu,
   CustomerMenuMobile,
@@ -16,39 +19,56 @@ import Link from "next/link";
 const API_URL = process.env.API_URL;
 import axios from "axios";
 
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
+
 const Customer = ({ content, page }) => {
   const Page = page !== "index" ? routes[page] : null;
   const [ loggedIn, setLoggedIn ] = useState(false);
+  const [ customerData, setCustomerData ] = useState(null);
   const [ emailIdentification, setEmailIdentification ] = useState({
     email: null,
     isRegistered: false
   });
+  const [ loading, setLoading ] = useState(false);
+  const classes = useStyles();
+
+  const getCustomerData = async(token) => {
+    try{
+      setLoading(true);
+      let loginResponse = await axios.post(`${API_URL}/customers`, { token });
+      if(loginResponse && loginResponse.data && loginResponse.data.status == 200){
+        setCustomerData(loginResponse.data.customerData);
+        setLoggedIn(true);
+      }
+      else{
+        setEmailIdentification({
+          email: savedEmail,
+          isRegistered: true
+        });
+      }
+      setLoading(false);
+    }
+    catch(error){
+      setEmailIdentification({
+        email: savedEmail,
+        isRegistered: true
+      });
+      setLoading(false);
+    }
+  }
 
   const tryLogin = async() => {
+    setLoading(true);
     const savedEmail = localStorage.getItem("customer-email");
     if(savedEmail){
       const savedToken = localStorage.getItem("customer-token");
       if(savedToken){
-        try{
-          let loginResponse = await axios.post(`${API_URL}/customers`, { token: savedToken });
-          if(loginResponse && loginResponse.data && loginResponse.data.status == 200){
-            console.log(loginResponse.data);
-            handleLogin();
-          }
-          else{
-            setEmailIdentification({
-              email: savedEmail,
-              isRegistered: true
-            });
-          }
-        }
-        catch(error){
-          setEmailIdentification({
-            email: savedEmail,
-            isRegistered: true
-          });
-        }
-
+        getCustomerData(savedToken);
       }
       else{
         setEmailIdentification({
@@ -57,22 +77,28 @@ const Customer = ({ content, page }) => {
         });
       }
     }
+    setLoading(false);
   };
 
   const handleLogin = (data) => {
     setLoggedIn(true);
-    console.log('loggedin');
-    console.log(data);
+    getCustomerData(data.token);
   }
 
   useEffect(() => {
     tryLogin();
   }, []);
 
+  if(loading)
+    return (
+      <Backdrop className={classes.backdrop} open={true}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
+
   if(!loggedIn)
     return (
       <OneColumn content={content}>
-
           <Grid container alignContent="center">
             <Hidden mdDown>
               <Grid item xs={12}>
@@ -85,9 +111,6 @@ const Customer = ({ content, page }) => {
               </Grid>
             </Hidden>
           </Grid>
-
-
-
       </OneColumn>
     );
 
@@ -96,7 +119,7 @@ const Customer = ({ content, page }) => {
       <Hidden mdDown>
         <Grid container>
           <Grid item lg={3}>
-            <CustomerMenu />
+            <CustomerMenu content={customerData}/>
           </Grid>
           <Grid item lg={9}>
             {Page && (<Page desktop={true}/>)}
@@ -116,7 +139,7 @@ const Customer = ({ content, page }) => {
               </Grid>
             ) :
             (
-              <CustomerMenuMobile />
+              <CustomerMenuMobile content={customerData}/>
             )
           }
         {Page && (<Page desktop={false}/>)}
