@@ -161,6 +161,7 @@ const Category = ({ content }) => {
         handlePageChange={handlePageChange}
         resetPage={searchOptions.resetPage}
       />
+      <div class="render-type" style={{display: "none"}}>{content.data.propsType}</div>
     </TwoColumns>
   );
 };

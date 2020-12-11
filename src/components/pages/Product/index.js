@@ -150,6 +150,7 @@ const Product = ({ content }) => {
         
       </Container>
       <ProductSchema content={content.data}/>
+      <div class="render-type" style={{display: "none"}}>{content.data.propsType}</div>
     </OneColumn>
   );
 };

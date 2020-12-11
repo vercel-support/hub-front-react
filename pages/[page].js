@@ -56,7 +56,7 @@ export const getStaticProps = async ({ params }) => {
     const response = await requestCategories();
   
     return {
-      props: { content: { data: { ...route.data, categories: response.data, url} } },
+      props: { content: { data: { ...route.data, categories: response.data, url, propsType: "static" } } },
     };
   }
   catch(error){
