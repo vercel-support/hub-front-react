@@ -60,7 +60,6 @@ export const getStaticProps = async ({ params }) => {
   try{
     const url = params.page;
     const { data: route } = await requestRedirect(url);
-    await sleep(200);
     const response = await requestCategories();
   
     return {
