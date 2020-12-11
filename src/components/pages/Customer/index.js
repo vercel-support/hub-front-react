@@ -8,6 +8,7 @@ import {
 import {
   AdressesIcon,
   BackContainer,
+  RegisterFormContainer,
 } from "./styles";
 import { IdentificationForm, RegisterForm } from "../../molecules";
 import routes from "../../../utils/switchComponentes";
@@ -58,8 +59,10 @@ const Customer = ({ content, page }) => {
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = (data) => {
     setLoggedIn(true);
+    console.log('loggedin');
+    console.log(data);
   }
 
   useEffect(() => {
@@ -69,9 +72,22 @@ const Customer = ({ content, page }) => {
   if(!loggedIn)
     return (
       <OneColumn content={content}>
-        <React.Fragment>
-          {emailIdentification.email ? <RegisterForm handleNext={handleLogin} emailIdentification={emailIdentification} />:<IdentificationForm setEmailIdentification={setEmailIdentification} />}
-        </React.Fragment>
+
+          <Grid container alignContent="center">
+            <Hidden mdDown>
+              <Grid item xs={12}>
+                  {emailIdentification.email ? <RegisterForm handleNext={handleLogin} emailIdentification={emailIdentification} />:<IdentificationForm setEmailIdentification={setEmailIdentification} />}
+              </Grid>
+            </Hidden>
+            <Hidden mdUp>
+              <Grid item xs={12}>
+                  {emailIdentification.email ? <RegisterForm handleNext={handleLogin} emailIdentification={emailIdentification} />:<IdentificationForm setEmailIdentification={setEmailIdentification} />}
+              </Grid>
+            </Hidden>
+          </Grid>
+
+
+
       </OneColumn>
     );
 

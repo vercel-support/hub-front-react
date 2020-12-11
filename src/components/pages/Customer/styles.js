@@ -14,3 +14,7 @@ export const AdressesIcon = styled(ArrowBackIcon)`
     vertical-align: middle;
     color: #4c4c4c;
 `;
+
+export const RegisterFormContainer = styled.div`
+    text-align: center;
+`;
