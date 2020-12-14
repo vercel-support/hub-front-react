@@ -8,12 +8,6 @@ const { CACHE_PAGES } = publicRuntimeConfig; */
 const CACHE_PAGES = process.env.CACHE_PAGES;
 
 const Pages = ({ content }) => {
-  if(!content || !content.data)
-    return (
-      <>
-        Página não encontrada
-      </>
-    );
   const Page = routes[content.data.pageType];
 
   return (
@@ -32,10 +26,6 @@ const Pages = ({ content }) => {
     </>
   );
 };
-
-const sleep = (ms) => {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 export const getStaticPaths = async() => {
     let paths = [];
@@ -57,20 +47,15 @@ export const getStaticPaths = async() => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  try{
-    const url = params.page;
-    const { data: route } = await requestRedirect(url);
-    const response = await requestCategories();
-  
-    return {
-      props: { content: { data: { ...route.data, categories: response.data, url, propsType: "static" } } },
-    };
-  }
-  catch(error){
-    return {
-      props: {}
-    };
-  }
+
+  const url = params.page;
+  const { data: route } = await requestRedirect(url);
+  const response = await requestCategories();
+
+  return {
+    props: { content: { data: { ...route.data, categories: response.data, url, propsType: "static" } } },
+  };
+
 
 };
 
