@@ -6,6 +6,8 @@ export { default as CategoryBanner } from "./CategoryBanner";
 export { default as CategoryFilter } from "./CategoryFilter";
 export { default as CategorySort } from "./CategorySort";
 export { default as CategoryTools } from "./CategoryTools";
+export { default as CustomerMenu } from "./CustomerMenu";
+export { default as CustomerMenuMobile } from "./CustomerMenuMobile";
 export { default as ContentFooter } from "./ContentFooter";
 export { default as Features } from "./Features";
 export { default as FooterLinks } from "./FooterLinks";
