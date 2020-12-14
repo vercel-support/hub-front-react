@@ -4,8 +4,9 @@ const CategoryDescriptionStyled = styled.p`
   color: #666666;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
-  line-height: 19px;
+  font-size: 0.8rem;
+  line-height: 1.25;
+  text-align: justify;
   margin: 0 0 45px 0;
   padding: 0;
   & > span {
@@ -13,6 +14,10 @@ const CategoryDescriptionStyled = styled.p`
     cursor: pointer;
     margin-left: 10px;
     text-decoration: underline;
+  }
+  h2, h3 {
+    font-size: 16px;
+    letter-spacing: 0;
   }
 `;
 

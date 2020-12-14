@@ -15,8 +15,8 @@ const Logo = () => {
               ? "/assets/images/logo.png"
               : "/assets/images/logo-mobile.png"
           }
-          alt="Logo Geração Pet"
-          title="Logo Geração Pet"
+          alt="Geração Pet - Pet Shop Online"
+          title=" Geração Pet - Pet Shop Online"
         />
       </LogoStyled>
     </Link>
