@@ -54,6 +54,10 @@ const initialState = {
   geoLocationOpen: false,
   cartPageProducts: [],
   userResumeInfo: null,
+  customerState: {
+    loggedIn: false,
+    token: null
+  }
 };
 const maxStoreDistance = 60000;
 const maxStoresNumber = 15;
@@ -271,6 +275,14 @@ const StateProvider = ({ children, value }) => {
         case "SET_USER_RESUME_INFO":
           return {
             ...state, userResumeInfo: action.payload
+          }
+        case "SET_USER_LOGGED_IN":
+          return {
+            ...state, customerState: {
+              loggedIn: true,
+              token: action.payload.token,
+              customerData: action.payload.customerData
+            }
           }
         default:
           return state;

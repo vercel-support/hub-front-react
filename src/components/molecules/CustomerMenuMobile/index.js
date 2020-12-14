@@ -15,7 +15,7 @@ const CustomerMenuMobile = ({ content }) => {
 
     return (
         <MenuWrapper>
-            { content && content.name && (
+            { content && content.firstname && (
                 <MenuTitle>
                     <h1>Olá, {content.firstname}!</h1>
                 </MenuTitle>

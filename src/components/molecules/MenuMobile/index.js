@@ -85,7 +85,7 @@ const MenuMobile = ({ categories = [] }) => {
         <div style={{ width: "300px" }} role="presentation">
           <List className={classes.list}>
             <ListItem divider="false" className={classes.accountItem} button>
-              <Link href={`/customer/account`}>
+              <Link href={`/minha-conta`}>
                 <a>
                   <AccountResume/>
                 </a>

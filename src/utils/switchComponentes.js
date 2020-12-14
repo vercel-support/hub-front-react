@@ -6,6 +6,7 @@ export default {
   checkout: Pages.Checkout,
   cms: Pages.Cms,
   customer: Pages.Customer,
+  customerCredits: Pages.CustomerCredits,
   customerData: Pages.CustomerData,
   customerAddresses: Pages.CustomerAddresses,
   customerOrders: Pages.CustomerOrders,

@@ -4,6 +4,7 @@ export { default as Checkout } from "./Checkout";
 export { default as Cms } from "./Cms";
 export { default as Customer } from "./Customer";
 export { default as CustomerAddresses } from "./CustomerAddresses";
+export { default as CustomerCredits } from "./CustomerCredits";
 export { default as CustomerData } from "./CustomerData";
 export { default as CustomerOrders } from "./CustomerOrders";
 export { default as Home } from "./Home";

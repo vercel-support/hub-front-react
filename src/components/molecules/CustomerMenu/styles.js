@@ -19,7 +19,7 @@ export const MenuTitle = styled.div`
         display: inline-block;
         vertical-align: middle;
         line-height: normal;
-        color: #4c4c4c;
+        color: #2983B9;
         font-size: 22px;
         font-weight: normal;
         line-height: 11px;
@@ -29,10 +29,13 @@ export const MenuTitle = styled.div`
 
 export const MenuItem = styled.div`
     cursor: pointer;
-    height: 50px;
     width: 100%;
     min-width: 150px;
-    background-color: transparent;
+    background-color: #f6f6f6;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 10px;
+    padding-left: 10px;
     & > p {
         display: inline-block;
         vertical-align: middle;
@@ -44,7 +47,7 @@ export const MenuItem = styled.div`
         padding-left: 15px;
     }
     &:hover {
-        background-color: #f6f6f6;
+        background-color: #eeeeee;
     }
 `;
 

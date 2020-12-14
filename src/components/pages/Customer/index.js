@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { store } from "../../../store";
 import { OneColumn } from "../../templates";
 import { Grid, Hidden } from "@material-ui/core";
 import Backdrop from '@material-ui/core/Backdrop';
@@ -27,7 +28,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Customer = ({ content, page }) => {
-  const Page = page !== "index" ? routes[page] : null;
+
+  const Page = page !== "index" ? routes[page] : routes["customerData"];
+
+  const { dispatch } = useContext(store);
   const [ loggedIn, setLoggedIn ] = useState(false);
   const [ customerData, setCustomerData ] = useState(null);
   const [ emailIdentification, setEmailIdentification ] = useState({
@@ -37,13 +41,17 @@ const Customer = ({ content, page }) => {
   const [ loading, setLoading ] = useState(false);
   const classes = useStyles();
 
-  const getCustomerData = async(token) => {
+  const getCustomerData = async(token, savedEmail) => {
     try{
       setLoading(true);
       let loginResponse = await axios.post(`${API_URL}/customers`, { token });
       if(loginResponse && loginResponse.data && loginResponse.data.status == 200){
         setCustomerData(loginResponse.data.customerData);
         setLoggedIn(true);
+        dispatch({ 
+          type: "SET_USER_LOGGED_IN", 
+          payload: { token, customerData: loginResponse.data.customerData } 
+        });
       }
       else{
         setEmailIdentification({
@@ -68,7 +76,7 @@ const Customer = ({ content, page }) => {
     if(savedEmail){
       const savedToken = localStorage.getItem("customer-token");
       if(savedToken){
-        getCustomerData(savedToken);
+        await getCustomerData(savedToken, savedEmail);
       }
       else{
         setEmailIdentification({
@@ -91,9 +99,11 @@ const Customer = ({ content, page }) => {
 
   if(loading)
     return (
-      <Backdrop className={classes.backdrop} open={true}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <OneColumn content={content}>
+        <Backdrop className={classes.backdrop} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </OneColumn>
     );
 
   if(!loggedIn)
@@ -142,7 +152,7 @@ const Customer = ({ content, page }) => {
               <CustomerMenuMobile content={customerData}/>
             )
           }
-        {Page && (<Page desktop={false}/>)}
+        {Page && page !== "index" && (<Page desktop={false}/>)}
       </Hidden>
       
     </OneColumn>

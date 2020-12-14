@@ -12,14 +12,13 @@ export const MenuWrapper = styled.div`
 `;
 
 export const MenuTitle = styled.div`
-    height: 50px;
     width: 100%;
     background-color: transparent;
     & > h1 {
         display: inline-block;
         vertical-align: middle;
         line-height: normal;
-        color: #4c4c4c;
+        color: #2983B9;
         font-size: 22px;
         font-weight: normal;
         line-height: 11px;
@@ -30,10 +29,11 @@ export const MenuTitle = styled.div`
 export const MenuItem = styled.div`
     position: relative;
     cursor: pointer;
-    height: 50px;
     width: 100%;
-    background-color: transparent;
-    border-bottom: 1px solid #d3d3d3;
+    background-color: #eeeeee;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 10px;
     & > p {
         display: inline-block;
         vertical-align: middle;
@@ -52,7 +52,6 @@ const IconStyled = `
     color: #4c4c4c;
     padding-left: 5px;
 `;
-
 
 export const AdressesIcon = styled(PersonPinCircleIcon)`${IconStyled}`;
 export const CreditsIcon = styled(LocalAtmIcon)`${IconStyled}`;
