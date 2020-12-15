@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import {
     AdressesIcon,
@@ -8,9 +8,17 @@ import {
     MenuWrapper,
     OrdersIcon,
     AccountIcon,
+    LogoutIcon,
 } from "./styles";
+import { store } from "../../../store";
 
 const CustomerMenu = ({ content }) => {
+    const { dispatch } = useContext(store);
+
+    const logout = () => {
+        dispatch({type: "SET_USER_LOGOUT"});
+        window.location.reload();
+    }
 
     return (
         <MenuWrapper>
@@ -43,6 +51,10 @@ const CustomerMenu = ({ content }) => {
                     <p>Créditos</p>
                 </MenuItem>
             </Link>
+            <MenuItem onClick={logout}>
+                <LogoutIcon />
+                <p>Sair</p>
+            </MenuItem>
         </MenuWrapper>
     );
 };

@@ -5,6 +5,7 @@ import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounded';
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 
 export const MenuWrapper = styled.div`
     width: 100%;
@@ -57,6 +58,7 @@ export const AdressesIcon = styled(PersonPinCircleIcon)`${IconStyled}`;
 export const CreditsIcon = styled(LocalAtmIcon)`${IconStyled}`;
 export const OrdersIcon = styled(AssignmentIcon)`${IconStyled}`;
 export const AccountIcon = styled(PersonIcon)`${IconStyled}`;
+export const LogoutIcon = styled(ExitToAppRoundedIcon)`${IconStyled}`;
 export const FwdArrowIcon = styled(ArrowForwardIosRoundedIcon)`
     position: absolute;
     top: 35%;

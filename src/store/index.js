@@ -173,6 +173,11 @@ function* setCdStore() {
   yield put({ type: "SET_STORE_STATE", payload: { myStore: initialState.defaultStore, stores: [] } });
 }
 
+function* setUserLogout() {
+  localStorage.removeItem("customer-token");
+  localStorage.removeItem("customer-email");
+}
+
 function* watchGetPostcode() {
   yield takeEvery("GEO_SUCCESS", getStoresByGeolocation);
 }
@@ -197,6 +202,10 @@ function* watchSetCdStore() {
   yield takeEvery("SET_CD_STORE", setCdStore);
 }
 
+function* watchUserLogout() {
+  yield takeEvery("SET_USER_LOGOUT", setUserLogout);
+}
+
 function* rootSaga() {
   yield all([
     watchGetPostcode(),
@@ -205,6 +214,7 @@ function* rootSaga() {
     watchGetPostcodeError(),
     watchSetNewStore(),
     watchSetCdStore(),
+    watchUserLogout(),
   ]);
 }
 // Saga
@@ -283,6 +293,16 @@ const StateProvider = ({ children, value }) => {
               token: action.payload.token,
               customerData: action.payload.customerData
             }
+          }
+        case "SET_USER_LOGOUT":
+          return {
+            ...state, 
+            customerState: {
+              loggedIn: false,
+              token: null,
+              customerData: null
+            },
+            userResumeInfo: null,
           }
         default:
           return state;

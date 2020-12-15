@@ -4,6 +4,7 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 
 export const MenuWrapper = styled.div`
     width: 300px;
@@ -63,3 +64,4 @@ export const AdressesIcon = styled(PersonPinCircleIcon)`${IconStyled}`;
 export const CreditsIcon = styled(LocalAtmIcon)`${IconStyled}`;
 export const OrdersIcon = styled(AssignmentIcon)`${IconStyled}`;
 export const AccountIcon = styled(PersonIcon)`${IconStyled}`;
+export const LogoutIcon = styled(ExitToAppRoundedIcon)`${IconStyled}`;

@@ -41,11 +41,7 @@ const HeaderLinks = () => (
       </Link>
     </li>
     <li>
-      <Link href={`/minha-conta`}>
-        <a>
-        <AccountResume />
-        </a>
-      </Link>
+      <AccountResume desktop={true}/>
       {/* {open ? <ExpandLess /> : <ExpandMore />}
       <DropDown open={open}>
         <SubMenu />

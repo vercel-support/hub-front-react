@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CancelIcon from '@material-ui/icons/Cancel';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 export const PageWrapper = styled.div`
@@ -37,6 +38,32 @@ export const OrderInfoContainer = styled.div`
             padding-top: 5px;
             font-size: 16px;
         }
+    }
+`;
+
+export const LinkContainer = styled.div`
+    color: #4c4c4c;
+    font-size: 14px;
+    font-weight: normal;
+    & > a {
+        text-decoration: underline;
+    }
+`;
+
+export const CopyButton = styled.button`
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+    text-decoration: none;
+    border: 1px solid #2983B9;
+    border-radius: 5px;
+    background-color: transparent;
+    color: #2983B9;
+    text-align: center;
+    margin-bottom: 10px;
+    &: hover{
+        background-color: #eeeeee;
+        border: none;
     }
 `;
 
@@ -165,6 +192,10 @@ export const StoreIconStyled = styled.div`
 
 export const DoneIconStyled = styled(CheckCircleOutlineIcon)`
     color: ${(props) => (props.type === "next" ? "#a3a3a3" : "#cfd601")};
+`;
+
+export const CanceledIconStyled = styled(CancelIcon)`
+    color: red;
 `;
 
 export const StatusBulletIconStyled = styled(FiberManualRecordIcon)`

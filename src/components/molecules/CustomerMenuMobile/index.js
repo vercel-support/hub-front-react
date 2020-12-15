@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import {
     AdressesIcon,
@@ -9,9 +9,18 @@ import {
     MenuTitle,
     MenuWrapper,
     OrdersIcon,
+    LogoutIcon
 } from "./styles";
+import { store } from "../../../store";
 
 const CustomerMenuMobile = ({ content }) => {
+
+    const { dispatch } = useContext(store);
+
+    const logout = () => {
+        dispatch({type: "SET_USER_LOGOUT"});
+        window.location.reload();
+    }
 
     return (
         <MenuWrapper>
@@ -48,6 +57,10 @@ const CustomerMenuMobile = ({ content }) => {
                     <FwdArrowIcon />
                 </MenuItem>
             </Link>
+            <MenuItem onClick={logout}>
+                <LogoutIcon />
+                <p>Sair</p>
+            </MenuItem>
         </MenuWrapper>
     );
 };

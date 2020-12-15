@@ -2,8 +2,11 @@ import React, { useContext, useState, useEffect } from "react";
 import { store } from "../../../store";
 import { Grid, Paper } from "@material-ui/core";
 import {
+    CanceledIconStyled,
+    CopyButton,
     DeliveryInfoWrapper,
     DoneIconStyled,
+    LinkContainer,
     MobileStepLabelStyled,
     MoreInfoButton,
     NfeButton,
@@ -37,7 +40,13 @@ const API_URL = process.env.API_URL;
 const FRONTEND_URL = process.env.FRONTEND_URL;
 import axios from "axios";
 
-const InoviceDetail = ({invoiceNumber, open, handleCloseNfe}) => {  
+const InoviceDetail = ({invoiceNumber, open, handleCloseNfe}) => {
+    const [ invoiceCopied, setInvoiceCopied ] = useState(false);
+    const copyInvoiceNumber = () => {
+        setInvoiceCopied(true);
+        navigator.clipboard.writeText(invoiceNumber);
+    }
+
     return (
         <Dialog open={open} onClose={handleCloseNfe} aria-labelledby="nfe-dialog-title">
             <DialogTitle id="nfe-dialog-title">NOTA FISCAL ELETRÔNICA</DialogTitle>
@@ -49,26 +58,23 @@ const InoviceDetail = ({invoiceNumber, open, handleCloseNfe}) => {
                         value={invoiceNumber}
                         type="text"
                         fullWidth
-                        disabled={true}
                     />
                 </DialogContentText>
                 <DialogContentText>
-                    COMO CONSULTAR OU IMPRIMIR MINHA NOTA FISCAL?
-                    <ul>
-                        <li>
-                            Copie a sua chave de acesso da nf-e acima;
-                        </li>
-                        <li>
-                            Entre em um dos sites abaixo e insira a sua chave;
-                        </li>
-                    </ul>
-                    <a target="_blank" href="http://www.nfe.fazenda.gov.br/portal/consultaRecaptcha.aspx?tipoConsulta=resumo&tipoConteudo=d09fwabTnLk=">
-                        RESUMO DA NOTA FISCAL
-                    </a>
-                    <br/>
-                    <a target="_blank" href="http://www.nfe.fazenda.gov.br/portal/consultaRecaptcha.aspx?tipoConsulta=completa&tipoConteudo=XbSeqxE8pl8=">
-                        NOTA FISCAL COMPLETA
-                    </a>
+                    Como consultar minha nota fiscal?
+                    <CopyButton onClick={copyInvoiceNumber}>
+                        { invoiceCopied ? "Copiado!" : "Copie a chave de acesso"}
+                    </CopyButton>
+                    Entre em um dos sites:
+                    <LinkContainer>
+                        <a target="_blank" href="http://www.nfe.fazenda.gov.br/portal/consultaRecaptcha.aspx?tipoConsulta=resumo&tipoConteudo=d09fwabTnLk=">
+                            RESUMO DA NOTA FISCAL
+                        </a>
+                        <br/>
+                        <a target="_blank" href="http://www.nfe.fazenda.gov.br/portal/consultaRecaptcha.aspx?tipoConsulta=completa&tipoConteudo=XbSeqxE8pl8=">
+                            NOTA FISCAL COMPLETA
+                        </a>
+                    </LinkContainer>
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -119,7 +125,10 @@ const DetailedOrder = ({desktop, order}) => {
                                                     </StepLabelStyled>
                                                 </Grid>
                                                 <Grid item xs={12} style={{"text-align": "center"}}>
-                                                    <DoneIconStyled type={status.type}/>
+                                                    { status.status === "CANCELADO" ?
+                                                        <CanceledIconStyled /> :
+                                                        <DoneIconStyled type={status.type}/>
+                                                    }
                                                 </Grid>
                                             </Grid>
                                         </Step>
@@ -132,7 +141,10 @@ const DetailedOrder = ({desktop, order}) => {
                                         <Step key={status.label}>
                                             <Grid container>
                                                 <Grid item xs={2}>
-                                                <DoneIconStyled type={status.type}/>
+                                                    { status.status === "CANCELADO" ?
+                                                        <CanceledIconStyled /> :
+                                                        <DoneIconStyled type={status.type}/>
+                                                    }
                                                 </Grid>
                                                 <Grid item xs={6}>
                                                     <MobileStepLabelStyled>
