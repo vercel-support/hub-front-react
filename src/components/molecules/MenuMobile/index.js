@@ -84,13 +84,13 @@ const MenuMobile = ({ categories = [] }) => {
       <Drawer open={open} onClose={() => setOpen(false)} disableScrollLock={true}>
         <div style={{ width: "300px" }} role="presentation">
           <List className={classes.list}>
-            <ListItem divider="false" className={classes.accountItem} button>
-              <Link href={`/customer/account`}>
-                <a>
-                  <AccountResume/>
-                </a>
+              <Link href={`/minha-conta`}>
+                <ListItem divider="false" className={classes.accountItem} button>
+                  <a>
+                    <AccountResume desktop={false}/>
+                  </a>
+                </ListItem>
               </Link>
-            </ListItem>
 {/*             <Divider /> */}
           </List>
           <List>

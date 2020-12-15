@@ -8,7 +8,7 @@ import { AccountResume } from "../../atoms";
 const SubMenu = () => (
   <ul>
     <li>
-      <Link href={`/[...page]`} as="/minha-conta">
+      <Link href={`/minha-conta`}>
         <a>Minha Conta</a>
       </Link>
     </li>
@@ -41,11 +41,7 @@ const HeaderLinks = () => (
       </Link>
     </li>
     <li>
-      <Link href={`/[...page]`} as="/customer/account/">
-        <a>
-        <AccountResume />
-        </a>
-      </Link>
+      <AccountResume desktop={true}/>
       {/* {open ? <ExpandLess /> : <ExpandMore />}
       <DropDown open={open}>
         <SubMenu />

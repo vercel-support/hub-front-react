@@ -30,7 +30,7 @@ const RegisterForm = ({handleNext, emailIdentification}) => {
       if(loginResponse && loginResponse.data && loginResponse.data.status == 200){
         localStorage.setItem("customer-token", loginResponse.data.token);
         localStorage.setItem("customer-email", data.email);
-        handleNext();
+        handleNext(loginResponse.data);
       }
       dispatch({ type: "LOADING_DATA", payload: false });
     }
